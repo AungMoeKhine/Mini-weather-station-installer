@@ -1,0 +1,16 @@
+{
+"name": "ESP32 Mini Weather Station",
+"version": "1.0",
+"new_install_prompt_erase": true,
+"builds": [
+{
+"chipFamily": "ESP32",
+"parts": [
+{
+"path": "https://github.com/AungMoeKhine/Mini-weather-station-installer/releases/download/v1.0/Test3.ino.merged.bin",
+"offset": 0
+}
+]
+}
+]
+}
