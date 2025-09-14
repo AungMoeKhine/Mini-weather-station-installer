@@ -9,14 +9,33 @@ body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; bac
 h1 { color: #333; }
 p { color: #555; max-width: 600px; margin: 20px auto; }
 .container { padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: inline-block; }
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.important-note { font-weight: bold; color: #D32F2F; } /* Style for the new note */
 </style>
 <script type="module" src="https://unpkg.com/esp-web-tools@9/dist/web/install-button.js?module"></script>
 </head>
 <body>
 <div class="container">
 <h1>ESP32 Weather Station Web Installer</h1>
+<p>This program was developed by <strong>Aung Moe Khine</strong>.</p>
 <p>Connect your ESP32 to your computer with a USB cable, then click the button below to install the firmware. You must use a compatible browser like Google Chrome or Microsoft Edge.</p>
+<p class="important-note">Important: Please use the same type of board this was designed for: "CYD-2432S028R Inverted Colors Type".</p>
 <esp-web-install-button manifest="manifest.json"></esp-web-install-button>
+<p>
+  <a href="https://drive.google.com/drive/folders/1BN2cHMYYCCNuXShteNzYeyH5BDFOJhIV?usp=drive_link" class="button" target="_blank">Download Required Icons</a>
+</p>
 </div>
 </body>
 </html>
