@@ -1,7 +1,8 @@
-ESP32 Mini Weather Station Features Functionality List
-ESP32 Mini Weather Station
-Features & Functionality List
+ESP32 Mini Weather Station Features & Functionality List
+
+
 Version: Final (ISR-Based Touch) - September 16, 2025
+
 Core User Interface & Navigation
 • Multi-Page Touch Interface: A modern, responsive UI with five distinct pages: Weather,
 Hourly Graph, Clock, Calendar, and Exchange Rates.
