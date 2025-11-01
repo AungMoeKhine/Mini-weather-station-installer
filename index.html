@@ -9,6 +9,12 @@ body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; bac
 h1 { color: #333; }
 p { color: #555; max-width: 600px; margin: 20px auto; }
 .container { padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: inline-block; }
+.logo {
+  width: 150px; /* You can adjust the size here */
+  height: auto;
+  border-radius: 50%; /* Makes the image a circle */
+  margin-bottom: 20px;
+}
 .button {
   background-color: #4CAF50; /* Green */
   border: none;
@@ -28,6 +34,9 @@ p { color: #555; max-width: 600px; margin: 20px auto; }
 </head>
 <body>
 <div class="container">
+<!-- Your Logo is here -->
+<img src="logo.png" alt="Developer Logo" class="logo">
+
 <h1>ESP32 Mini Weather Station Web Installer</h1>
 <p>This program was developed by <strong>Aung Moe Khine</strong>.</p>
 <p>Connect your ESP32 to your computer with a USB cable, then click the button below to install the firmware. You must use a compatible browser like Google Chrome or Microsoft Edge.</p>
