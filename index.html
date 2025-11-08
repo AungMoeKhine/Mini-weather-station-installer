@@ -29,6 +29,8 @@ p { color: #555; max-width: 600px; margin: 20px auto; }
   border-radius: 8px;
 }
 .important-note { font-weight: bold; color: #D32F2F; } /* Style for the new note */
+hr { border: 0; height: 1px; background: #ddd; margin: 30px 0; }
+.firmware-option { margin-bottom: 10px; }
 </style>
 <script type="module" src="https://unpkg.com/esp-web-tools@9/dist/web/install-button.js?module"></script>
 </head>
@@ -41,7 +43,22 @@ p { color: #555; max-width: 600px; margin: 20px auto; }
 <p>This program was developed by <strong>Aung Moe Khine</strong>.</p>
 <p>Connect your ESP32 to your computer with a USB cable, then click the button below to install the firmware. You must use a compatible browser like Google Chrome or Microsoft Edge.</p>
 <p class="important-note">Please use ESP32 CYD 2.8 inches board only</p>
-<esp-web-install-button manifest="manifest.json"></esp-web-install-button>
+
+<!-- Original Button for Weather Station Firmware -->
+<div class="firmware-option">
+    <p><strong>1. Install the main Weather Station firmware:</strong></p>
+    <esp-web-install-button manifest="manifest.json">Install</esp-web-install-button>
+</div>
+
+<!-- NEW SECTION: Button for Web Control Firmware -->
+<div class="firmware-option">
+    <p><strong>2. (Optional) Install the Web Control firmware:</strong></p>
+    <esp-web-install-button manifest="manifest_web_control.json">Web Control</esp-web-install-button>
+</div>
+<!-- END OF NEW SECTION -->
+
+<hr>
+
 <p>
   <a href="https://drive.google.com/drive/folders/1BN2cHMYYCCNuXShteNzYeyH5BDFOJhIV?usp=drive_link" class="button" target="_blank">Download Required Icons</a>
 </p>
