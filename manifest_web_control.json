@@ -1,0 +1,13 @@
+{
+  "name": "ESP32 Web Control",
+  "version": "1.0.0",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "Web_Control.ino.merged.bin", "offset": 0 }
+      ]
+    }
+  ]
+}
