@@ -28,9 +28,16 @@ p { color: #555; max-width: 600px; margin: 20px auto; }
   cursor: pointer;
   border-radius: 8px;
 }
-.important-note { font-weight: bold; color: #D32F2F; } /* Style for the new note */
+.important-note { font-weight: bold; color: #D32F2F; }
 hr { border: 0; height: 1px; background: #ddd; margin: 30px 0; }
-.firmware-option { margin-bottom: 10px; }
+.firmware-option { margin-bottom: 15px; } /* Added a bit more space */
+/* Style for the sub-note */
+.note {
+  font-size: 0.9em;
+  color: #6c757d;
+  font-style: italic;
+  margin-top: -15px; /* Pulls the note closer to the title above it */
+}
 </style>
 <script type="module" src="https://unpkg.com/esp-web-tools@9/dist/web/install-button.js?module"></script>
 </head>
@@ -56,12 +63,12 @@ hr { border: 0; height: 1px; background: #ddd; margin: 30px 0; }
     <esp-web-install-button manifest="manifest_web_control.json">Web Control</esp-web-install-button>
 </div>
 
-<!-- NEW SECTION: Button for Compact Firmware -->
+<!-- Button for Compact Firmware with the new note -->
 <div class="firmware-option">
-    <p><strong>3. (Optional) Install the Compact version (Removed Exchange Rate, Calculator & Decision Maker pages but expend world cities to 150 countries):</strong></p>
+    <p><strong>3. (Optional) Install the Compact version:</strong></p>
+    <p class="note">(Removed Exchange Rate, Calculator & Decision Maker pages but expend world cities to 150 countries)</p>
     <esp-web-install-button manifest="manifest_compact.json">Compact Install</esp-web-install-button>
 </div>
-<!-- END OF NEW SECTION -->
 
 <hr>
 
