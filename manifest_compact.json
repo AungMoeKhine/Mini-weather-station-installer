@@ -6,7 +6,7 @@
     {
       "chipFamily": "ESP32",
       "parts": [
-        { "path": "Light_Weight_wz_WabCtrl_Touch.ino.merged.bin", "offset": 0 }
+        { "path": "Mini_Weather_Station_Final_Version.ino.bin", "offset": 0 }
       ]
     }
   ]
