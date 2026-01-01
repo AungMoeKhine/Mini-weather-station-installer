@@ -6,7 +6,7 @@
     {
       "chipFamily": "ESP32",
       "parts": [
-        { "path": "Mini_Weather_Station_Final_Version_Logo_embedded_modified.ino", "offset": 0 }
+        { "path": "Mini_Weather_Station_Final_Version_Logo_embedded_modified.ino.bin", "offset": 0 }
       ]
     }
   ]
