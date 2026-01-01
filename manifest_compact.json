@@ -1,0 +1,13 @@
+{
+  "name": "ESP32 Compact",
+  "version": "1.0.0",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "Mini_Weather_Station_Final_Version_Logo_embedded_modified.ino.bin", "offset": 0 }
+      ]
+    }
+  ]
+}
