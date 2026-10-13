@@ -1,5 +1,5 @@
 {
-  "name": "ESP32 Compact",
+  "name": "ESP32 Mini Weather Station",
   "version": "1.0.0",
   "new_install_prompt_erase": true,
   "builds": [
