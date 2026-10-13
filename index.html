@@ -10,9 +10,9 @@ h1 { color: #333; }
 p { color: #555; max-width: 600px; margin: 20px auto; }
 .container { padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: inline-block; }
 .logo {
-  width: 150px; /* You can adjust the size here */
+  width: 150px;
   height: auto;
-  border-radius: 50%; /* Makes the image a circle */
+  border-radius: 50%;
   margin-bottom: 20px;
 }
 .button {
@@ -30,44 +30,32 @@ p { color: #555; max-width: 600px; margin: 20px auto; }
 }
 .important-note { font-weight: bold; color: #D32F2F; }
 hr { border: 0; height: 1px; background: #ddd; margin: 30px 0; }
-.firmware-option { margin-bottom: 15px; } /* Added a bit more space */
-/* Style for the sub-note */
+.firmware-option { margin-bottom: 20px; }
 .note {
   font-size: 0.9em;
   color: #6c757d;
   font-style: italic;
-  margin-top: -15px; /* Pulls the note closer to the title above it */
+  margin-top: -10px;
+  margin-bottom: 15px;
 }
 </style>
 <script type="module" src="https://unpkg.com/esp-web-tools@9/dist/web/install-button.js?module"></script>
 </head>
 <body>
 <div class="container">
-<!-- Your Logo is here -->
+<!-- Developer Logo -->
 <img src="logo.png" alt="Developer Logo" class="logo">
 
 <h1>ESP32 Mini Weather Station Web Installer</h1>
 <p>This program was developed by <strong>Aung Moe Khine</strong>.</p>
-<p>Connect your ESP32 to your computer via USB, then use Chrome or Edge and click the button below to install the firmware. Download the required icon folders, place them in the SD card's root directory, and insert the SD card into the slot. Without the SD card and icons, will not fetching weather data and display the Weather icons.</p>
+<p>Connect your ESP32 to your computer via USB, then use Chrome or Edge and click the button below to install the firmware. Download the required icon folders, place them in the SD card's root directory, and insert the SD card into the slot. Without the SD card and icons, it will not fetch weather data or display icons.</p>
 <p class="important-note">Please use ESP32 CYD 2.8 inches board only</p>
 
-<!-- Original Button for Weather Station Firmware -->
+<!-- Single Firmware Installation Button (Compact Version) -->
 <div class="firmware-option">
-    <p><strong>1. Install the normal Weather Station version:</strong></p>
-    <esp-web-install-button manifest="manifest.json">Install</esp-web-install-button>
-</div>
-
-<!-- Button for Web Control Firmware -->
-<div class="firmware-option">
-    <p><strong>2. (Optional) Install the Web Control version:</strong></p>
-    <esp-web-install-button manifest="manifest_web_control.json">Web Control</esp-web-install-button>
-</div>
-
-<!-- Button for Compact Firmware with the new note -->
-<div class="firmware-option">
-    <p><strong>3. (Optional) Install the Compact version:</strong></p>
-    <p class="note">(Removed Exchange Rate, Calculator, and Decision Maker pages to save RAM for fixe the issue that clock not showing sometimes. Now 150 cities in world clock)</p>
-    <esp-web-install-button manifest="manifest_compact.json">Compact Install</esp-web-install-button>
+    <p><strong>Install Weather Station Firmware:</strong></p>
+    <p class="note">RAM-optimized version with 150 World Clock cities and enhanced memory stability.</p>
+    <esp-web-install-button manifest="manifest_compact.json">Install Firmware</esp-web-install-button>
 </div>
 
 <hr>
