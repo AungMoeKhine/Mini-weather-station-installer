@@ -1,68 +1,334 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>ESP32 Mini Weather Station Installer</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f4; }
-h1 { color: #333; }
-p { color: #555; max-width: 600px; margin: 20px auto; }
-.container { padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: inline-block; }
-.logo {
-  width: 150px;
-  height: auto;
-  border-radius: 50%;
-  margin-bottom: 20px;
-}
-.button {
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px;
-}
-.important-note { font-weight: bold; color: #D32F2F; }
-hr { border: 0; height: 1px; background: #ddd; margin: 30px 0; }
-.firmware-option { margin-bottom: 20px; }
-.note {
-  font-size: 0.9em;
-  color: #6c757d;
-  font-style: italic;
-  margin-top: -10px;
-  margin-bottom: 15px;
-}
-</style>
-<script type="module" src="https://unpkg.com/esp-web-tools@9/dist/web/install-button.js?module"></script>
+  <title>ESP32 Mini Weather Station Installer</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+      --card-bg: rgba(30, 41, 59, 0.75);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent-cyan: #00bcd4;
+      --accent-cyan-hover: #00acc1;
+      --accent-green: #10b981;
+      --accent-green-hover: #059669;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --warning-bg: rgba(239, 68, 68, 0.12);
+      --warning-border: rgba(239, 68, 68, 0.4);
+      --warning-text: #fca5a5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 15px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 640px;
+      width: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 40px 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+
+    .logo-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 18px;
+    }
+
+    .logo {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--accent-cyan);
+      box-shadow: 0 0 25px rgba(0, 188, 212, 0.35);
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #ffffff, #67e8f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+
+    .developer-badge {
+      display: inline-block;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .developer-badge strong {
+      color: var(--accent-cyan);
+    }
+
+    /* Hardware Alert Banner */
+    .hardware-alert {
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: var(--warning-text);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* Feature Pills */
+    .features-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .feature-pill {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #cbd5e1;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    /* Step-by-Step Guide Cards */
+    .steps-container {
+      text-align: left;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 28px;
+    }
+
+    .steps-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      margin-bottom: 10px;
+    }
+
+    .step-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-num {
+      background: var(--accent-cyan);
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 0.75rem;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Action Section */
+    .action-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 24px 20px;
+      margin-bottom: 20px;
+    }
+
+    .action-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .btn-install {
+      background: linear-gradient(135deg, var(--accent-cyan), #0284c7);
+      color: #ffffff;
+      box-shadow: 0 10px 20px -5px rgba(0, 188, 212, 0.4);
+    }
+
+    .btn-install:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 24px -5px rgba(0, 188, 212, 0.55);
+    }
+
+    .btn-download {
+      background: linear-gradient(135deg, var(--accent-green), #059669);
+      color: #ffffff;
+      box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.35);
+    }
+
+    .btn-download:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 24px -5px rgba(16, 185, 129, 0.5);
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      margin: 24px 0;
+    }
+
+    .footer {
+      margin-top: 24px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 28px 20px;
+      }
+      h1 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+  <script type="module" src="https://unpkg.com/esp-web-tools@9/dist/web/install-button.js?module"></script>
 </head>
 <body>
-<div class="container">
-<!-- Developer Logo -->
-<img src="logo.png" alt="Developer Logo" class="logo">
+  <div class="container">
+    <!-- Developer Logo -->
+    <div class="logo-wrapper">
+      <img src="logo.png" alt="Developer Logo" class="logo">
+    </div>
 
-<h1>ESP32 Mini Weather Station Web Installer</h1>
-<p>This program was developed by <strong>Aung Moe Khine</strong>.</p>
-<p>Connect your ESP32 to your computer via USB, then use Chrome or Edge and click the button below to install the firmware. Download the required icon folders, place them in the SD card's root directory, and insert the SD card into the slot. Without the SD card and icons, it will not fetch weather data or display icons.</p>
-<p class="important-note">Please use ESP32 CYD 2.8 inches board only</p>
+    <h1>AMK Mini Weather Station</h1>
+    <div class="developer-badge">Developed by <strong>Aung Moe Khine</strong></div>
 
-<!-- Single Firmware Installation Button (Compact Version) -->
-<div class="firmware-option">
-    <p><strong>Install Weather Station Firmware:</strong></p>
-    <p class="note">RAM-optimized version with 150 World Clock cities and enhanced memory stability.</p>
-    <esp-web-install-button manifest="manifest_compact.json">Install Firmware</esp-web-install-button>
-</div>
+    <!-- Hardware Notice -->
+    <div class="hardware-alert">
+      <span>&#9888;&#65039;</span>
+      <span>Designed exclusively for the <strong>ESP32 CYD 2.8-inch</strong> board</span>
+    </div>
 
-<hr>
+    <!-- Key Features -->
+    <div class="features-grid">
+      <span class="feature-pill">&#127780;&#65039; Live Weather &amp; 7-Day Forecast</span>
+      <span class="feature-pill">&#127757; 120+ World Clock Cities</span>
+      <span class="feature-pill">&#9200; Alarms &amp; Timer</span>
+      <span class="feature-pill">&#128177; Live Currency Rates</span>
+    </div>
 
-<p>
-  <a href="https://drive.google.com/drive/folders/1BN2cHMYYCCNuXShteNzYeyH5BDFOJhIV?usp=drive_link" class="button" target="_blank">Download Required Icons</a>
-</p>
-</div>
+    <!-- Quick Setup Steps -->
+    <div class="steps-container">
+      <div class="steps-title">Quick Installation Guide</div>
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>Connect your ESP32 CYD 2.8" board to your computer via USB using <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>Click <strong>Install Firmware</strong> below and select your board's serial port.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>Download the required icon folders, copy them directly to the <strong>SD card's root directory</strong>, and insert the SD card into the slot.</div>
+      </div>
+    </div>
+
+    <!-- Step 1: Firmware Installation -->
+    <div class="action-box">
+      <div class="action-title">Step 1: Flash Weather Station Firmware</div>
+      <p class="note">RAM-optimized build with World Clock, Sun/Moon tracking, and enhanced stability.</p>
+      <esp-web-install-button manifest="manifest_compact.json">
+        <button slot="activate" class="btn btn-install">
+          &#9889; Install Firmware
+        </button>
+      </esp-web-install-button>
+    </div>
+
+    <!-- Step 2: SD Card Icons -->
+    <div class="action-box">
+      <div class="action-title">Step 2: SD Card Assets (Required)</div>
+      <p class="note">Without the SD card and icon folders, weather icons and flags cannot be displayed.</p>
+      <a href="https://drive.google.com/drive/folders/1BN2cHMYYCCNuXShteNzYeyH5BDFOJhIV?usp=drive_link" class="btn btn-download" target="_blank" rel="noopener noreferrer">
+        &#128193; Download Required Icons
+      </a>
+    </div>
+
+    <div class="footer">
+      Powered by ESP Web Tools &bull; Web Serial API
+    </div>
+  </div>
 </body>
 </html>
