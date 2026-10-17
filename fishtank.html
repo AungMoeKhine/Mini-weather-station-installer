@@ -1,0 +1,2050 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Smart Interactive Fish Tank</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 10px;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      background: #06090e;
+      background-image: radial-gradient(circle at 50% 10%, #152238 0%, #06090e 80%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #f0f6fc;
+    }
+
+    /* Responsive Aquarium Cabinet Architecture */
+    .aquarium-assembly {
+      position: relative;
+      width: 95vw;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.85));
+      transition: all 0.3s ease;
+    }
+
+    /* 1. TOP HOOD / CANOPY COVER */
+    .tank-canopy {
+      position: relative;
+      width: 102%;
+      height: clamp(28px, 5vh, 38px);
+      background: linear-gradient(180deg, #2a3441 0%, #171f2a 60%, #0f151e 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-bottom: 2px solid #0b0f14;
+      border-radius: 14px 14px 4px 4px;
+      box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.2), 0 6px 16px rgba(0, 0, 0, 0.6);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(8px, 2vw, 16px);
+      box-sizing: border-box;
+    }
+
+    .canopy-vents {
+      display: flex;
+      gap: clamp(3px, 1vw, 6px);
+    }
+
+    .canopy-vent {
+      width: clamp(16px, 3.5vw, 28px);
+      height: 4px;
+      background: #090d12;
+      border-radius: 2px;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .canopy-led {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: clamp(0.55rem, 1.6vw, 0.65rem);
+      font-weight: 700;
+      color: #94a3b8;
+      letter-spacing: 0.5px;
+    }
+
+    .canopy-led-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00f0ff;
+      box-shadow: 0 0 8px #00f0ff;
+      animation: ledPulse 2.5s infinite;
+    }
+
+    @keyframes ledPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.55;
+      }
+    }
+
+    /* 2. MAIN GLASS ENCLOSURE */
+    .tank-panel {
+      position: relative;
+      width: 100%;
+      height: clamp(220px, 56vh, 480px);
+      border-left: 3px solid rgba(255, 255, 255, 0.22);
+      border-right: 3px solid rgba(255, 255, 255, 0.22);
+      background: radial-gradient(ellipse at 50% 20%, #0d1a29 0%, #06090e 100%);
+      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.95);
+      overflow: hidden;
+      cursor: crosshair;
+      z-index: 5;
+    }
+
+    .aquarium-light-fixture {
+      position: absolute;
+      top: 0;
+      left: 5%;
+      right: 5%;
+      height: 10px;
+      background: linear-gradient(180deg, #e0f2fe 0%, #38bdf8 100%);
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 2px 25px 8px rgba(56, 189, 248, 0.75), 0 0 60px 20px rgba(0, 210, 255, 0.4);
+      z-index: 9;
+      pointer-events: none;
+    }
+
+    .tank-inner {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 94%;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .tank-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(0, 210, 255, 0.95) 0%, #0066ff 55%, #002266 100%);
+      border-top: 2px solid rgba(186, 243, 255, 0.9);
+      box-shadow: inset 0 10px 30px rgba(255, 255, 255, 0.2), 0 0 25px rgba(0, 210, 255, 0.5);
+      transition: background 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease;
+    }
+
+    .light-sunset .tank-fill {
+      background: linear-gradient(180deg, rgba(255, 140, 50, 0.95) 0%, #d946ef 50%, #1e1b4b 100%);
+      border-top: 2px solid rgba(254, 215, 170, 0.9);
+      box-shadow: inset 0 10px 30px rgba(254, 215, 170, 0.25), 0 0 25px rgba(249, 115, 22, 0.4);
+    }
+
+    .light-sunset .aquarium-light-fixture {
+      background: linear-gradient(180deg, #ffedd5 0%, #f97316 100%);
+      box-shadow: 0 2px 25px 8px rgba(249, 115, 22, 0.75), 0 0 60px 20px rgba(234, 88, 12, 0.4);
+    }
+
+    .light-sunset .canopy-led-dot {
+      background: #f97316;
+      box-shadow: 0 0 8px #f97316;
+    }
+
+    .light-moonlight .tank-fill {
+      background: linear-gradient(180deg, rgba(30, 58, 138, 0.9) 0%, #0f172a 65%, #020617 100%);
+      border-top: 2px solid rgba(96, 165, 250, 0.6);
+      box-shadow: inset 0 10px 30px rgba(96, 165, 250, 0.15), 0 0 20px rgba(37, 99, 235, 0.3);
+    }
+
+    .light-moonlight .aquarium-light-fixture {
+      background: linear-gradient(180deg, #93c5fd 0%, #2563eb 100%);
+      box-shadow: 0 2px 20px 6px rgba(37, 99, 235, 0.6), 0 0 50px 15px rgba(29, 78, 216, 0.3);
+    }
+
+    .light-moonlight .sun-rays {
+      opacity: 0.15 !important;
+    }
+
+    .light-moonlight .canopy-led-dot {
+      background: #38bdf8;
+      box-shadow: 0 0 8px #38bdf8;
+    }
+
+    .light-off .tank-fill {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, #090d16 65%, #020408 100%);
+      border-top: 2px solid rgba(148, 163, 184, 0.2);
+      box-shadow: none;
+    }
+
+    .light-off .aquarium-light-fixture {
+      background: #334155;
+      box-shadow: none;
+    }
+
+    .light-off .sun-rays {
+      opacity: 0 !important;
+    }
+
+    .light-off .canopy-led-dot {
+      background: #64748b;
+      box-shadow: none;
+    }
+
+    .sun-rays {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 75%;
+      background: repeating-linear-gradient(108deg, rgba(255, 255, 255, 0.08) 0px, rgba(255, 255, 255, 0.08) 22px, transparent 22px, transparent 65px);
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 1;
+      animation: causticShimmer 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes causticShimmer {
+      0% {
+        opacity: 0.65;
+        transform: scaleX(1);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scaleX(1.05);
+      }
+    }
+
+    /* 3. BASEMENT / FURNITURE PEDESTAL STAND */
+    .tank-stand {
+      position: relative;
+      width: 104%;
+      height: clamp(24px, 4vh, 34px);
+      background: linear-gradient(180deg, #182029 0%, #0d1217 60%, #06090c 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      border-top: 2px solid rgba(255, 255, 255, 0.22);
+      border-radius: 4px 4px 14px 14px;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.15), 0 12px 25px rgba(0, 0, 0, 0.85);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tank-stand-badge {
+      font-size: clamp(0.5rem, 1.4vw, 0.62rem);
+      font-weight: 800;
+      color: #64748b;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .tank-substrate {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 16px;
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      z-index: 4;
+    }
+
+    .equip-heater {
+      position: absolute;
+      top: 15px;
+      left: clamp(40px, 15%, 110px);
+      width: 14px;
+      height: clamp(100px, 25vh, 150px);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.85;
+      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.6));
+    }
+
+    .heater-element {
+      animation: heaterGlow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes heaterGlow {
+      0% {
+        stroke: #d97706;
+        opacity: 0.55;
+      }
+
+      100% {
+        stroke: #f59e0b;
+        opacity: 0.95;
+        filter: drop-shadow(0 0 3px #f59e0b);
+      }
+    }
+
+    .equip-airstone {
+      position: absolute;
+      bottom: 12px;
+      right: clamp(40px, 15%, 95px);
+      width: 22px;
+      height: 32px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .air-micro-bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .decor-rock {
+      position: absolute;
+      bottom: 2px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .rock-left {
+      left: -8px;
+      width: clamp(80px, 18vw, 115px);
+      height: clamp(32px, 8vh, 46px);
+    }
+
+    .rock-right {
+      right: -6px;
+      width: clamp(70px, 16vw, 100px);
+      height: clamp(30px, 7vh, 42px);
+    }
+
+    .decor-plant {
+      position: absolute;
+      bottom: 0px;
+      pointer-events: none;
+      z-index: 3;
+      filter: drop-shadow(0 3px 8px rgba(0, 20, 10, 0.5));
+    }
+
+    .plant-left {
+      left: 8px;
+      width: clamp(65px, 15vw, 100px);
+      height: clamp(150px, 35vh, 230px);
+    }
+
+    .plant-right {
+      right: 12px;
+      width: clamp(60px, 14vw, 95px);
+      height: clamp(140px, 33vh, 210px);
+    }
+
+    .leaf-sway {
+      transform-origin: 50% 100%;
+      will-change: transform;
+    }
+
+    .l-leaf-1 {
+      animation: leafWaveA 6.8s ease-in-out infinite alternate;
+    }
+
+    .l-leaf-2 {
+      animation: leafWaveB 5.4s ease-in-out infinite alternate 0.6s;
+    }
+
+    .l-leaf-3 {
+      animation: leafWaveC 7.2s ease-in-out infinite alternate 1.2s;
+    }
+
+    .l-leaf-4 {
+      animation: leafWaveB 6.1s ease-in-out infinite alternate 1.8s;
+    }
+
+    .l-leaf-5 {
+      animation: leafWaveA 4.8s ease-in-out infinite alternate 0.3s;
+    }
+
+    .r-leaf-1 {
+      animation: fernWaveA 6.3s ease-in-out infinite alternate;
+    }
+
+    .r-leaf-2 {
+      animation: fernWaveB 5.1s ease-in-out infinite alternate 0.8s;
+    }
+
+    .r-leaf-3 {
+      animation: fernWaveA 7.0s ease-in-out infinite alternate 1.5s;
+    }
+
+    .r-leaf-4 {
+      animation: fernWaveB 5.7s ease-in-out infinite alternate 0.4s;
+    }
+
+    @keyframes leafWaveA {
+      0% {
+        transform: rotate(0deg) skewX(0deg);
+      }
+
+      30% {
+        transform: rotate(2.4deg) skewX(2.8deg) scaleY(1.01);
+      }
+
+      65% {
+        transform: rotate(-1.8deg) skewX(-2.2deg) scaleY(0.99);
+      }
+
+      100% {
+        transform: rotate(3.2deg) skewX(3.5deg) scaleY(1.02);
+      }
+    }
+
+    @keyframes leafWaveB {
+      0% {
+        transform: rotate(0deg) skewX(0deg);
+      }
+
+      35% {
+        transform: rotate(-2.8deg) skewX(-3.2deg);
+      }
+
+      75% {
+        transform: rotate(2.0deg) skewX(2.4deg);
+      }
+
+      100% {
+        transform: rotate(-3.5deg) skewX(-4.0deg);
+      }
+    }
+
+    @keyframes leafWaveC {
+      0% {
+        transform: rotate(0deg) skewX(0deg);
+      }
+
+      40% {
+        transform: rotate(3.5deg) skewX(3.8deg);
+      }
+
+      70% {
+        transform: rotate(-2.2deg) skewX(-2.5deg);
+      }
+
+      100% {
+        transform: rotate(2.2deg) skewX(2.5deg);
+      }
+    }
+
+    @keyframes fernWaveA {
+      0% {
+        transform: rotate(0deg) skewX(0deg);
+      }
+
+      32% {
+        transform: rotate(-2.5deg) skewX(-2.8deg) scaleY(1.01);
+      }
+
+      72% {
+        transform: rotate(1.8deg) skewX(2.0deg) scaleY(0.99);
+      }
+
+      100% {
+        transform: rotate(-3.2deg) skewX(-3.6deg);
+      }
+    }
+
+    @keyframes fernWaveB {
+      0% {
+        transform: rotate(0deg) skewX(0deg);
+      }
+
+      38% {
+        transform: rotate(2.8deg) skewX(3.0deg);
+      }
+
+      75% {
+        transform: rotate(-1.5deg) skewX(-1.8deg);
+      }
+
+      100% {
+        transform: rotate(3.4deg) skewX(3.8deg);
+      }
+    }
+
+    .tank-glaze {
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      pointer-events: none;
+      background: linear-gradient(115deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0.04) 100%);
+    }
+
+    .fish-sprite {
+      position: absolute;
+      z-index: 4;
+      pointer-events: auto;
+      cursor: pointer;
+      will-change: transform, left, bottom;
+      transition: filter 0.2s;
+    }
+
+    .fish-sprite:hover {
+      filter: drop-shadow(0 0 8px #00d2ff);
+    }
+
+    .food-pellet {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ff9f1c;
+      box-shadow: 0 0 6px rgba(255, 159, 28, 0.8);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .tank-bubble {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Modal Dropdown */
+    .species-dropdown {
+      position: absolute;
+      bottom: 75px;
+      left: 50%;
+      transform: translateX(-50%) translateY(12px) scale(0.96);
+      width: 90vw;
+      max-width: 410px;
+      background: rgba(15, 23, 42, 0.94);
+      border: 1px solid rgba(0, 210, 255, 0.35);
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 210, 255, 0.15);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 30;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .species-dropdown.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+
+    .dropdown-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #00d2ff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dropdown-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.25rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .species-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .species-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 6px 10px;
+    }
+
+    .species-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .species-checkbox {
+      width: 16px;
+      height: 16px;
+      accent-color: #00d2ff;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .species-preview {
+      width: 38px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 6px;
+      padding: 2px;
+    }
+
+    .species-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+
+    .qty-stepper {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 2px 4px;
+    }
+
+    .stepper-btn {
+      background: none;
+      border: none;
+      color: #00d2ff;
+      font-size: 0.95rem;
+      font-weight: 800;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stepper-val {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #ffffff;
+      min-width: 16px;
+      text-align: center;
+    }
+
+    .controls {
+      margin-top: clamp(8px, 2vh, 16px);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: clamp(6px, 1.5vw, 10px);
+      max-width: 640px;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .btn {
+      padding: clamp(6px, 1.4vh, 9px) clamp(10px, 2.5vw, 16px);
+      font-size: clamp(0.72rem, 2vw, 0.85rem);
+      font-weight: 700;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: rgba(0, 210, 255, 0.25);
+      border-color: #00d2ff;
+      transform: translateY(-2px);
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .stats-bar {
+      margin-top: 6px;
+      font-size: clamp(0.68rem, 1.8vw, 0.78rem);
+      color: #8b949e;
+      letter-spacing: 0.3px;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    @media (max-height: 520px) and (orientation: landscape) {
+      body {
+        padding: 4px;
+        justify-content: flex-start;
+      }
+
+      .aquarium-assembly {
+        width: 82vw;
+      }
+
+      .tank-panel {
+        height: 58vh;
+      }
+
+      .controls {
+        margin-top: 4px;
+        gap: 4px;
+      }
+
+      .btn {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+      }
+
+      .stats-bar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="aquarium-assembly">
+    <!-- 1. TOP HOOD / CANOPY -->
+    <div class="tank-canopy">
+      <div class="canopy-vents">
+        <div class="canopy-vent"></div>
+        <div class="canopy-vent"></div>
+        <div class="canopy-vent"></div>
+      </div>
+      <div class="canopy-led" onclick="cycleLightMode()" style="cursor:pointer;"
+        title="Tap to switch lighting spectrum">
+        <div class="canopy-led-dot" id="canopyLedDot"></div>
+        <span id="lightModeLabel">SMART LED: DAYLIGHT</span>
+        <span style="color:rgba(255,255,255,0.25); margin: 0 4px;">|</span>
+        <span id="tempDisplay" style="color: #38bdf8; font-variant-numeric: tabular-nums;">25.4°C</span>
+      </div>
+    </div>
+
+    <!-- 2. GLASS AQUARIUM TANK -->
+    <div class="tank-panel" id="tankPanel">
+      <div class="aquarium-light-fixture"></div>
+
+      <div class="tank-inner">
+        <div class="tank-fill"></div>
+        <div class="sun-rays"></div>
+
+        <!-- Left Plant -->
+        <svg class="decor-plant plant-left" viewBox="0 0 120 260" preserveAspectRatio="xMidYMax meet"
+          xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="leafGrad1" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#04472c" />
+              <stop offset="60%" stop-color="#059669" />
+              <stop offset="100%" stop-color="#34d399" stop-opacity="0.9" />
+            </linearGradient>
+            <linearGradient id="leafGrad2" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#065f46" />
+              <stop offset="70%" stop-color="#10b981" />
+              <stop offset="100%" stop-color="#6ee7b7" stop-opacity="0.85" />
+            </linearGradient>
+          </defs>
+          <path class="leaf-sway l-leaf-1"
+            d="M50 260 C40 190 20 125 35 60 C42 30 58 8 52 0 C44 18 28 55 18 115 C8 175 38 220 50 260 Z"
+            fill="url(#leafGrad1)" opacity="0.75" />
+          <path class="leaf-sway l-leaf-2"
+            d="M54 260 C64 195 82 135 70 70 C62 25 42 5 47 0 C56 22 75 65 78 120 C82 180 62 225 54 260 Z"
+            fill="url(#leafGrad2)" opacity="0.9" />
+          <path class="leaf-sway l-leaf-3"
+            d="M48 260 C38 185 10 140 6 85 C3 45 22 18 18 10 C10 28 0 70 4 125 C8 185 35 225 48 260 Z"
+            fill="url(#leafGrad1)" opacity="0.85" />
+          <path class="leaf-sway l-leaf-4"
+            d="M56 260 C68 205 92 160 88 100 C85 55 68 32 72 20 C78 40 88 78 82 130 C76 182 62 225 56 260 Z"
+            fill="url(#leafGrad2)" opacity="0.8" />
+          <path class="leaf-sway l-leaf-5"
+            d="M52 260 C46 220 38 180 48 140 C54 115 62 95 60 88 C54 105 44 135 38 175 C34 215 46 245 52 260 Z"
+            fill="#34d399" opacity="0.7" />
+        </svg>
+
+        <!-- Right Plant -->
+        <svg class="decor-plant plant-right" viewBox="0 0 110 240" preserveAspectRatio="xMidYMax meet"
+          xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="fernGrad1" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#064e3b" />
+              <stop offset="65%" stop-color="#047857" />
+              <stop offset="100%" stop-color="#10b981" stop-opacity="0.95" />
+            </linearGradient>
+            <linearGradient id="fernGrad2" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#065f46" />
+              <stop offset="60%" stop-color="#10b981" />
+              <stop offset="100%" stop-color="#a7f3d0" stop-opacity="0.85" />
+            </linearGradient>
+          </defs>
+          <path class="leaf-sway r-leaf-1"
+            d="M50 240 C52 175 62 120 48 60 C40 25 24 6 28 0 C38 20 54 55 58 110 C62 165 54 205 50 240 Z"
+            fill="url(#fernGrad1)" opacity="0.85" />
+          <path class="leaf-sway r-leaf-2"
+            d="M52 240 C62 185 85 135 78 75 C72 35 52 14 58 6 C68 28 80 68 82 120 C85 170 66 210 52 240 Z"
+            fill="url(#fernGrad2)" opacity="0.9" />
+          <path class="leaf-sway r-leaf-3"
+            d="M48 240 C42 190 28 145 36 95 C42 60 55 35 50 25 C42 45 30 80 26 130 C22 178 38 212 48 240 Z"
+            fill="url(#fernGrad1)" opacity="0.75" />
+          <path class="leaf-sway r-leaf-4"
+            d="M50 240 C58 210 72 175 65 135 C60 105 48 85 52 75 C58 92 68 120 62 155 C56 190 52 220 50 240 Z"
+            fill="url(#fernGrad2)" opacity="0.8" />
+        </svg>
+
+        <!-- River Stones -->
+        <svg class="decor-rock rock-left" viewBox="0 0 140 60" preserveAspectRatio="xMidYMax meet" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 60 Q20 18 65 22 Q110 26 135 48 Q140 60 140 60 Z" fill="#1e293b" />
+          <path d="M8 60 Q25 24 62 27 Q95 30 120 48 Z" fill="#334155" opacity="0.6" />
+          <ellipse cx="55" cy="24" rx="28" ry="4" fill="#059669" opacity="0.5" />
+        </svg>
+
+        <svg class="decor-rock rock-right" viewBox="0 0 120 55" preserveAspectRatio="xMidYMax meet" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 55 Q25 20 60 16 Q98 12 120 55 Z" fill="#0f172a" />
+          <path d="M12 55 Q35 24 65 21 Q92 18 110 55 Z" fill="#1e293b" opacity="0.7" />
+          <ellipse cx="62" cy="18" rx="22" ry="3.5" fill="#10b981" opacity="0.45" />
+        </svg>
+
+        <!-- Heater -->
+        <svg class="equip-heater" viewBox="0 0 20 180" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="0" width="8" height="155" rx="4" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.4)"
+            stroke-width="1.2" />
+          <line class="heater-element" x1="10" y1="35" x2="10" y2="135" stroke="#f59e0b" stroke-width="2.2"
+            stroke-dasharray="3,3" opacity="0.8" />
+          <rect x="4" y="0" width="12" height="22" rx="3" fill="#1e293b" />
+          <circle cx="10" cy="14" r="2.5" fill="#ef4444" filter="drop-shadow(0 0 3px #ef4444)" />
+        </svg>
+
+        <!-- Air Diffuser -->
+        <svg class="equip-airstone" id="airstoneFixture" viewBox="0 0 30 50" xmlns="http://www.w3.org/2000/svg">
+          <line x1="8" y1="0" x2="8" y2="35" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" />
+          <path d="M 8 35 L 8 42 L 22 42 L 22 35 Z" fill="rgba(255,255,255,0.3)" stroke="rgba(255,255,255,0.7)"
+            stroke-width="1.2" />
+          <rect x="7" y="32" width="16" height="4" rx="1.5" fill="#f8fafc" stroke="#94a3b8" stroke-width="0.8" />
+        </svg>
+
+        <div class="tank-substrate"></div>
+      </div>
+      <div class="tank-glaze"></div>
+    </div>
+
+    <!-- 3. BASEMENT / PEDESTAL STAND -->
+    <div class="tank-stand">
+      <div class="tank-stand-badge">AMK AQUA DESIGN • 60P RIMLESS</div>
+    </div>
+  </div>
+
+  <!-- Species & Population Dropdown Modal -->
+  <div class="species-dropdown" id="speciesDropdown">
+    <div class="dropdown-header">
+      <div class="dropdown-title"><span>🐟</span> Manage Fish Population</div>
+      <button class="dropdown-close" onclick="toggleSpeciesMenu()">&times;</button>
+    </div>
+    <div class="species-list" id="speciesList"></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="speciesMenuBtn" onclick="toggleSpeciesMenu()">🐟 Fish Stock ▾</button>
+    <button class="btn" onclick="dropFoodAtRandom()">🍞 Drop Food Flakes</button>
+    <button class="btn" onclick="scareAllFish()">⚡ Tap Water</button>
+    <button class="btn" id="airPumpBtn" onclick="toggleAirPump()">💨 Oxygen: ON</button>
+    <button class="btn" id="lightModeBtn" onclick="cycleLightMode()">💡 Light: Daylight</button>
+  </div>
+
+  <div class="stats-bar" id="statsBar">Tap inside the tank to drop food or tap on fish to startle them!</div>
+
+  <script>
+    const tank = document.getElementById('tankPanel');
+    let foodList = [];
+    let fishList = [];
+
+    // Distinct Fish Models with Full Fin Anatomy
+    const FISH_MODELS = [
+      // 0. Classic Goldfish
+      {
+        type: 'goldfish',
+        width: 38,
+        height: 24,
+        speedMin: 0.0035,
+        speedMax: 0.0065,
+        svg: `
+          <svg viewBox="0 0 50 30" width="100%" height="100%">
+            <polygon points="38,15 48,5 45,15 48,25" fill="#ffb703"/>
+            <ellipse cx="22" cy="15" rx="16" ry="10" fill="#fb8500"/>
+            <polygon points="20,5 25,1 28,6" fill="#ffb703"/>
+            <polygon points="20,25 24,29 27,24" fill="#ffb703"/>
+            <circle cx="12" cy="12" r="2" fill="#fff"/>
+            <circle cx="12" cy="12" r="1" fill="#000"/>
+          </svg>
+        `
+      },
+      // 1. Graceful Angelfish
+      {
+        type: 'angelfish',
+        width: 52,
+        height: 52,
+        speedMin: 0.003,
+        speedMax: 0.006,
+        svg: `
+          <svg viewBox="0 0 120 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 66 52 C 77 42 89 38 97 42 C 89 48 84 53 85 60 C 84 67 89 72 97 78 C 87 82 77 78 66 68 Z" fill="#facc15" stroke="#eab308" stroke-width="0.7"/>
+            <path d="M 68 55 Q 80 53 91 46" stroke="#ca8a04" stroke-width="0.8" fill="none" opacity="0.7"/>
+            <path d="M 68 60 Q 80 60 88 60" stroke="#ca8a04" stroke-width="0.8" fill="none" opacity="0.7"/>
+            <path d="M 68 65 Q 80 67 91 74" stroke="#ca8a04" stroke-width="0.8" fill="none" opacity="0.7"/>
+            <path d="M 32 35 C 44 26 62 18 92 12 C 78 20 68 32 64 45 C 52 42 42 38 32 35 Z" fill="#fde047" stroke="#eab308" stroke-width="0.7"/>
+            <path d="M 36 33 C 48 24 64 17 92 12" stroke="#ca8a04" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+            <path d="M 48 34 Q 65 24 78 20" stroke="#fef08a" stroke-width="0.9" fill="none"/>
+            <path d="M 56 38 Q 68 30 76 25" stroke="#fef08a" stroke-width="0.9" fill="none"/>
+            <path d="M 40 65 C 45 78 55 95 72 114 C 65 98 62 82 66 71 C 56 68 48 66 40 65 Z" fill="#fde047" stroke="#eab308" stroke-width="0.7"/>
+            <path d="M 42 67 C 48 81 57 98 72 114" stroke="#ca8a04" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+            <path d="M 48 68 Q 57 84 64 96" stroke="#fef08a" stroke-width="0.9" fill="none"/>
+            <path d="M 33 60 C 34 78 42 98 52 112" stroke="#facc15" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+            <path d="M 36 61 C 38 76 43 92 48 106" stroke="#fef08a" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+            <path d="M 18 36 C 24 33 32 35 44 38 C 58 42 68 49 68 60 C 68 71 58 78 44 76 C 32 74 24 64 18 36 Z" fill="#ffffff" stroke="#38bdf8" stroke-width="0.8"/>
+            <path d="M 24 34 C 23 42 24 50 25 58" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+            <path d="M 37 30 C 38 45 39 61 44 77" stroke="#0f172a" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            <path d="M 47 22 C 48 42 50 63 56 88" stroke="#0f172a" stroke-width="4.2" stroke-linecap="round" fill="none"/>
+            <path d="M 58 17 C 60 35 62 54 67 71" stroke="#0f172a" stroke-width="3.6" stroke-linecap="round" fill="none"/>
+            <circle cx="26" cy="38" r="3.4" fill="#ffffff"/>
+            <circle cx="26" cy="38" r="2.0" fill="#0f172a"/>
+            <circle cx="25.2" cy="37.2" r="0.8" fill="#ffffff"/>
+          </svg>
+        `
+      },
+      // 2. Neon Tetra
+      {
+        type: 'tetra',
+        width: 38,
+        height: 18,
+        speedMin: 0.009,
+        speedMax: 0.016,
+        svg: `
+          <svg viewBox="0 0 68 32" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 25 10 L 29 2 L 35 5 L 32 10 Z" fill="rgba(255,255,255,0.55)" stroke="rgba(255,255,255,0.75)" stroke-width="0.7"/>
+            <line x1="25" y1="10" x2="29" y2="2" stroke="rgba(255,255,255,0.9)" stroke-width="0.9"/>
+            <ellipse cx="43" cy="10" rx="2.2" ry="1.2" transform="rotate(-25 43 10)" fill="rgba(255,255,255,0.5)"/>
+            <path d="M 20 20 L 23 27 L 27 22 Z" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.7)" stroke-width="0.6"/>
+            <path d="M 30 20 L 33 28 L 43 23 L 42 19 Z" fill="rgba(255,255,255,0.55)" stroke="rgba(255,255,255,0.75)" stroke-width="0.6"/>
+            <line x1="30" y1="20" x2="33" y2="28" stroke="rgba(255,255,255,0.9)" stroke-width="0.8"/>
+            <polygon points="48,16 62,6 57,16 62,26" fill="rgba(255,255,255,0.65)" stroke="rgba(255,255,255,0.75)" stroke-width="0.6"/>
+            <ellipse cx="28" cy="16" rx="21" ry="6.5" fill="#0f172a"/>
+            <path d="M 12 17 C 18 22 36 22 47 18 C 36 23 18 23 12 17 Z" fill="#e2e8f0" opacity="0.85"/>
+            <path d="M 11 13 Q 27 10 48 14" stroke="#00f0ff" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+            <path d="M 11 13 Q 27 10 48 14" stroke="#e0f2fe" stroke-width="0.8" fill="none" opacity="0.8"/>
+            <path d="M 27 18 Q 38 19 48 16" stroke="#ff0055" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+            <ellipse cx="18" cy="18" rx="4.5" ry="1.8" transform="rotate(15 18 18)" fill="rgba(255,255,255,0.6)"/>
+            <circle cx="13" cy="13.5" r="2.2" fill="#00f0ff"/>
+            <circle cx="13" cy="13.5" r="1.3" fill="#0f172a"/>
+            <circle cx="12.5" cy="13" r="0.5" fill="#ffffff"/>
+          </svg>
+        `
+      },
+      // 3. Clownfish
+      {
+        type: 'clownfish',
+        width: 44,
+        height: 25,
+        speedMin: 0.0045,
+        speedMax: 0.0085,
+        svg: `
+          <svg viewBox="0 0 64 34" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 20 11 C 23 2 37 2 43 11 Z" fill="#ff6b35" stroke="#0f172a" stroke-width="1.2"/>
+            <path d="M 33 23 C 37 31 43 30 45 23 Z" fill="#ff6b35" stroke="#0f172a" stroke-width="1.1"/>
+            <path d="M 19 22 C 21 30 27 30 28 22 Z" fill="#ff6b35" stroke="#0f172a" stroke-width="1.1"/>
+            <path d="M 46 17 C 51 9 60 9 60 17 C 60 25 51 25 46 17 Z" fill="#ff6b35" stroke="#0f172a" stroke-width="1.2"/>
+            <path d="M 58 11 C 60 14 60 20 58 23" stroke="#ffffff" stroke-width="1.4" fill="none"/>
+            <ellipse cx="27" cy="17" rx="19" ry="10" fill="#ff6b35"/>
+            <path d="M 15 8 C 17 14 17 20 15 26" stroke="#0f172a" stroke-width="4.8" fill="none"/>
+            <path d="M 15 8 C 17 14 17 20 15 26" stroke="#ffffff" stroke-width="3.2" fill="none"/>
+            <path d="M 28 7 C 31 12 30 22 28 27" stroke="#0f172a" stroke-width="5.0" fill="none"/>
+            <path d="M 28 7 C 31 12 30 22 28 27" stroke="#ffffff" stroke-width="3.4" fill="none"/>
+            <path d="M 44 11 C 45 15 45 19 44 23" stroke="#0f172a" stroke-width="3.8" fill="none"/>
+            <path d="M 44 11 C 45 15 45 19 44 23" stroke="#ffffff" stroke-width="2.2" fill="none"/>
+            <ellipse cx="21" cy="18" rx="5" ry="3.2" transform="rotate(-15 21 18)" fill="#ff8c42" stroke="#0f172a" stroke-width="0.9"/>
+            <path d="M 24 16 Q 26 18 24 20" stroke="#ffffff" stroke-width="0.8" fill="none"/>
+            <circle cx="11" cy="14" r="2.6" fill="#fef08a"/>
+            <circle cx="10.6" cy="14" r="1.6" fill="#0f172a"/>
+            <circle cx="10.1" cy="13.3" r="0.6" fill="#ffffff"/>
+          </svg>
+        `
+      },
+      // 4. Corydoras Catfish
+      {
+        type: 'corydoras',
+        isBottomDweller: true,
+        width: 48,
+        height: 25,
+        speedMin: 0.0035,
+        speedMax: 0.007,
+        svg: `
+          <svg viewBox="0 0 68 34" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 22 14 L 28 2 L 36 6 L 33 15 Z" fill="#78716c" opacity="0.85"/>
+            <line x1="22" y1="14" x2="28" y2="2" stroke="#292524" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="29" cy="6" r="1.1" fill="#292524"/>
+            <circle cx="33" cy="8" r="1.0" fill="#292524"/>
+            <path d="M 40 23 L 44 29 L 47 24 Z" fill="#a8a29e" opacity="0.8"/>
+            <path d="M 28 23 L 30 29 L 34 24 Z" fill="#a8a29e" opacity="0.8"/>
+            <polygon points="49,19 65,8 60,19 65,30" fill="#a8a29e" opacity="0.85"/>
+            <line x1="51" y1="19" x2="62" y2="12" stroke="#44403c" stroke-width="0.8" opacity="0.7"/>
+            <line x1="51" y1="19" x2="62" y2="26" stroke="#44403c" stroke-width="0.8" opacity="0.7"/>
+            <path d="M 10 22 C 12 14 20 8 32 12 C 43 14 50 17 50 20 C 50 23 42 24 10 23 Z" fill="#78716c"/>
+            <path d="M 12 23 C 22 24 38 24 48 21 C 42 24 22 25 12 23 Z" fill="#e7e5e4" opacity="0.85"/>
+            <circle cx="22" cy="15" r="1.7" fill="#292524"/>
+            <circle cx="28" cy="13" r="2.0" fill="#292524"/>
+            <circle cx="34" cy="15" r="1.6" fill="#292524"/>
+            <circle cx="40" cy="17" r="1.8" fill="#292524"/>
+            <circle cx="25" cy="19" r="1.5" fill="#292524"/>
+            <circle cx="32" cy="19" r="1.7" fill="#292524"/>
+            <circle cx="38" cy="20" r="1.4" fill="#292524"/>
+            <path d="M 19 22 C 22 28 29 31 31 29 C 30 25 25 22 19 22 Z" fill="#a8a29e" stroke="#57534e" stroke-width="0.8"/>
+            <line x1="19" y1="22" x2="29" y2="30" stroke="#292524" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M 10 22 Q 6 26 4 30" stroke="#d6d3d1" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+            <path d="M 12 22 Q 8 28 7 32" stroke="#d6d3d1" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            <circle cx="14" cy="15" r="2.4" fill="#facc15"/>
+            <circle cx="13.8" cy="15" r="1.4" fill="#0f172a"/>
+            <circle cx="13.3" cy="14.4" r="0.6" fill="#ffffff"/>
+          </svg>
+        `
+      },
+      // 5. Red Cherry Dwarf Shrimp
+      {
+        type: 'shrimp',
+        isBottomDweller: true,
+        width: 30,
+        height: 16,
+        speedMin: 0.002,
+        speedMax: 0.005,
+        svg: `
+          <svg viewBox="0 0 55 30" width="100%" height="100%">
+            <path d="M 12 12 Q 4 8 0 4" stroke="#fca5a5" stroke-width="0.8" fill="none"/>
+            <path d="M 12 14 Q 4 15 1 18" stroke="#fca5a5" stroke-width="0.8" fill="none"/>
+            <path d="M 14 12 C 22 6 36 6 44 14 C 47 17 48 20 44 21 C 36 17 26 18 14 17 Z" fill="#ef4444" opacity="0.92"/>
+            <path d="M 24 9 Q 25 15 23 18" stroke="#fee2e2" stroke-width="0.8" fill="none" opacity="0.7"/>
+            <path d="M 32 9 Q 34 15 31 18" stroke="#fee2e2" stroke-width="0.8" fill="none" opacity="0.7"/>
+            <polygon points="44,14 52,12 48,18" fill="#dc2626" opacity="0.85"/>
+            <polygon points="44,17 53,20 46,22" fill="#dc2626" opacity="0.85"/>
+            <line x1="16" y1="17" x2="14" y2="24" stroke="#f87171" stroke-width="1.1"/>
+            <line x1="20" y1="17" x2="19" y2="24" stroke="#f87171" stroke-width="1.1"/>
+            <line x1="24" y1="17" x2="25" y2="24" stroke="#f87171" stroke-width="1.1"/>
+            <line x1="28" y1="17" x2="30" y2="24" stroke="#f87171" stroke-width="1.1"/>
+            <circle cx="14" cy="11" r="1.3" fill="#0f172a"/>
+          </svg>
+        `
+      },
+      // 6. Traditional Chinese Fancy Goldfish
+      {
+        type: 'chinese_goldfish',
+        width: 65,
+        height: 50,
+        speedMin: 0.0028,
+        speedMax: 0.0052,
+        svg: `
+          <svg viewBox="0 0 120 85" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="cnBodyGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ea580c"/>
+                <stop offset="30%" stop-color="#f97316"/>
+                <stop offset="70%" stop-color="#fb923c"/>
+                <stop offset="100%" stop-color="#ffffff"/>
+              </linearGradient>
+              <radialGradient id="tailRootGlow" cx="0.1" cy="0.5" r="0.8">
+                <stop offset="0%" stop-color="#dc2626"/>
+                <stop offset="35%" stop-color="#ea580c"/>
+                <stop offset="75%" stop-color="rgba(254, 215, 170, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(255, 255, 255, 0.85)"/>
+              </radialGradient>
+              <linearGradient id="tailFanSilk" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="rgba(234, 88, 12, 0.95)"/>
+                <stop offset="18%" stop-color="rgba(249, 115, 22, 0.8)"/>
+                <stop offset="42%" stop-color="rgba(255, 255, 255, 0.9)"/>
+                <stop offset="85%" stop-color="rgba(241, 245, 249, 0.75)"/>
+                <stop offset="100%" stop-color="rgba(226, 232, 240, 0.55)"/>
+              </linearGradient>
+              <linearGradient id="backLowerFan" x1="0" y1="0" x2="1" y2="0.3">
+                <stop offset="0%" stop-color="rgba(194, 65, 12, 0.85)"/>
+                <stop offset="25%" stop-color="rgba(253, 186, 116, 0.65)"/>
+                <stop offset="70%" stop-color="rgba(241, 245, 249, 0.7)"/>
+                <stop offset="100%" stop-color="rgba(203, 213, 225, 0.4)"/>
+              </linearGradient>
+            </defs>
+            <path d="M 52 46 C 60 62 76 80 102 82 C 95 68 84 54 54 44 Z" fill="url(#backLowerFan)"/>
+            <path d="M 54 47 C 64 64 78 78 100 80" stroke="rgba(255,255,255,0.7)" stroke-width="0.8" fill="none"/>
+            <path d="M 55 46 Q 74 62 88 70" stroke="rgba(255,255,255,0.5)" stroke-width="0.7" fill="none"/>
+            <path d="M 50 38 C 58 20 74 8 98 7 C 94 18 82 28 53 40 Z" fill="url(#backLowerFan)"/>
+            <path d="M 52 38 C 60 22 76 11 96 9" stroke="rgba(255,255,255,0.75)" stroke-width="0.9" fill="none"/>
+            <path d="M 52 39 C 60 21 78 11 103 11 C 97 22 84 32 55 41 Z" fill="url(#tailFanSilk)"/>
+            <path d="M 54 39 C 62 23 80 13 101 13" stroke="rgba(255,255,255,0.95)" stroke-width="1.2" fill="none"/>
+            <path d="M 55 40 Q 75 24 94 22" stroke="rgba(255,255,255,0.6)" stroke-width="0.8" fill="none"/>
+            <path d="M 28 26 C 34 10 46 6 60 14 C 57 23 49 28 44 31 Z" fill="url(#tailFanSilk)"/>
+            <path d="M 32 25 Q 43 12 56 16" stroke="rgba(255,255,255,0.8)" stroke-width="0.8" fill="none"/>
+            <path d="M 12 43 C 14 29 25 20 37 22 C 48 24 53 33 54 41 C 53 50 47 60 34 60 C 21 60 11 54 12 43 Z" fill="url(#cnBodyGrad)"/>
+            <path d="M 18 49 C 24 58 37 58 45 50 C 40 57 27 58 18 49 Z" fill="#ffffff" opacity="0.75"/>
+            <ellipse cx="51" cy="42" rx="7" ry="10" fill="url(#tailRootGlow)"/>
+            <path d="M 53 43 C 70 42 96 40 118 47 C 114 62 98 72 55 48 Z" fill="url(#tailFanSilk)"/>
+            <path d="M 55 44 C 74 44 98 44 116 49" stroke="rgba(255,255,255,0.95)" stroke-width="1.3" fill="none"/>
+            <path d="M 55 45 C 75 49 97 53 113 58" stroke="rgba(255,255,255,0.8)" stroke-width="1.0" fill="none"/>
+            <path d="M 55 46 Q 78 57 104 66" stroke="rgba(255,255,255,0.7)" stroke-width="0.85" fill="none"/>
+            <path d="M 54 47 Q 72 63 92 70" stroke="rgba(255,255,255,0.6)" stroke-width="0.75" fill="none"/>
+            <path d="M 28 52 C 30 63 38 72 44 71 C 41 62 36 55 30 51 Z" fill="url(#tailFanSilk)"/>
+            <path d="M 30 53 Q 35 65 41 69" stroke="rgba(255,255,255,0.8)" stroke-width="0.8" fill="none"/>
+            <path d="M 40 54 C 44 63 51 67 55 64 C 51 58 47 53 42 53 Z" fill="url(#tailFanSilk)"/>
+            <circle cx="17" cy="40" r="4.0" fill="#fef08a"/>
+            <circle cx="16.3" cy="40" r="2.6" fill="#0f172a"/>
+            <circle cx="15.3" cy="39.2" r="1.0" fill="#ffffff"/>
+          </svg>
+        `
+      },
+      // 7. Tiger Barb
+      {
+        type: 'tiger_barb',
+        width: 48,
+        height: 32,
+        speedMin: 0.007,
+        speedMax: 0.013,
+        svg: `
+          <svg viewBox="0 0 95 62" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="barbBodyGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#f87171"/>
+                <stop offset="16%" stop-color="#fbcfe8"/>
+                <stop offset="42%" stop-color="#fde047"/>
+                <stop offset="70%" stop-color="#fef08a"/>
+                <stop offset="100%" stop-color="#f8fafc"/>
+              </linearGradient>
+              <linearGradient id="barbDorsalGrad" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stop-color="#0f172a"/>
+                <stop offset="72%" stop-color="#18181b"/>
+                <stop offset="73%" stop-color="#ef4444"/>
+                <stop offset="100%" stop-color="#f97316"/>
+              </linearGradient>
+            </defs>
+            <polygon points="68,31 92,13 84,31 92,49" fill="rgba(255,255,255,0.4)" stroke="rgba(255,255,255,0.7)" stroke-width="0.7"/>
+            <path d="M 69 30 L 92 13 L 83 23 Z" fill="#ef4444" opacity="0.95"/>
+            <path d="M 69 32 L 92 49 L 83 39 Z" fill="#ef4444" opacity="0.95"/>
+            <path d="M 52 41 L 58 53 L 64 43 L 60 38 Z" fill="#f97316" stroke="#ea580c" stroke-width="0.8"/>
+            <path d="M 37 45 C 38 56 46 56 50 44 Z" fill="#ef4444" stroke="#dc2626" stroke-width="0.8"/>
+            <path d="M 40 17 L 54 5 C 57 7 60 12 59 23 Z" fill="url(#barbDorsalGrad)" stroke="#09090b" stroke-width="0.8"/>
+            <path d="M 48 9 Q 54 4 58 7" stroke="#fb923c" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+            <path d="M 6 29 C 14 21 28 14 48 16 C 60 18 69 26 71 31 C 69 36 60 44 48 46 C 28 48 14 39 6 31 Z" fill="url(#barbBodyGrad)" stroke="#e2e8f0" stroke-width="0.8"/>
+            <path d="M 6 30 C 10 24 17 22 23 23 C 18 29 16 33 6 31 Z" fill="#f87171" opacity="0.8"/>
+            <path d="M 17 20 C 19 25 19 32 15 37" stroke="#18181b" stroke-width="4.6" stroke-linecap="round" fill="none"/>
+            <path d="M 34 16 C 36 26 36 37 38 46" stroke="#09090b" stroke-width="6.8" stroke-linecap="round" fill="none"/>
+            <path d="M 54 18 C 57 26 59 34 56 43" stroke="#09090b" stroke-width="5.8" stroke-linecap="round" fill="none"/>
+            <path d="M 67 27 L 68 35" stroke="#18181b" stroke-width="4.2" stroke-linecap="round"/>
+            <path d="M 27 34 Q 38 38 32 43 Z" fill="rgba(251, 146, 60, 0.75)" stroke="#ea580c" stroke-width="0.6"/>
+            <circle cx="16" cy="27" r="4.2" fill="#09090b"/>
+            <circle cx="16" cy="27" r="3.2" fill="#18181b"/>
+            <circle cx="14.8" cy="25.8" r="1.1" fill="#ffffff"/>
+            <circle cx="17.2" cy="28.2" r="0.6" fill="#facc15" opacity="0.8"/>
+          </svg>
+        `
+      },
+      // 8. Super Red Dragon Arowana (Expanded Muscular High-Back Body, Overlapping Scales, Exact Reference Fins)
+      {
+        type: 'arowana',
+        isSurfaceDweller: true,
+        width: 160,
+        height: 74,
+        speedMin: 0.003,
+        speedMax: 0.006,
+        svg: `
+          <svg viewBox="0 0 310 145" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="aroDeepBody" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#b91c1c"/>
+                <stop offset="9%" stop-color="#ea580c"/>
+                <stop offset="30%" stop-color="#f59e0b"/>
+                <stop offset="70%" stop-color="#f97316"/>
+                <stop offset="92%" stop-color="#ea580c"/>
+                <stop offset="100%" stop-color="#b91c1c"/>
+              </linearGradient>
+
+              <linearGradient id="aroFinFan" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#f97316"/>
+                <stop offset="25%" stop-color="#ef4444"/>
+                <stop offset="85%" stop-color="#dc2626"/>
+                <stop offset="100%" stop-color="#881337"/>
+              </linearGradient>
+
+              <linearGradient id="aroHeadPlate" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#d97706"/>
+                <stop offset="40%" stop-color="#f59e0b"/>
+                <stop offset="80%" stop-color="#ea580c"/>
+                <stop offset="100%" stop-color="#c2410c"/>
+              </linearGradient>
+            </defs>
+
+            <!-- 1. DORSAL FIN (Arched Crest Fin set far back) -->
+            <path d="M 188 38 C 196 16 220 12 250 14 C 265 17 270 34 266 48 L 252 50 C 242 34 214 34 188 38 Z" fill="url(#aroFinFan)" stroke="#7f1d1d" stroke-width="1.2"/>
+            <g stroke="#fecaca" stroke-width="1.3" opacity="0.8" fill="none">
+              <path d="M 204 32 Q 224 20 258 24"/>
+              <path d="M 214 34 Q 232 23 262 30"/>
+              <path d="M 226 36 Q 242 27 264 38"/>
+              <path d="M 238 38 Q 248 33 264 45"/>
+            </g>
+
+            <!-- 2. ANAL FIN (Deep Fan Fin Running Under Caudal Peduncle) -->
+            <path d="M 168 100 C 185 132 232 138 264 102 L 264 88 C 238 98 198 102 168 100 Z" fill="url(#aroFinFan)" stroke="#7f1d1d" stroke-width="1.2"/>
+            <g stroke="#fecaca" stroke-width="1.3" opacity="0.8" fill="none">
+              <line x1="178" y1="104" x2="242" y2="128"/>
+              <line x1="190" y1="104" x2="252" y2="122"/>
+              <line x1="204" y1="103" x2="260" y2="114"/>
+              <line x1="220" y1="101" x2="262" y2="105"/>
+            </g>
+
+            <!-- 3. CAUDAL TAIL FIN (Wide Rounded Dragon Paddle Tail) -->
+            <path d="M 260 56 C 274 38 292 30 304 36 C 314 44 314 78 304 84 C 292 90 274 80 260 68 Z" fill="url(#aroFinFan)" stroke="#7f1d1d" stroke-width="1.4"/>
+            <g stroke="#fee2e2" stroke-width="1.3" opacity="0.85" fill="none">
+              <line x1="264" y1="60" x2="304" y2="44"/>
+              <line x1="266" y1="61" x2="308" y2="52"/>
+              <line x1="267" y1="62" x2="310" y2="60"/>
+              <line x1="266" y1="63" x2="308" y2="68"/>
+              <line x1="264" y1="64" x2="304" y2="76"/>
+            </g>
+
+            <!-- 4. MUSCULAR HIGH-BACK & DEEP BELLY BODY TORSO -->
+            <path d="M 16 54 C 40 40 98 32 188 32 C 232 32 258 48 266 60 L 266 66 C 258 78 232 98 188 98 C 128 100 84 98 48 88 C 30 82 22 68 16 54 Z" fill="url(#aroDeepBody)" stroke="#9a3412" stroke-width="1.2"/>
+
+            <!-- 5. TIGHT OVERLAPPING SCALES (5 Horizontal Rows x 8 Columns) -->
+            <g opacity="0.95">
+              <!-- Column 1 -->
+              <path d="M 96 38 C 103 38 109 45 103 52 C 96 45 90 38 96 38 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.6"/>
+              <path d="M 96 52 C 103 52 109 59 103 66 C 96 59 90 52 96 52 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.6"/>
+              <path d="M 96 66 C 103 66 109 73 103 80 C 96 73 90 66 96 66 Z" fill="#14b8a6" stroke="#f97316" stroke-width="2.6"/>
+              <path d="M 96 80 C 103 80 109 87 103 94 C 96 87 90 80 96 80 Z" fill="#0f766e" stroke="#ea580c" stroke-width="2.6"/>
+
+              <!-- Column 2 -->
+              <path d="M 114 36 C 121 36 127 43 121 50 C 114 43 108 36 114 36 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.6"/>
+              <path d="M 114 50 C 121 50 127 57 121 64 C 114 57 108 50 114 50 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.6"/>
+              <path d="M 114 64 C 121 64 127 71 121 78 C 114 71 108 64 114 64 Z" fill="#14b8a6" stroke="#f97316" stroke-width="2.6"/>
+              <path d="M 114 78 C 121 78 127 85 121 92 C 114 85 108 78 114 78 Z" fill="#0d9488" stroke="#ea580c" stroke-width="2.6"/>
+              <path d="M 114 90 C 121 90 127 96 121 101 C 114 96 108 90 114 90 Z" fill="#0f766e" stroke="#ea580c" stroke-width="2.2"/>
+
+              <!-- Column 3 -->
+              <path d="M 132 36 C 139 36 145 43 139 50 C 132 43 126 36 132 36 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.6"/>
+              <path d="M 132 50 C 139 50 145 57 139 64 C 132 57 126 50 132 50 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.6"/>
+              <path d="M 132 64 C 139 64 145 71 139 78 C 132 71 126 64 132 64 Z" fill="#14b8a6" stroke="#f97316" stroke-width="2.6"/>
+              <path d="M 132 78 C 139 78 145 85 139 92 C 132 85 126 78 132 78 Z" fill="#0d9488" stroke="#ea580c" stroke-width="2.6"/>
+              <path d="M 132 90 C 139 90 145 96 139 101 C 132 96 126 90 132 90 Z" fill="#0f766e" stroke="#ea580c" stroke-width="2.2"/>
+
+              <!-- Column 4 -->
+              <path d="M 150 36 C 157 36 163 43 157 50 C 150 43 144 36 150 36 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.6"/>
+              <path d="M 150 50 C 157 50 163 57 157 64 C 150 57 144 50 150 50 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.6"/>
+              <path d="M 150 64 C 157 64 163 71 157 78 C 150 71 144 64 150 64 Z" fill="#14b8a6" stroke="#f97316" stroke-width="2.6"/>
+              <path d="M 150 78 C 157 78 163 85 157 92 C 150 85 144 78 150 78 Z" fill="#0d9488" stroke="#ea580c" stroke-width="2.6"/>
+              <path d="M 150 90 C 157 90 163 96 157 101 C 150 96 144 90 150 90 Z" fill="#0f766e" stroke="#ea580c" stroke-width="2.2"/>
+
+              <!-- Column 5 -->
+              <path d="M 168 37 C 175 37 181 44 175 51 C 168 44 162 37 168 37 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.6"/>
+              <path d="M 168 51 C 175 51 181 58 175 65 C 168 58 162 51 168 51 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.6"/>
+              <path d="M 168 65 C 175 65 181 72 175 79 C 168 72 162 65 168 65 Z" fill="#14b8a6" stroke="#f97316" stroke-width="2.6"/>
+              <path d="M 168 79 C 175 79 181 86 175 93 C 168 86 162 79 168 79 Z" fill="#0d9488" stroke="#ea580c" stroke-width="2.6"/>
+
+              <!-- Column 6 -->
+              <path d="M 186 39 C 193 39 199 46 193 53 C 186 46 180 39 186 39 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.4"/>
+              <path d="M 186 53 C 193 53 199 60 193 67 C 186 60 180 53 186 53 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.4"/>
+              <path d="M 186 67 C 193 67 199 74 193 81 C 186 74 180 67 186 67 Z" fill="#14b8a6" stroke="#f97316" stroke-width="2.4"/>
+              <path d="M 186 81 C 193 81 199 88 193 95 C 186 88 180 81 186 81 Z" fill="#0d9488" stroke="#ea580c" stroke-width="2.4"/>
+
+              <!-- Column 7 -->
+              <path d="M 204 43 C 210 43 216 49 210 56 C 204 49 198 43 204 43 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.2"/>
+              <path d="M 204 56 C 210 56 216 63 210 70 C 204 63 198 56 204 56 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.2"/>
+              <path d="M 204 70 C 210 70 216 77 210 84 C 204 77 198 70 204 70 Z" fill="#0d9488" stroke="#f97316" stroke-width="2.2"/>
+
+              <!-- Column 8 (Rear Peduncle) -->
+              <path d="M 222 47 C 228 47 234 53 228 60 C 222 53 216 47 222 47 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.0"/>
+              <path d="M 222 60 C 228 60 234 67 228 74 C 222 67 216 60 222 60 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.0"/>
+              <path d="M 238 52 C 244 52 248 57 244 63 C 240 57 234 52 238 52 Z" fill="#0f766e" stroke="#dc2626" stroke-width="1.8"/>
+              <path d="M 238 63 C 244 63 248 68 244 74 C 240 68 234 63 238 63 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="1.8"/>
+            </g>
+
+            <!-- 6. PELVIC / VENTRAL FIN (Pointed Feathered Double Tip) -->
+            <path d="M 134 94 C 142 116 154 122 164 112 C 160 106 162 98 166 94 Z" fill="url(#aroFinFan)" stroke="#991b1b" stroke-width="1.2"/>
+            <line x1="138" y1="98" x2="158" y2="116" stroke="#fecaca" stroke-width="1.4"/>
+
+            <!-- 7. ELONGATED PECTORAL GLIDE FIN (Broad Dragon Wing) -->
+            <path d="M 64 84 C 84 92 120 134 112 138 C 98 134 80 110 60 92 Z" fill="url(#aroFinFan)" stroke="#7f1d1d" stroke-width="1.4"/>
+            <path d="M 68 86 C 88 96 116 126 108 134" stroke="#fde047" stroke-width="1.8" fill="none"/>
+            <line x1="72" y1="92" x2="102" y2="128" stroke="#fecaca" stroke-width="1.2"/>
+
+            <!-- 8. OPERCULUM GILL ARMOR & HEAD SCULPT (Golden Shield with Red Edges) -->
+            <path d="M 16 54 C 28 44 56 41 90 41 C 94 62 90 80 80 90 C 58 89 32 76 16 54 Z" fill="url(#aroHeadPlate)" stroke="#b45309" stroke-width="1.4"/>
+            <!-- Forehead Teal/Green Shimmer -->
+            <path d="M 16 54 C 26 48 40 43 54 42 C 40 46 26 50 16 54 Z" fill="#14b8a6" opacity="0.45"/>
+            <path d="M 82 43 C 90 56 88 78 76 88" stroke="#dc2626" stroke-width="4.0" fill="none"/>
+            <path d="M 70 45 C 78 57 76 74 66 82" stroke="#ea580c" stroke-width="2.2" fill="none" opacity="0.8"/>
+
+            <!-- 9. SHORT UPTURNED LOWER JAW & DRAGON BARBELS (Whiskers) -->
+            <path d="M 16 54 L 26 58 C 30 68 38 76 46 80 C 32 76 22 66 16 54 Z" fill="#f59e0b" stroke="#ea580c" stroke-width="1.2"/>
+            <path d="M 16 54 L 25 58" stroke="#7f1d1d" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+            <!-- Chin Barbels pointing forward from the tip of the lower lip -->
+            <path d="M 16 55 Q 10 54 5 52" stroke="#facc15" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+            <path d="M 15 57 Q 9 56 4 56" stroke="#f97316" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+
+            <!-- 10. EXPRESSIVE DRAGON EYE -->
+            <circle cx="32" cy="52" r="6.5" fill="#dc2626"/>
+            <circle cx="32" cy="52" r="4.6" fill="#facc15"/>
+            <circle cx="31.4" cy="52" r="2.8" fill="#09090b"/>
+            <circle cx="30" cy="50.6" r="1.0" fill="#ffffff"/>
+          </svg>
+        `
+      }
+    ];
+
+    class Fish {
+      constructor(modelIndex, startX, startY) {
+        this.modelIndex = modelIndex;
+        this.model = FISH_MODELS[modelIndex];
+        this.x = startX;
+        this.y = startY;
+        this.targetX = startX;
+        this.targetY = startY;
+        this.facingRight = Math.random() < 0.5;
+        this.speed = this.model.speedMin;
+        this.tilt = 0;
+        this.pauseFrames = 0;
+        this.postFeedCooldown = 0;
+        this.stuckFrames = 0;
+        this.lastBubbleTime = Date.now() + Math.random() * 3000;
+        this.individualScale = 0.88 + Math.random() * 0.24;
+        this.isClimbing = false;
+        this.climbPlantSide = Math.random() < 0.5 ? 'left' : 'right';
+
+        this.el = document.createElement('div');
+        this.el.className = 'fish-sprite';
+        this.el.style.width = this.model.width + 'px';
+        this.el.style.height = this.model.height + 'px';
+        this.el.innerHTML = this.model.svg;
+        tank.appendChild(this.el);
+
+        this.el.addEventListener('pointerdown', (e) => {
+          e.stopPropagation();
+          this.dartAway(e.clientX, e.clientY);
+        });
+
+        this.pickNewTarget();
+      }
+
+      pickNewTarget() {
+        const rect = tank.getBoundingClientRect();
+        const waterHeight = rect.height * 0.94;
+
+        if (this.model.type === 'shrimp') {
+          if (this.isClimbing) {
+            const stayOnPlant = Math.random() < 0.65;
+            if (stayOnPlant) {
+              const isLeftPlant = this.x < rect.width * 0.5;
+              this.targetX = isLeftPlant ? (10 + Math.random() * 70) : (rect.width - 85 + Math.random() * 65);
+              this.targetY = 18 + Math.random() * 55;
+            } else {
+              this.isClimbing = false;
+              this.targetX = this.x + (Math.random() * 40 - 20);
+              this.targetY = 12 + Math.random() * 3;
+            }
+          } else {
+            const startClimbing = Math.random() < 0.35;
+            if (startClimbing) {
+              this.isClimbing = true;
+              const goLeft = this.x < rect.width * 0.5;
+              this.targetX = goLeft ? (12 + Math.random() * 65) : (rect.width - 80 + Math.random() * 60);
+              this.targetY = 18 + Math.random() * 45;
+            } else {
+              this.targetX = Math.max(12, Math.min(rect.width - 45, this.x + (Math.random() * 120 - 60)));
+              this.targetY = 12 + Math.random() * 3;
+            }
+          }
+          this.speed = 0.0022 + Math.random() * 0.0025;
+          return;
+        }
+
+        const midX = rect.width / 2;
+        if (this.x < midX) {
+          this.targetX = midX + 20 + Math.random() * (midX - this.model.width - 35);
+        } else {
+          this.targetX = 15 + Math.random() * (midX - 35);
+        }
+
+        if (this.model.isBottomDweller) {
+          this.targetY = 14 + Math.random() * 24;
+        } else if (this.model.isSurfaceDweller) {
+          // Arowana cruises gracefully in the upper layer with full fin clearance
+          this.targetY = Math.max(30, waterHeight - this.model.height - 18 - Math.random() * 32);
+        } else {
+          const usableCeiling = Math.max(60, waterHeight - this.model.height - 45);
+          this.targetY = 24 + Math.random() * usableCeiling;
+        }
+
+        this.speed = this.model.speedMin + Math.random() * (this.model.speedMax - this.model.speedMin);
+      }
+
+      disperseImmediately() {
+        const rect = tank.getBoundingClientRect();
+        const waterHeight = rect.height * 0.94;
+
+        this.postFeedCooldown = 210;
+        this.pauseFrames = 0;
+        this.targetOffsetAngle = undefined;
+
+        if (this.model.type === 'shrimp') {
+          this.isClimbing = Math.random() < 0.5;
+          this.targetX = (this.x < rect.width * 0.5) ? (20 + Math.random() * 60) : (rect.width - 90 + Math.random() * 60);
+          this.targetY = 12 + Math.random() * (this.isClimbing ? 45 : 4);
+        } else {
+          const swimToRight = (this.x < rect.width * 0.5);
+          this.targetX = swimToRight
+            ? (rect.width * 0.52 + Math.random() * (rect.width * 0.40))
+            : (25 + Math.random() * (rect.width * 0.40));
+
+          if (this.model.isBottomDweller) {
+            this.targetY = 14 + Math.random() * 20;
+          } else if (this.model.isSurfaceDweller) {
+            this.targetY = waterHeight - this.model.height - 14 - Math.random() * 22;
+          } else {
+            this.targetY = 25 + Math.random() * (waterHeight - this.model.height - 55);
+          }
+        }
+        this.speed = this.model.speedMin + Math.random() * (this.model.speedMax - this.model.speedMin);
+      }
+
+      dartAway(fromClientX, fromClientY) {
+        const rect = tank.getBoundingClientRect();
+        const localX = fromClientX - rect.left;
+
+        if (this.model.type === 'shrimp') {
+          this.targetX = localX > this.x ? Math.max(15, this.x - 140) : Math.min(rect.width - 45, this.x + 140);
+          this.targetY = Math.min(80, this.y + 35 + Math.random() * 30);
+          this.speed = 0.15;
+          this.isClimbing = false;
+          this.pauseFrames = 0;
+          return;
+        }
+
+        this.targetX = localX > this.x ? Math.max(20, this.x - 180) : Math.min(rect.width - 50, this.x + 180);
+
+        if (this.model.isBottomDweller) {
+          this.targetY = 14 + Math.random() * 22;
+          this.speed = 0.08;
+        } else if (this.model.isSurfaceDweller) {
+          // Drops slightly downward to evade before returning to surface
+          this.targetY = (rect.height * 0.94) - this.model.height - 40;
+          this.speed = 0.09;
+        } else {
+          this.targetY = Math.min((rect.height * 0.94) - 40, Math.max(16, this.y + (Math.random() * 120 - 60)));
+          this.speed = 0.08;
+        }
+        this.pauseFrames = 0;
+      }
+
+      seekNearestFood() {
+        if (this.postFeedCooldown > 0) return false;
+        if (!foodList.length) return false;
+
+        let nearest = null;
+        let minDist = 9999;
+        for (let f of foodList) {
+          if (this.model.type === 'shrimp' && f.y > 55) continue;
+
+          let dist = Math.hypot(f.x - this.x, f.y - this.y);
+          if (dist < minDist) {
+            minDist = dist;
+            nearest = f;
+          }
+        }
+
+        if (nearest) {
+          if (this.targetOffsetAngle === undefined) {
+            this.targetOffsetAngle = Math.random() * Math.PI * 2;
+          }
+          // Flex movement: tighter orbit scale so large fish mouths actually reach the target
+          const spreadRadius = 4 + (this.model.width * 0.15);
+          this.targetX = nearest.x - (this.model.width / 2) + Math.cos(this.targetOffsetAngle) * spreadRadius;
+          this.targetY = nearest.y + Math.sin(this.targetOffsetAngle) * (spreadRadius * 0.4);
+
+          // Size-based attack burst (big fish lunge faster to catch sinking food)
+          const sizeBoost = this.model.width > 80 ? 3.5 : 2.2;
+          this.speed = this.model.speedMax * sizeBoost;
+          this.pauseFrames = 0;
+          return true;
+        }
+        this.targetOffsetAngle = undefined;
+        return false;
+      }
+
+      update() {
+        const rect = tank.getBoundingClientRect();
+        if (this.postFeedCooldown > 0) this.postFeedCooldown--;
+
+        const hasFood = this.seekNearestFood();
+        const now = Date.now();
+
+        if (!hasFood && this.speed > this.model.speedMax) {
+          this.speed += (this.model.speedMax - this.speed) * 0.08;
+        }
+
+        if (this.pauseFrames > 0 && !hasFood) {
+          this.pauseFrames--;
+          this.y += Math.sin((now + this.x * 10) / 600) * 0.15;
+        } else {
+          const dx = this.targetX - this.x;
+          const dy = this.targetY - this.y;
+          const dist = Math.hypot(dx, dy);
+
+          // Dynamic flex bite radius (massive fish have larger intake areas)
+          const biteRange = 14 + (this.model.width * 0.25);
+          if (hasFood && dist < biteRange) {
+            eatFoodNear(this.x + this.model.width / 2, this.y, biteRange + 10);
+            this.disperseImmediately();
+          }
+
+          if (dist < 12) {
+            this.stuckFrames = 0;
+            this.lastCheckPos = null;
+            const pauseChance = (this.model.type === 'shrimp') ? 0.75 : (this.postFeedCooldown > 0 ? 0 : 0.25);
+            if (!hasFood && Math.random() < pauseChance) {
+              this.pauseFrames = (this.model.type === 'shrimp')
+                ? (140 + Math.floor(Math.random() * 220))
+                : (30 + Math.floor(Math.random() * 45));
+            } else {
+              this.pickNewTarget();
+            }
+          } else {
+            if (!this.lastCheckPos) {
+              this.lastCheckPos = {x: this.x, y: this.y, frame: 0};
+            }
+            this.lastCheckPos.frame++;
+            if (this.lastCheckPos.frame > 210) {
+              const movedDist = Math.hypot(this.x - this.lastCheckPos.x, this.y - this.lastCheckPos.y);
+              if (movedDist < 3.0) {
+                this.pickNewTarget();
+              }
+              this.lastCheckPos = {x: this.x, y: this.y, frame: 0};
+            }
+
+            if (hasFood) {
+              const step = Math.min(dist, 1.8 + (this.model.speedMax * 70));
+              this.x += (dx / dist) * step;
+              this.y += (dy / dist) * step;
+
+              // Flex Movement: Prevents long fish from violently snapping left/right when right on top of food
+              const turnThreshold = this.model.width * 0.1;
+              if (Math.abs(dx) > Math.max(1.8, turnThreshold)) {
+                this.facingRight = dx > 0;
+              }
+
+              let targetPitch = Math.atan2(dy, Math.abs(dx)) * (180 / Math.PI);
+              let clampedPitch = Math.max(-40, Math.min(40, targetPitch));
+              // Larger fish tilt slightly slower, simulating heavier water displacement
+              let flexFactor = this.model.width > 80 ? 0.06 : 0.12;
+              this.tilt += (clampedPitch - this.tilt) * flexFactor;
+            } else {
+              const nightDampener = (currentLightIndex >= 2) ? 0.6 : 1.0;
+              this.x += (dx * this.speed * nightDampener);
+              this.y += (dy * this.speed * nightDampener);
+
+              if (dx > 0.6) this.facingRight = true;
+              else if (dx < -0.6) this.facingRight = false;
+
+              let targetTilt = Math.max(-14, Math.min(14, dy * 0.22));
+              this.tilt += (targetTilt - this.tilt) * 0.04;
+            }
+          }
+        }
+
+        const bubbleCooldown = this.speed > 0.04 ? 1800 : 5000;
+        if (this.pauseFrames === 0 && (now - this.lastBubbleTime > bubbleCooldown) && Math.random() < 0.15) {
+          spawnBubble(this.x + (this.facingRight ? this.model.width * 0.15 : this.model.width * 0.85), this.y + 4);
+          this.lastBubbleTime = now;
+        }
+
+        const waterHeight = rect.height * 0.94;
+        const minY = (this.model.type === 'shrimp') ? 12 : 16;
+        const maxY = (this.model.type === 'shrimp' && !hasFood) ? 75 : (waterHeight - this.model.height - 8);
+
+        this.x = Math.max(10, Math.min(rect.width - this.model.width - 10, this.x));
+        this.y = Math.max(minY, Math.min(maxY, this.y));
+
+        const isChineseGold = (this.model.type === 'chinese_goldfish');
+        const isClown = (this.model.type === 'clownfish');
+        const isBarb = (this.model.type === 'tiger_barb');
+        const isArowana = (this.model.type === 'arowana');
+
+        let waveBounce = 0;
+        if (!hasFood && this.model.type !== 'shrimp') {
+          if (isChineseGold) {
+            waveBounce = Math.sin((now + this.x * 5) / 500) * 3.2;
+          } else if (isClown) {
+            waveBounce = Math.sin((now + this.x * 9) / 280) * 1.8;
+          } else if (isBarb) {
+            waveBounce = Math.sin((now + this.x * 11) / 220) * 1.6;
+          } else if (isArowana) {
+            waveBounce = Math.sin((now + this.x * 4) / 460) * 1.2; // Majestic, low-frequency glide
+          } else {
+            waveBounce = Math.sin((now + this.x * 7) / 340) * 1.5;
+          }
+        }
+
+        const flip = this.facingRight ? "scaleX(-1)" : "scaleX(1)";
+
+        let finalRotation = this.facingRight ? -this.tilt : this.tilt;
+        if (this.model.type === 'shrimp') {
+          finalRotation = this.isClimbing ? (this.facingRight ? -22 : 22) : 0;
+        } else if (isChineseGold && !hasFood) {
+          finalRotation += Math.sin((now + this.x * 8) / 420) * 5.2;
+        } else if (isClown && !hasFood) {
+          finalRotation += Math.sin((now + this.x * 12) / 320) * 3.5;
+        } else if (isBarb && !hasFood) {
+          finalRotation += Math.sin((now + this.x * 14) / 240) * 2.8;
+        } else if (isArowana && !hasFood) {
+          finalRotation += Math.sin((now + this.x * 6) / 500) * 1.8; // Graceful, stately posture
+        }
+
+        this.el.style.left = this.x + 'px';
+        this.el.style.bottom = (this.y + waveBounce) + 'px';
+        this.el.style.transform = `rotate(${finalRotation}deg) ${flip} scale(${this.individualScale.toFixed(2)})`;
+      }
+    }
+
+    // Feeding Mechanism
+    function dropFood(x, y) {
+      const pellet = document.createElement('div');
+      pellet.className = 'food-pellet';
+      pellet.style.left = x + 'px';
+      pellet.style.bottom = y + 'px';
+      tank.appendChild(pellet);
+
+      const foodObj = {
+        x: x,
+        y: y,
+        el: pellet,
+        fallSpeed: 0.5 + Math.random() * 0.35,
+        driftPhase: Math.random() * Math.PI * 2,
+        driftSpeed: 0.04 + Math.random() * 0.03
+      };
+      foodList.push(foodObj);
+    }
+
+    function dropFoodAtRandom() {
+      const rect = tank.getBoundingClientRect();
+      for (let i = 0; i < 4; i++) {
+        setTimeout(() => {
+          dropFood(40 + Math.random() * (rect.width - 80), (rect.height * 0.94) - 15);
+        }, i * 150);
+      }
+    }
+
+    // Accepts dynamic hitRadius so big fish successfully consume the pellet
+    function eatFoodNear(fx, fy, hitRadius = 24) {
+      for (let i = foodList.length - 1; i >= 0; i--) {
+        let f = foodList[i];
+        if (Math.hypot(f.x - fx, f.y - fy) < hitRadius) {
+          f.el.remove();
+          foodList.splice(i, 1);
+
+          fishList.forEach(fish => {
+            if (Math.hypot(fish.x - fx, fish.y - fy) < 80) {
+              fish.disperseImmediately();
+            }
+          });
+        }
+      }
+    }
+
+    function spawnBubble(x, y) {
+      const rect = tank.getBoundingClientRect();
+      const waterHeight = rect.height * 0.94;
+
+      if ((y + 10) >= waterHeight) return;
+
+      const bubble = document.createElement('div');
+      bubble.className = 'tank-bubble';
+
+      const startBottom = y + 6;
+      const maxTravel = Math.min(30, Math.max(18, waterHeight - startBottom - 4));
+
+      bubble.style.left = x + 'px';
+      bubble.style.bottom = startBottom + 'px';
+      tank.appendChild(bubble);
+
+      const startTime = Date.now();
+      const duration = 900;
+
+      const animateBubble = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = elapsed / duration;
+
+        if (progress >= 1 || !bubble.parentElement) {
+          if (bubble.parentElement) bubble.remove();
+          return;
+        }
+
+        const currentBottom = startBottom + (progress * maxTravel);
+        bubble.style.bottom = currentBottom + 'px';
+        bubble.style.opacity = (1 - progress).toFixed(2);
+        requestAnimationFrame(animateBubble);
+      };
+
+      requestAnimationFrame(animateBubble);
+    }
+
+    function scareAllFish() {
+      const rect = tank.getBoundingClientRect();
+      fishList.forEach(f => {
+        const fleeLeft = Math.random() < 0.5;
+        f.targetX = fleeLeft
+          ? (20 + Math.random() * (rect.width * 0.35))
+          : (rect.width * 0.6 + Math.random() * (rect.width * 0.35));
+
+        if (f.model.isBottomDweller) {
+          f.targetY = 14 + Math.random() * 20;
+        } else if (f.model.isSurfaceDweller) {
+          f.targetY = (rect.height * 0.94) - f.model.height - 35;
+        } else {
+          f.targetY = 25 + Math.random() * ((rect.height * 0.94) - f.model.height - 45);
+        }
+        f.speed = f.model.speedMax * 2.2;
+        f.pauseFrames = 0;
+      });
+    }
+
+    tank.addEventListener('pointerdown', (e) => {
+      const rect = tank.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = rect.height - (e.clientY - rect.top);
+      dropFood(clickX, clickY);
+    });
+
+    // AIR PUMP & OXYGEN BUBBLES
+    let airPumpActive = true;
+    let microBubbleList = [];
+
+    function toggleAirPump() {
+      airPumpActive = !airPumpActive;
+      const btn = document.getElementById('airPumpBtn');
+      if (btn) {
+        btn.innerText = airPumpActive ? "💨 Oxygen: ON" : "💨 Oxygen: OFF";
+        btn.style.borderColor = airPumpActive ? "#00d2ff" : "rgba(255,255,255,0.18)";
+      }
+    }
+
+    function spawnMicroOxygenBubble() {
+      if (!airPumpActive) return;
+
+      const diffuser = document.getElementById('airstoneFixture');
+      if (!diffuser) return;
+
+      const rect = tank.getBoundingClientRect();
+      const diffRect = diffuser.getBoundingClientRect();
+
+      const originX = (diffRect.left - rect.left) + 12 + (Math.random() * 8 - 4);
+      const originY = 22;
+
+      const bubble = document.createElement('div');
+      bubble.className = 'air-micro-bubble';
+
+      const size = 2 + Math.random() * 2.5;
+      bubble.style.width = size + 'px';
+      bubble.style.height = size + 'px';
+      bubble.style.left = originX + 'px';
+      bubble.style.bottom = originY + 'px';
+      tank.appendChild(bubble);
+
+      microBubbleList.push({
+        el: bubble,
+        x: originX,
+        y: originY,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: 1.8 + Math.random() * 0.8,
+        wobble: Math.random() * 10
+      });
+    }
+
+    setInterval(() => {
+      if (airPumpActive) {
+        spawnMicroOxygenBubble();
+        if (Math.random() < 0.6) spawnMicroOxygenBubble();
+      }
+    }, 110);
+
+    let currentTemp = 25.4;
+    setInterval(() => {
+      const delta = (Math.random() - 0.48) * 0.08;
+      currentTemp = Math.max(25.1, Math.min(25.8, currentTemp + delta));
+      const tempEl = document.getElementById('tempDisplay');
+      if (tempEl) tempEl.innerText = currentTemp.toFixed(1) + "°C";
+    }, 4500);
+
+    // LIGHTING PRESETS
+    const LIGHT_MODES = [
+      {id: 'daylight', label: 'Daylight', cssClass: ''},
+      {id: 'sunset', label: 'Sunset', cssClass: 'light-sunset'},
+      {id: 'moonlight', label: 'Moonlight', cssClass: 'light-moonlight'},
+      {id: 'off', label: 'Dark / Off', cssClass: 'light-off'}
+    ];
+
+    let currentLightIndex = parseInt(localStorage.getItem('aqua_light_mode') || '0', 10);
+
+    function applyLightingPreset() {
+      const mode = LIGHT_MODES[currentLightIndex];
+      const assembly = document.querySelector('.aquarium-assembly');
+      if (!assembly) return;
+
+      LIGHT_MODES.forEach(m => {
+        if (m.cssClass) assembly.classList.remove(m.cssClass);
+      });
+
+      if (mode.cssClass) {
+        assembly.classList.add(mode.cssClass);
+      }
+
+      const labelEl = document.getElementById('lightModeLabel');
+      if (labelEl) labelEl.innerText = `SMART LED: ${mode.label.toUpperCase()}`;
+
+      const btnEl = document.getElementById('lightModeBtn');
+      if (btnEl) btnEl.innerText = `💡 Light: ${mode.label}`;
+
+      localStorage.setItem('aqua_light_mode', currentLightIndex);
+    }
+
+    function cycleLightMode() {
+      currentLightIndex = (currentLightIndex + 1) % LIGHT_MODES.length;
+      applyLightingPreset();
+    }
+
+    // SPECIES POPULATION CONTROLLER (Index 8 = Asian Arowana)
+    const DEFAULT_POPULATION = {0: 2, 1: 2, 2: 3, 3: 2, 4: 2, 5: 3, 6: 2, 7: 3, 8: 1};
+    let populationCounts = JSON.parse(localStorage.getItem('aqua_population') || 'null') || DEFAULT_POPULATION;
+
+    if (populationCounts[8] === undefined) {
+      populationCounts[8] = 1;
+    }
+
+    function savePopulationSettings() {
+      localStorage.setItem('aqua_population', JSON.stringify(populationCounts));
+    }
+
+    function toggleSpeciesMenu() {
+      const menu = document.getElementById('speciesDropdown');
+      if (menu) menu.classList.toggle('open');
+    }
+
+    document.addEventListener('pointerdown', (e) => {
+      const menu = document.getElementById('speciesDropdown');
+      const btn = document.getElementById('speciesMenuBtn');
+      if (menu && menu.classList.contains('open') && !menu.contains(e.target) && e.target !== btn) {
+        menu.classList.remove('open');
+      }
+    });
+
+    function renderSpeciesDropdown() {
+      const container = document.getElementById('speciesList');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const speciesDisplayNames = [
+        "Golden Fantail",
+        "Graceful Angelfish",
+        "Neon Tetra",
+        "Ocellaris Clownfish",
+        "Corydoras Catfish",
+        "Red Cherry Shrimp",
+        "Chinese Yuanbao Goldfish",
+        "Tiger Barb (Tiger Fish)",
+        "Super Red Dragon Arowana"
+      ];
+
+      FISH_MODELS.forEach((model, idx) => {
+        const count = populationCounts[idx] || 0;
+        const isEnabled = count > 0;
+
+        const row = document.createElement('div');
+        row.className = 'species-item';
+        row.innerHTML = `
+          <label class="species-info" for="chk_${idx}">
+            <input type="checkbox" id="chk_${idx}" class="species-checkbox" ${isEnabled ? 'checked' : ''} onchange="toggleSpeciesChecked(${idx}, this.checked)">
+            <div class="species-preview">${model.svg}</div>
+            <div class="species-name">${speciesDisplayNames[idx]}</div>
+          </label>
+          <div class="qty-stepper">
+            <button class="stepper-btn" onclick="changeSpeciesCount(${idx}, -1)">−</button>
+            <span class="stepper-val" id="count_${idx}">${count}</span>
+            <button class="stepper-btn" onclick="changeSpeciesCount(${idx}, 1)">+</button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function toggleSpeciesChecked(idx, checked) {
+      if (checked) {
+        if (!populationCounts[idx] || populationCounts[idx] === 0) populationCounts[idx] = 1;
+      } else {
+        populationCounts[idx] = 0;
+      }
+      savePopulationSettings();
+      syncFishPopulation();
+      renderSpeciesDropdown();
+    }
+
+    function changeSpeciesCount(idx, delta) {
+      const current = populationCounts[idx] || 0;
+      const next = Math.max(0, Math.min(10, current + delta));
+      populationCounts[idx] = next;
+      savePopulationSettings();
+      syncFishPopulation();
+      renderSpeciesDropdown();
+    }
+
+    function syncFishPopulation() {
+      const rect = tank.getBoundingClientRect();
+      const waterHeight = rect.height * 0.94;
+
+      FISH_MODELS.forEach((_, modelIdx) => {
+        const targetCount = populationCounts[modelIdx] || 0;
+        const currentOfModel = fishList.filter(f => f.modelIndex === modelIdx);
+
+        if (currentOfModel.length < targetCount) {
+          const toAdd = targetCount - currentOfModel.length;
+          for (let i = 0; i < toAdd; i++) {
+            let startY;
+            if (FISH_MODELS[modelIdx].type === 'shrimp') {
+              startY = 12 + Math.random() * 4;
+            } else if (FISH_MODELS[modelIdx].isSurfaceDweller) {
+              startY = waterHeight - FISH_MODELS[modelIdx].height - 18 - Math.random() * 20;
+            } else {
+              startY = 25 + Math.random() * (waterHeight * 0.8);
+            }
+            const f = new Fish(modelIdx, 40 + Math.random() * (rect.width - 100), startY);
+            fishList.push(f);
+          }
+        } else if (currentOfModel.length > targetCount) {
+          const toRemove = currentOfModel.length - targetCount;
+          for (let i = 0; i < toRemove; i++) {
+            const victim = currentOfModel[i];
+            victim.el.remove();
+            const listIdx = fishList.indexOf(victim);
+            if (listIdx > -1) fishList.splice(listIdx, 1);
+          }
+        }
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      const rect = tank.getBoundingClientRect();
+      const waterHeight = rect.height * 0.94;
+      fishList.forEach(fish => {
+        fish.x = Math.max(10, Math.min(rect.width - fish.model.width - 10, fish.x));
+        fish.y = Math.max(12, Math.min(waterHeight - fish.model.height - 8, fish.y));
+      });
+    });
+
+    function setupTank() {
+      fishList.forEach(f => f.el.remove());
+      fishList = [];
+      syncFishPopulation();
+      renderSpeciesDropdown();
+      applyLightingPreset();
+    }
+
+    function render() {
+      fishList.forEach(f => f.update());
+
+      for (let i = foodList.length - 1; i >= 0; i--) {
+        let f = foodList[i];
+
+        if (f.y > 14) {
+          f.driftPhase += f.driftSpeed;
+          f.x += Math.sin(f.driftPhase) * 0.35;
+          f.el.style.left = f.x + 'px';
+        }
+
+        f.y -= f.fallSpeed;
+        f.el.style.bottom = f.y + 'px';
+
+        if (f.y <= 14) {
+          f.y = 14;
+          fishList.forEach(fish => {
+            if (fish.model.isBottomDweller && Math.hypot(fish.x - f.x, fish.y - f.y) < 140) {
+              fish.targetX = f.x - (fish.model.width / 2);
+              fish.targetY = 14;
+              fish.speed = fish.model.speedMax * 1.8;
+              fish.pauseFrames = 0;
+            }
+          });
+
+          if (!f.dissolveTimer) {
+            f.dissolveTimer = setTimeout(() => {
+              if (f.el && f.el.parentElement) f.el.remove();
+              let idx = foodList.indexOf(f);
+              if (idx > -1) foodList.splice(idx, 1);
+            }, 5000);
+          }
+        }
+      }
+
+      const tankRect = tank.getBoundingClientRect();
+      const waterCeiling = (tankRect.height * 0.94) - 4;
+
+      for (let i = microBubbleList.length - 1; i >= 0; i--) {
+        let b = microBubbleList[i];
+        b.y += b.vy;
+        b.wobble += 0.12;
+        b.x += Math.sin(b.wobble) * 0.45;
+
+        b.el.style.bottom = b.y + 'px';
+        b.el.style.left = b.x + 'px';
+
+        if (b.y >= waterCeiling) {
+          b.el.remove();
+          microBubbleList.splice(i, 1);
+        }
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    setupTank();
+    requestAnimationFrame(render);
+  </script>
+</body>
+
+</html>
