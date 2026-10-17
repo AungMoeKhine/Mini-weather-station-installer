@@ -133,15 +133,16 @@
       background: var(--warning-bg);
       border: 1px solid var(--warning-border);
       color: var(--warning-text);
-      padding: 12px 16px;
+      padding: 14px 18px;
       border-radius: 12px;
       font-weight: 600;
       font-size: 0.92rem;
       margin-bottom: 24px;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
+      text-align: center;
+      gap: 6px;
     }
 
     /* Feature Pills */
@@ -307,12 +308,12 @@
     </div>
 
     <!-- Hardware Notice -->
-    <div class="hardware-alert" style="flex-direction: column; align-items: flex-start; gap: 6px;">
-      <div style="display: flex; align-items: center; gap: 8px;">
+    <div class="hardware-alert">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
         <span>&#9888;&#65039;</span>
         <span id="alert-text">Configured for the <strong>ESP32 CYD 2.8-inch</strong> board</span>
       </div>
-      <div id="driver-disclaimer" style="font-size: 0.82rem; font-weight: normal; color: #fecaca; opacity: 0.95;">
+      <div id="driver-disclaimer" style="font-size: 0.82rem; font-weight: normal; color: #fecaca; opacity: 0.95; margin-top: 4px;">
         ⚠️ <strong>Driver Warning:</strong> This firmware version is compiled exclusively for the <strong>ST7789</strong> display driver. Flashing it to an incorrect screen type will result in a white/black screen or corrupted graphics.
       </div>
     </div>
@@ -372,7 +373,6 @@
   </div>
 
   <script>
-    <script>
     function switchBoard(version) {
       const tabs = document.querySelectorAll('.board-tab');
       tabs.forEach(tab => tab.classList.remove('active'));
