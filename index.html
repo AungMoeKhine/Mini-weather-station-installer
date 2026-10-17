@@ -97,6 +97,37 @@
       color: var(--accent-cyan);
     }
 
+    /* Board Selector Tabs */
+    .board-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 6px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .board-tab {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .board-tab.active {
+      background: var(--accent-cyan);
+      color: #0f172a;
+      box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+    }
+
     /* Hardware Alert Banner */
     .hardware-alert {
       background: var(--warning-bg);
@@ -242,12 +273,6 @@
       box-shadow: 0 14px 24px -5px rgba(16, 185, 129, 0.5);
     }
 
-    .divider {
-      height: 1px;
-      background: rgba(255, 255, 255, 0.08);
-      margin: 24px 0;
-    }
-
     .footer {
       margin-top: 24px;
       font-size: 0.8rem;
@@ -275,10 +300,16 @@
     <h1>AMK Mini Weather Station</h1>
     <div class="developer-badge">Developed by <strong>Aung Moe Khine</strong></div>
 
+    <!-- Board Selector Tabs -->
+    <div class="board-selector">
+      <button class="board-tab active" onclick="switchBoard('2.8')">ESP32 CYD 2.8"</button>
+      <button class="board-tab" onclick="switchBoard('3.5')">ESP32 CYD 3.5"</button>
+    </div>
+
     <!-- Hardware Notice -->
     <div class="hardware-alert">
       <span>&#9888;&#65039;</span>
-      <span>Designed exclusively for the <strong>ESP32 CYD 2.8-inch</strong> board</span>
+      <span id="alert-text">Configured for the <strong>ESP32 CYD 2.8-inch</strong> board</span>
     </div>
 
     <!-- Key Features -->
@@ -294,7 +325,7 @@
       <div class="steps-title">Quick Installation Guide</div>
       <div class="step-item">
         <div class="step-num">1</div>
-        <div>Connect your ESP32 CYD 2.8" board to your computer via USB using <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.</div>
+        <div id="step-1-text">Connect your ESP32 CYD 2.8" board to your computer via USB using <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.</div>
       </div>
       <div class="step-item">
         <div class="step-num">2</div>
@@ -309,12 +340,16 @@
     <!-- Step 1: Firmware Installation -->
     <div class="action-box">
       <div class="action-title">Step 1: Flash Weather Station Firmware</div>
-      <p class="note">RAM-optimized build with World Clock, Sun/Moon tracking, and enhanced stability.</p>
-      <esp-web-install-button manifest="manifest_compact.json">
-        <button slot="activate" class="btn btn-install">
-          &#9889; Install Firmware
-        </button>
-      </esp-web-install-button>
+      <p class="note" id="firmware-note">RAM-optimized build with World Clock, Sun/Moon tracking, and enhanced stability.</p>
+      
+      <!-- ESP Web Install Button Element (Manifest updates dynamically) -->
+      <div id="install-button-wrapper">
+        <esp-web-install-button id="esp-installer" manifest="manifest_compact.json">
+          <button slot="activate" class="btn btn-install">
+            &#9889; Install Firmware (<span id="btn-board-label">2.8"</span>)
+          </button>
+        </esp-web-install-button>
+      </div>
     </div>
 
     <!-- Step 2: SD Card Icons -->
@@ -330,5 +365,42 @@
       Powered by ESP Web Tools &bull; Web Serial API
     </div>
   </div>
+
+  <script>
+    function switchBoard(version) {
+      // Update Tab Active States
+      const tabs = document.querySelectorAll('.board-tab');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      
+      if (version === '2.8') {
+        tabs[0].classList.add('active');
+        document.getElementById('alert-text').innerHTML = 'Configured for the <strong>ESP32 CYD 2.8-inch</strong> board';
+        document.getElementById('step-1-text').innerHTML = 'Connect your ESP32 CYD 2.8" board to your computer via USB using <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.';
+        document.getElementById('btn-board-label').innerText = '2.8"';
+        
+        // Update manifest for 2.8 inch build
+        updateManifest('manifest_compact.json');
+      } else {
+        tabs[1].classList.add('active');
+        document.getElementById('alert-text').innerHTML = 'Configured for the <strong>ESP32 CYD 3.5-inch</strong> board';
+        document.getElementById('step-1-text').innerHTML = 'Connect your ESP32 CYD 3.5" board to your computer via USB using <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.';
+        document.getElementById('btn-board-label').innerText = '3.5"';
+        
+        // Update manifest for 3.5 inch build (Change filename here if your 3.5" manifest is named differently, e.g., manifest_3.5.json)
+        updateManifest('manifest_3.5.json');
+      }
+    }
+
+    function updateManifest(manifestFile) {
+      const wrapper = document.getElementById('install-button-wrapper');
+      wrapper.innerHTML = `
+        <esp-web-install-button id="esp-installer" manifest="${manifestFile}">
+          <button slot="activate" class="btn btn-install">
+            &#9889; Install Firmware (<span id="btn-board-label">${manifestFile.includes('3.5') ? '3.5"' : '2.8"'}</span>)
+          </button>
+        </esp-web-install-button>
+      `;
+    }
+  </script>
 </body>
 </html>
