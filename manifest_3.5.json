@@ -7,7 +7,7 @@
       "chipFamily": "ESP32",
       "parts": [
         {
-          "path": "Test3_3.5.ino.merged.bin",
+          "path": "Mini_Weather_Station_3.5_CYD.ino.merged.bin",
           "offset": 0
         }
       ]
