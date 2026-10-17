@@ -307,9 +307,14 @@
     </div>
 
     <!-- Hardware Notice -->
-    <div class="hardware-alert">
-      <span>&#9888;&#65039;</span>
-      <span id="alert-text">Configured for the <strong>ESP32 CYD 2.8-inch</strong> board</span>
+    <div class="hardware-alert" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span>&#9888;&#65039;</span>
+        <span id="alert-text">Configured for the <strong>ESP32 CYD 2.8-inch</strong> board</span>
+      </div>
+      <div id="driver-disclaimer" style="font-size: 0.82rem; font-weight: normal; color: #fecaca; opacity: 0.95;">
+        ⚠️ <strong>Driver Warning:</strong> This firmware version is compiled exclusively for the <strong>ST7789</strong> display driver. Flashing it to an incorrect screen type will result in a white/black screen or corrupted graphics.
+      </div>
     </div>
 
     <!-- Key Features -->
@@ -367,6 +372,7 @@
   </div>
 
   <script>
+    <script>
     function switchBoard(version) {
       const tabs = document.querySelectorAll('.board-tab');
       tabs.forEach(tab => tab.classList.remove('active'));
@@ -374,12 +380,14 @@
       if (version === '2.8') {
         tabs[0].classList.add('active');
         document.getElementById('alert-text').innerHTML = 'Configured for the <strong>ESP32 CYD 2.8-inch</strong> board';
+        document.getElementById('driver-disclaimer').innerHTML = '⚠️ <strong>Driver Warning:</strong> This firmware version is compiled exclusively for the <strong>ST7789</strong> display driver. Flashing it to an incorrect screen type will result in a white/black screen or corrupted graphics.';
         document.getElementById('step-1-text').innerHTML = 'Connect your ESP32 CYD 2.8" board to your computer via USB using <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.';
         document.getElementById('btn-board-label').innerText = '2.8"';
         updateManifest('manifest_2.8.json');
       } else {
         tabs[1].classList.add('active');
         document.getElementById('alert-text').innerHTML = 'Configured for the <strong>ESP32 CYD 3.5-inch</strong> board';
+        document.getElementById('driver-disclaimer').innerHTML = '⚠️ <strong>Driver Warning:</strong> This firmware version is compiled exclusively for the <strong>ST7796</strong> display driver. Flashing it to an incorrect screen type will result in a white/black screen or corrupted graphics.';
         document.getElementById('step-1-text').innerHTML = 'Connect your ESP32 CYD 3.5" board to your computer via USB using <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.';
         document.getElementById('btn-board-label').innerText = '3.5"';
         updateManifest('manifest_3.5.json');
