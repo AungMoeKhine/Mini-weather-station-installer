@@ -342,9 +342,9 @@
       <div class="action-title">Step 1: Flash Weather Station Firmware</div>
       <p class="note" id="firmware-note">RAM-optimized build with World Clock, Sun/Moon tracking, and enhanced stability.</p>
       
-      <!-- ESP Web Install Button Element (Manifest updates dynamically) -->
+      <!-- ESP Web Install Button Element -->
       <div id="install-button-wrapper">
-        <esp-web-install-button id="esp-installer" manifest="manifest_compact.json">
+        <esp-web-install-button id="esp-installer" manifest="manifest_2.8.json">
           <button slot="activate" class="btn btn-install">
             &#9889; Install Firmware (<span id="btn-board-label">2.8"</span>)
           </button>
@@ -368,7 +368,6 @@
 
   <script>
     function switchBoard(version) {
-      // Update Tab Active States
       const tabs = document.querySelectorAll('.board-tab');
       tabs.forEach(tab => tab.classList.remove('active'));
       
@@ -377,16 +376,12 @@
         document.getElementById('alert-text').innerHTML = 'Configured for the <strong>ESP32 CYD 2.8-inch</strong> board';
         document.getElementById('step-1-text').innerHTML = 'Connect your ESP32 CYD 2.8" board to your computer via USB using <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.';
         document.getElementById('btn-board-label').innerText = '2.8"';
-        
-        // Update manifest for 2.8 inch build
-        updateManifest('manifest_compact.json');
+        updateManifest('manifest_2.8.json');
       } else {
         tabs[1].classList.add('active');
         document.getElementById('alert-text').innerHTML = 'Configured for the <strong>ESP32 CYD 3.5-inch</strong> board';
         document.getElementById('step-1-text').innerHTML = 'Connect your ESP32 CYD 3.5" board to your computer via USB using <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.';
         document.getElementById('btn-board-label').innerText = '3.5"';
-        
-        // Update manifest for 3.5 inch build (Change filename here if your 3.5" manifest is named differently, e.g., manifest_3.5.json)
         updateManifest('manifest_3.5.json');
       }
     }
