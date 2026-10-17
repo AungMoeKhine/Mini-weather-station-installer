@@ -1,0 +1,16 @@
+{
+  "name": "ESP32 Mini Weather Station (3.5\" CYD)",
+  "version": "1.0",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        {
+          "path": "Test3_3.5.ino.merged.bin",
+          "offset": 0
+        }
+      ]
+    }
+  ]
+}
