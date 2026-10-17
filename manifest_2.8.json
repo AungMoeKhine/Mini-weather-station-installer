@@ -1,1 +1,16 @@
-
+{
+  "name": "ESP32 Mini Weather Station (2.8\" CYD)",
+  "version": "1.0",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        {
+          "path": "Mini_Weather_Station_2.8_CYD.ino.merged.bin",
+          "offset": 0
+        }
+      ]
+    }
+  ]
+}
