@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Smart Interactive Fish Tank</title>
+  <title>AMK Smart Digital Aquarium • Natural Ecosystem</title>
   <style>
     * {
       box-sizing: border-box;
@@ -15,44 +15,44 @@
 
     body {
       margin: 0;
-      padding: 10px;
+      padding: 8px;
       width: 100vw;
-      height: 100vh;
-      height: 100dvh;
-      background: #06090e;
-      background-image: radial-gradient(circle at 50% 10%, #152238 0%, #06090e 80%);
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: #040810;
+      background-image: radial-gradient(circle at 50% 10%, #101c30 0%, #040810 85%);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      overflow-x: hidden;
       color: #f0f6fc;
     }
 
-    /* Responsive Aquarium Cabinet Architecture */
+    /* ─── AQUARIUM ASSEMBLY ─── */
     .aquarium-assembly {
       position: relative;
-      width: 95vw;
-      max-width: 680px;
+      width: 96vw;
+      max-width: 720px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.85));
+      filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.9));
       transition: all 0.3s ease;
     }
 
-    /* 1. TOP HOOD / CANOPY COVER */
+    /* 1. TOP HOOD / CANOPY */
     .tank-canopy {
       position: relative;
       width: 102%;
-      height: clamp(28px, 5vh, 38px);
-      background: linear-gradient(180deg, #2a3441 0%, #171f2a 60%, #0f151e 100%);
+      height: clamp(32px, 5vh, 42px);
+      background: linear-gradient(180deg, #2b3543 0%, #171f2a 60%, #0d131b 100%);
       border: 1.5px solid rgba(255, 255, 255, 0.16);
-      border-bottom: 2px solid #0b0f14;
+      border-bottom: 2px solid #080c12;
       border-radius: 14px 14px 4px 4px;
-      box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.2), 0 6px 16px rgba(0, 0, 0, 0.6);
-      z-index: 10;
+      box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.2), 0 6px 16px rgba(0, 0, 0, 0.7);
+      z-index: 20;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -63,29 +63,51 @@
     .canopy-vents {
       display: flex;
       gap: clamp(3px, 1vw, 6px);
+      align-items: center;
     }
 
     .canopy-vent {
-      width: clamp(16px, 3.5vw, 28px);
+      width: clamp(14px, 3vw, 24px);
       height: 4px;
       background: #090d12;
       border-radius: 2px;
       box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
-    .canopy-led {
+    .audio-toggle-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      color: #94a3b8;
+      font-size: 0.72rem;
+      padding: 2px 7px;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: clamp(0.55rem, 1.6vw, 0.65rem);
+      gap: 4px;
+      margin-left: 6px;
+      transition: all 0.2s;
+    }
+
+    .audio-toggle-btn.active {
+      color: #38bdf8;
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+    }
+
+    .canopy-telemetry {
+      display: flex;
+      align-items: center;
+      gap: clamp(4px, 1.4vw, 10px);
+      font-size: clamp(0.6rem, 1.7vw, 0.72rem);
       font-weight: 700;
       color: #94a3b8;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
     }
 
     .canopy-led-dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: #00f0ff;
       box-shadow: 0 0 8px #00f0ff;
@@ -93,30 +115,58 @@
     }
 
     @keyframes ledPulse {
-
-      0%,
-      100% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0.55;
-      }
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.9); }
     }
 
-    /* 2. MAIN GLASS ENCLOSURE */
+    .telemetry-chip {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 2px 6px;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .telemetry-chip.warn {
+      color: #f59e0b !important;
+      border-color: rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.12);
+    }
+
+    .telemetry-chip.alert {
+      color: #ef4444 !important;
+      border-color: rgba(239, 68, 68, 0.5);
+      background: rgba(239, 68, 68, 0.18);
+      animation: alertBlink 1.2s infinite;
+    }
+
+    @keyframes alertBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* 2. MAIN TANK ENCLOSURE */
     .tank-panel {
       position: relative;
       width: 100%;
-      height: clamp(220px, 56vh, 480px);
+      height: clamp(230px, 55vh, 460px);
       border-left: 3px solid rgba(255, 255, 255, 0.22);
       border-right: 3px solid rgba(255, 255, 255, 0.22);
-      background: radial-gradient(ellipse at 50% 20%, #0d1a29 0%, #06090e 100%);
+      background: radial-gradient(ellipse at 50% 20%, #0c1828 0%, #05080e 100%);
       box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.95);
       overflow: hidden;
       cursor: crosshair;
       z-index: 5;
     }
+
+    /* Dynamic Tool Cursors */
+    .tank-panel.tool-feed { cursor: crosshair; }
+    .tank-panel.tool-siphon { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2v14'/%3E%3Cpath d='M8 12l4 4 4-4'/%3E%3Ccircle cx='12' cy='19' r='3' fill='%2338bdf8' opacity='0.4'/%3E%3C/svg%3E") 14 26, pointer; }
+    .tank-panel.tool-sponge { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='%2310b981' stroke='%23ffffff' stroke-width='1.5'%3E%3Crect x='3' y='5' width='18' height='14' rx='4'/%3E%3Ccircle cx='7' cy='10' r='1.2' fill='%23064e3b'/%3E%3Ccircle cx='12' cy='14' r='1.5' fill='%23064e3b'/%3E%3Ccircle cx='16' cy='9' r='1.1' fill='%23064e3b'/%3E%3C/svg%3E") 14 14, pointer; }
+    .tank-panel.tool-shears { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%23f59e0b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Ccircle cx='6' cy='18' r='3'/%3E%3Cline x1='20' y1='4' x2='8.12' y2='15.88'/%3E%3Cline x1='14.47' y1='14.48' x2='20' y2='20'/%3E%3Cline x1='8.12' y1='8.12' x2='12' y2='12'/%3E%3C/svg%3E") 6 6, pointer; }
 
     .aquarium-light-fixture {
       position: absolute;
@@ -127,8 +177,9 @@
       background: linear-gradient(180deg, #e0f2fe 0%, #38bdf8 100%);
       border-radius: 0 0 8px 8px;
       box-shadow: 0 2px 25px 8px rgba(56, 189, 248, 0.75), 0 0 60px 20px rgba(0, 210, 255, 0.4);
-      z-index: 9;
+      z-index: 10;
       pointer-events: none;
+      transition: all 0.8s ease;
     }
 
     .tank-inner {
@@ -139,6 +190,7 @@
       height: 94%;
       overflow: hidden;
       z-index: 1;
+      transition: transform 0.6s ease;
     }
 
     .tank-fill {
@@ -153,6 +205,36 @@
       transition: background 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease;
     }
 
+    /* Water Clarity Murk Overlay */
+    .tank-water-murk {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(138, 115, 36, 0.7) 0%, rgba(30, 40, 15, 0.9) 100%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 2;
+      transition: opacity 1.2s ease;
+    }
+
+    /* Algae Spots on Front Glass */
+    .algae-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 12;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .algae-patch {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.85) 0%, rgba(5, 150, 105, 0.45) 60%, transparent 85%);
+      filter: blur(2.5px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    /* Lighting Spectrum Modes */
     .light-sunset .tank-fill {
       background: linear-gradient(180deg, rgba(255, 140, 50, 0.95) 0%, #d946ef 50%, #1e1b4b 100%);
       border-top: 2px solid rgba(254, 215, 170, 0.9);
@@ -164,10 +246,7 @@
       box-shadow: 0 2px 25px 8px rgba(249, 115, 22, 0.75), 0 0 60px 20px rgba(234, 88, 12, 0.4);
     }
 
-    .light-sunset .canopy-led-dot {
-      background: #f97316;
-      box-shadow: 0 0 8px #f97316;
-    }
+    .light-sunset .canopy-led-dot { background: #f97316; box-shadow: 0 0 8px #f97316; }
 
     .light-moonlight .tank-fill {
       background: linear-gradient(180deg, rgba(30, 58, 138, 0.9) 0%, #0f172a 65%, #020617 100%);
@@ -180,14 +259,8 @@
       box-shadow: 0 2px 20px 6px rgba(37, 99, 235, 0.6), 0 0 50px 15px rgba(29, 78, 216, 0.3);
     }
 
-    .light-moonlight .sun-rays {
-      opacity: 0.15 !important;
-    }
-
-    .light-moonlight .canopy-led-dot {
-      background: #38bdf8;
-      box-shadow: 0 0 8px #38bdf8;
-    }
+    .light-moonlight .sun-rays { opacity: 0.15 !important; }
+    .light-moonlight .canopy-led-dot { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
 
     .light-off .tank-fill {
       background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, #090d16 65%, #020408 100%);
@@ -195,18 +268,12 @@
       box-shadow: none;
     }
 
-    .light-off .aquarium-light-fixture {
-      background: #334155;
-      box-shadow: none;
-    }
-
-    .light-off .sun-rays {
-      opacity: 0 !important;
-    }
-
-    .light-off .canopy-led-dot {
-      background: #64748b;
-      box-shadow: none;
+    .light-off .aquarium-light-fixture { background: #334155; box-shadow: none; }
+    .light-off .sun-rays { opacity: 0 !important; }
+    .light-off .canopy-led-dot { background: #64748b; box-shadow: none; }
+    .light-off .fish-sprite {
+      filter: brightness(0.76) contrast(1.08) drop-shadow(0 0 6px rgba(56, 189, 248, 0.16));
+      transition: filter 1s ease;
     }
 
     .sun-rays {
@@ -224,35 +291,29 @@
     }
 
     @keyframes causticShimmer {
-      0% {
-        opacity: 0.65;
-        transform: scaleX(1);
-      }
-
-      100% {
-        opacity: 1;
-        transform: scaleX(1.05);
-      }
+      0% { opacity: 0.65; transform: scaleX(1); }
+      100% { opacity: 1; transform: scaleX(1.05); }
     }
 
-    /* 3. BASEMENT / FURNITURE PEDESTAL STAND */
+    /* 3. BASEMENT STAND */
     .tank-stand {
       position: relative;
       width: 104%;
-      height: clamp(24px, 4vh, 34px);
+      height: clamp(26px, 4.5vh, 36px);
       background: linear-gradient(180deg, #182029 0%, #0d1217 60%, #06090c 100%);
       border: 1.5px solid rgba(255, 255, 255, 0.14);
       border-top: 2px solid rgba(255, 255, 255, 0.22);
       border-radius: 4px 4px 14px 14px;
       box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.15), 0 12px 25px rgba(0, 0, 0, 0.85);
-      z-index: 10;
+      z-index: 20;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      padding: 0 16px;
     }
 
     .tank-stand-badge {
-      font-size: clamp(0.5rem, 1.4vw, 0.62rem);
+      font-size: clamp(0.52rem, 1.4vw, 0.65rem);
       font-weight: 800;
       color: #64748b;
       letter-spacing: 2px;
@@ -264,39 +325,50 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 16px;
+      height: 18px;
       background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
       border-top: 1px solid rgba(255, 255, 255, 0.14);
       z-index: 4;
     }
 
+    /* Tank Equipment */
     .equip-heater {
       position: absolute;
       top: 15px;
-      left: clamp(40px, 15%, 110px);
-      width: 14px;
+      left: clamp(38px, 14%, 90px);
+      width: 16px;
       height: clamp(100px, 25vh, 150px);
-      pointer-events: none;
-      z-index: 2;
-      opacity: 0.85;
+      pointer-events: auto;
+      cursor: pointer;
+      z-index: 3;
+      opacity: 0.9;
       filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.6));
+      transition: filter 0.3s;
+    }
+
+    .equip-heater:hover {
+      filter: drop-shadow(0 0 8px #f59e0b);
     }
 
     .heater-element {
       animation: heaterGlow 4s ease-in-out infinite alternate;
+      transition: stroke 0.5s;
+    }
+
+    .heater-off .heater-element {
+      stroke: #475569 !important;
+      animation: none !important;
+      opacity: 0.35 !important;
+    }
+
+    .heater-off circle.heater-indicator {
+      fill: #475569 !important;
+      filter: none !important;
     }
 
     @keyframes heaterGlow {
-      0% {
-        stroke: #d97706;
-        opacity: 0.55;
-      }
-
-      100% {
-        stroke: #f59e0b;
-        opacity: 0.95;
-        filter: drop-shadow(0 0 3px #f59e0b);
-      }
+      0% { stroke: #d97706; opacity: 0.55; }
+      100% { stroke: #f59e0b; opacity: 0.95; filter: drop-shadow(0 0 3px #f59e0b); }
     }
 
     .equip-airstone {
@@ -305,7 +377,8 @@
       right: clamp(40px, 15%, 95px);
       width: 22px;
       height: 32px;
-      pointer-events: none;
+      pointer-events: auto;
+      cursor: pointer;
       z-index: 3;
     }
 
@@ -343,6 +416,7 @@
       pointer-events: none;
       z-index: 3;
       filter: drop-shadow(0 3px 8px rgba(0, 20, 10, 0.5));
+      transition: transform 0.5s ease;
     }
 
     .plant-left {
@@ -362,136 +436,56 @@
       will-change: transform;
     }
 
-    .l-leaf-1 {
-      animation: leafWaveA 6.8s ease-in-out infinite alternate;
-    }
+    .l-leaf-1 { animation: leafWaveA 6.8s ease-in-out infinite alternate; }
+    .l-leaf-2 { animation: leafWaveB 5.4s ease-in-out infinite alternate 0.6s; }
+    .l-leaf-3 { animation: leafWaveC 7.2s ease-in-out infinite alternate 1.2s; }
+    .l-leaf-4 { animation: leafWaveB 6.1s ease-in-out infinite alternate 1.8s; }
+    .l-leaf-5 { animation: leafWaveA 4.8s ease-in-out infinite alternate 0.3s; }
 
-    .l-leaf-2 {
-      animation: leafWaveB 5.4s ease-in-out infinite alternate 0.6s;
-    }
-
-    .l-leaf-3 {
-      animation: leafWaveC 7.2s ease-in-out infinite alternate 1.2s;
-    }
-
-    .l-leaf-4 {
-      animation: leafWaveB 6.1s ease-in-out infinite alternate 1.8s;
-    }
-
-    .l-leaf-5 {
-      animation: leafWaveA 4.8s ease-in-out infinite alternate 0.3s;
-    }
-
-    .r-leaf-1 {
-      animation: fernWaveA 6.3s ease-in-out infinite alternate;
-    }
-
-    .r-leaf-2 {
-      animation: fernWaveB 5.1s ease-in-out infinite alternate 0.8s;
-    }
-
-    .r-leaf-3 {
-      animation: fernWaveA 7.0s ease-in-out infinite alternate 1.5s;
-    }
-
-    .r-leaf-4 {
-      animation: fernWaveB 5.7s ease-in-out infinite alternate 0.4s;
-    }
+    .r-leaf-1 { animation: fernWaveA 6.3s ease-in-out infinite alternate; }
+    .r-leaf-2 { animation: fernWaveB 5.1s ease-in-out infinite alternate 0.8s; }
+    .r-leaf-3 { animation: fernWaveA 7.0s ease-in-out infinite alternate 1.5s; }
+    .r-leaf-4 { animation: fernWaveB 5.7s ease-in-out infinite alternate 0.4s; }
 
     @keyframes leafWaveA {
-      0% {
-        transform: rotate(0deg) skewX(0deg);
-      }
-
-      30% {
-        transform: rotate(2.4deg) skewX(2.8deg) scaleY(1.01);
-      }
-
-      65% {
-        transform: rotate(-1.8deg) skewX(-2.2deg) scaleY(0.99);
-      }
-
-      100% {
-        transform: rotate(3.2deg) skewX(3.5deg) scaleY(1.02);
-      }
+      0% { transform: rotate(0deg) skewX(0deg); }
+      30% { transform: rotate(2.4deg) skewX(2.8deg) scaleY(1.01); }
+      65% { transform: rotate(-1.8deg) skewX(-2.2deg) scaleY(0.99); }
+      100% { transform: rotate(3.2deg) skewX(3.5deg) scaleY(1.02); }
     }
 
     @keyframes leafWaveB {
-      0% {
-        transform: rotate(0deg) skewX(0deg);
-      }
-
-      35% {
-        transform: rotate(-2.8deg) skewX(-3.2deg);
-      }
-
-      75% {
-        transform: rotate(2.0deg) skewX(2.4deg);
-      }
-
-      100% {
-        transform: rotate(-3.5deg) skewX(-4.0deg);
-      }
+      0% { transform: rotate(0deg) skewX(0deg); }
+      35% { transform: rotate(-2.8deg) skewX(-3.2deg); }
+      75% { transform: rotate(2.0deg) skewX(2.4deg); }
+      100% { transform: rotate(-3.5deg) skewX(-4.0deg); }
     }
 
     @keyframes leafWaveC {
-      0% {
-        transform: rotate(0deg) skewX(0deg);
-      }
-
-      40% {
-        transform: rotate(3.5deg) skewX(3.8deg);
-      }
-
-      70% {
-        transform: rotate(-2.2deg) skewX(-2.5deg);
-      }
-
-      100% {
-        transform: rotate(2.2deg) skewX(2.5deg);
-      }
+      0% { transform: rotate(0deg) skewX(0deg); }
+      40% { transform: rotate(3.5deg) skewX(3.8deg); }
+      70% { transform: rotate(-2.2deg) skewX(-2.5deg); }
+      100% { transform: rotate(2.2deg) skewX(2.5deg); }
     }
 
     @keyframes fernWaveA {
-      0% {
-        transform: rotate(0deg) skewX(0deg);
-      }
-
-      32% {
-        transform: rotate(-2.5deg) skewX(-2.8deg) scaleY(1.01);
-      }
-
-      72% {
-        transform: rotate(1.8deg) skewX(2.0deg) scaleY(0.99);
-      }
-
-      100% {
-        transform: rotate(-3.2deg) skewX(-3.6deg);
-      }
+      0% { transform: rotate(0deg) skewX(0deg); }
+      32% { transform: rotate(-2.5deg) skewX(-2.8deg) scaleY(1.01); }
+      72% { transform: rotate(1.8deg) skewX(2.0deg) scaleY(0.99); }
+      100% { transform: rotate(-3.2deg) skewX(-3.6deg); }
     }
 
     @keyframes fernWaveB {
-      0% {
-        transform: rotate(0deg) skewX(0deg);
-      }
-
-      38% {
-        transform: rotate(2.8deg) skewX(3.0deg);
-      }
-
-      75% {
-        transform: rotate(-1.5deg) skewX(-1.8deg);
-      }
-
-      100% {
-        transform: rotate(3.4deg) skewX(3.8deg);
-      }
+      0% { transform: rotate(0deg) skewX(0deg); }
+      38% { transform: rotate(2.8deg) skewX(3.0deg); }
+      75% { transform: rotate(-1.5deg) skewX(-1.8deg); }
+      100% { transform: rotate(3.4deg) skewX(3.8deg); }
     }
 
     .tank-glaze {
       position: absolute;
       inset: 0;
-      z-index: 8;
+      z-index: 15;
       pointer-events: none;
       background: linear-gradient(115deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0.04) 100%);
     }
@@ -509,6 +503,16 @@
       filter: drop-shadow(0 0 8px #00d2ff);
     }
 
+    .fish-sprite.hypoxic {
+      animation: hypoxicWobble 0.6s infinite alternate ease-in-out;
+    }
+
+    @keyframes hypoxicWobble {
+      0% { transform: rotate(-8deg); }
+      100% { transform: rotate(8deg); }
+    }
+
+    /* Pellets & Organic Waste */
     .food-pellet {
       position: absolute;
       width: 6px;
@@ -518,6 +522,29 @@
       box-shadow: 0 0 6px rgba(255, 159, 28, 0.8);
       z-index: 3;
       pointer-events: none;
+    }
+
+    .food-pellet.decaying {
+      background: #854d0e;
+      box-shadow: 0 0 5px rgba(133, 77, 14, 0.6);
+      filter: blur(0.5px);
+    }
+
+    .fish-poop {
+      position: absolute;
+      width: 7px;
+      height: 4px;
+      border-radius: 4px;
+      background: #451a03;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+      z-index: 4;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.3s;
+    }
+
+    .fish-poop:hover {
+      transform: scale(1.3);
+      filter: drop-shadow(0 0 4px #f59e0b);
     }
 
     .tank-bubble {
@@ -531,22 +558,203 @@
       z-index: 3;
     }
 
+    /* Floating Suction Particle Effect for Siphon */
+    .leaf-clip {
+      position: absolute;
+      width: 7px;
+      height: 13px;
+      background: linear-gradient(135deg, #34d399 0%, #059669 60%, #064e3b 100%);
+      border-radius: 70% 10% 70% 10%;
+      pointer-events: none;
+      z-index: 5;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.4));
+    }
+
+    .suction-fx {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px dashed #38bdf8;
+      pointer-events: none;
+      z-index: 10;
+      animation: suctionSpin 0.5s linear forwards;
+    }
+
+    @keyframes suctionSpin {
+      0% { transform: scale(1.5) rotate(0deg); opacity: 0.9; }
+      100% { transform: scale(0.2) rotate(180deg); opacity: 0; }
+    }
+
+    /* ─── TANK MAINTENANCE TOOLBAR ─── */
+    .maintenance-dock {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      max-width: 680px;
+      width: 100%;
+      z-index: 20;
+    }
+
+    .tool-group {
+      display: flex;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 12px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .tool-btn {
+      padding: 6px 12px;
+      font-size: clamp(0.72rem, 1.9vw, 0.82rem);
+      font-weight: 700;
+      color: #94a3b8;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .tool-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .tool-btn.active {
+      color: #00d2ff;
+      background: rgba(0, 210, 255, 0.16);
+      border-color: rgba(0, 210, 255, 0.4);
+      box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+    }
+
+    .action-btn {
+      padding: 6px 13px;
+      font-size: clamp(0.72rem, 1.9vw, 0.82rem);
+      font-weight: 700;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      white-space: nowrap;
+    }
+
+    .action-btn:hover {
+      background: rgba(0, 210, 255, 0.25);
+      border-color: #00d2ff;
+      transform: translateY(-2px);
+    }
+
+    .action-btn:active {
+      transform: scale(0.96);
+    }
+
+    .action-btn.active {
+      border-color: #00d2ff;
+      background: rgba(0, 210, 255, 0.25);
+    }
+
+
+    /* Persistent Equipment & Light Toggle Button Styles */
+    .action-btn.heater-btn-on {
+      background: rgba(234, 88, 12, 0.28) !important;
+      border-color: #f97316 !important;
+      color: #ffedd5 !important;
+      box-shadow: 0 0 14px rgba(249, 115, 22, 0.5), inset 0 0 8px rgba(234, 88, 12, 0.25) !important;
+    }
+    .action-btn.heater-btn-off {
+      background: rgba(15, 23, 42, 0.65) !important;
+      border-color: rgba(100, 116, 139, 0.35) !important;
+      color: #64748b !important;
+      box-shadow: none !important;
+      opacity: 0.65;
+    }
+
+    .action-btn.oxygen-btn-on {
+      background: rgba(6, 182, 212, 0.28) !important;
+      border-color: #06b6d4 !important;
+      color: #cffafe !important;
+      box-shadow: 0 0 14px rgba(6, 182, 212, 0.5), inset 0 0 8px rgba(6, 182, 212, 0.25) !important;
+    }
+    .action-btn.oxygen-btn-off {
+      background: rgba(15, 23, 42, 0.65) !important;
+      border-color: rgba(100, 116, 139, 0.35) !important;
+      color: #64748b !important;
+      box-shadow: none !important;
+      opacity: 0.65;
+    }
+
+    .action-btn.light-btn-daylight {
+      background: rgba(245, 158, 11, 0.26) !important;
+      border-color: #fbbf24 !important;
+      color: #fef3c7 !important;
+      box-shadow: 0 0 14px rgba(251, 191, 36, 0.5), inset 0 0 8px rgba(245, 158, 11, 0.25) !important;
+    }
+    .action-btn.light-btn-sunset {
+      background: rgba(234, 88, 12, 0.28) !important;
+      border-color: #f97316 !important;
+      color: #ffedd5 !important;
+      box-shadow: 0 0 14px rgba(234, 88, 12, 0.5), inset 0 0 8px rgba(234, 88, 12, 0.25) !important;
+    }
+    .action-btn.light-btn-moonlight {
+      background: rgba(99, 102, 241, 0.28) !important;
+      border-color: #818cf8 !important;
+      color: #e0e7ff !important;
+      box-shadow: 0 0 14px rgba(99, 102, 241, 0.5), inset 0 0 8px rgba(99, 102, 241, 0.25) !important;
+    }
+    .action-btn.light-btn-off {
+      background: rgba(15, 23, 42, 0.65) !important;
+      border-color: rgba(100, 116, 139, 0.35) !important;
+      color: #64748b !important;
+      box-shadow: none !important;
+      opacity: 0.65;
+    }
+
+    /* Status Bar & Hints */
+    .status-panel {
+      margin-top: 8px;
+      font-size: clamp(0.68rem, 1.7vw, 0.78rem);
+      color: #94a3b8;
+      letter-spacing: 0.3px;
+      text-align: center;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      max-width: 650px;
+      width: 90%;
+    }
+
     /* Modal Dropdown */
     .species-dropdown {
       position: absolute;
-      bottom: 75px;
+      bottom: 80px;
       left: 50%;
       transform: translateX(-50%) translateY(12px) scale(0.96);
       width: 90vw;
-      max-width: 410px;
-      background: rgba(15, 23, 42, 0.94);
+      max-width: 420px;
+      background: rgba(15, 23, 42, 0.95);
       border: 1px solid rgba(0, 210, 255, 0.35);
       border-radius: 18px;
       padding: 14px 16px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 210, 255, 0.15);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 20px rgba(0, 210, 255, 0.15);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      z-index: 30;
+      z-index: 40;
       opacity: 0;
       pointer-events: none;
       transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
@@ -667,77 +875,15 @@
       text-align: center;
     }
 
-    .controls {
-      margin-top: clamp(8px, 2vh, 16px);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: clamp(6px, 1.5vw, 10px);
-      max-width: 640px;
-      width: 100%;
-      z-index: 10;
-    }
-
-    .btn {
-      padding: clamp(6px, 1.4vh, 9px) clamp(10px, 2.5vw, 16px);
-      font-size: clamp(0.72rem, 2vw, 0.85rem);
-      font-weight: 700;
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      white-space: nowrap;
-    }
-
-    .btn:hover {
-      background: rgba(0, 210, 255, 0.25);
-      border-color: #00d2ff;
-      transform: translateY(-2px);
-    }
-
-    .btn:active {
-      transform: scale(0.96);
-    }
-
-    .stats-bar {
-      margin-top: 6px;
-      font-size: clamp(0.68rem, 1.8vw, 0.78rem);
-      color: #8b949e;
-      letter-spacing: 0.3px;
-      text-align: center;
-      padding: 0 10px;
-    }
-
-    @media (max-height: 520px) and (orientation: landscape) {
-      body {
-        padding: 4px;
-        justify-content: flex-start;
-      }
-
-      .aquarium-assembly {
-        width: 82vw;
-      }
-
-      .tank-panel {
-        height: 58vh;
-      }
-
-      .controls {
-        margin-top: 4px;
-        gap: 4px;
-      }
-
-      .btn {
-        padding: 4px 8px;
-        font-size: 0.7rem;
-      }
-
-      .stats-bar {
-        display: none;
-      }
+    /* Water Change Animation Overlay */
+    .water-drain-fx {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.15);
+      pointer-events: none;
+      z-index: 18;
+      opacity: 0;
+      transition: opacity 0.5s ease;
     }
   </style>
 </head>
@@ -751,26 +897,43 @@
         <div class="canopy-vent"></div>
         <div class="canopy-vent"></div>
         <div class="canopy-vent"></div>
+        <button class="audio-toggle-btn active" id="audioToggleBtn" onclick="toggleAudio()" title="Sound Effects">
+          <span id="audioIcon">🔊</span>
+        </button>
       </div>
-      <div class="canopy-led" onclick="cycleLightMode()" style="cursor:pointer;"
-        title="Tap to switch lighting spectrum">
-        <div class="canopy-led-dot" id="canopyLedDot"></div>
-        <span id="lightModeLabel">SMART LED: DAYLIGHT</span>
-        <span style="color:rgba(255,255,255,0.25); margin: 0 4px;">|</span>
-        <span id="tempDisplay" style="color: #38bdf8; font-variant-numeric: tabular-nums;">25.4°C</span>
+
+      <!-- Real-Time Telemetry Dashboard -->
+      <div class="canopy-telemetry">
+        <div class="canopy-led-dot" id="canopyLedDot" onclick="cycleLightMode()" style="cursor:pointer;" title="LED Spectrum Mode"></div>
+        <div class="telemetry-chip" id="chipTemp" title="Water Temperature (Target: 25.4°C)">
+          <span>🌡️</span><span id="valTemp">25.4°C</span>
+        </div>
+        <div class="telemetry-chip" id="chipO2" title="Dissolved Oxygen (O2)">
+          <span>💨</span><span id="valO2">98%</span>
+        </div>
+        <div class="telemetry-chip" id="chipClarity" title="Water Clarity & Purity">
+          <span>💧</span><span id="valClarity">100%</span>
+        </div>
+        <div class="telemetry-chip" id="chipAlgae" title="Glass Algae Film">
+          <span>🌿</span><span id="valAlgae">0%</span>
+        </div>
+        <div class="telemetry-chip" id="chipPace" onclick="cyclePacingMode()" style="cursor:pointer; border-color: rgba(0, 210, 255, 0.35);" title="Simulation Pace: Click to toggle (Real-Time Days / Relaxed Hours / Fast Demo)">
+          <span>⏱️</span><span id="valPace">1x Days</span>
+        </div>
       </div>
     </div>
 
     <!-- 2. GLASS AQUARIUM TANK -->
-    <div class="tank-panel" id="tankPanel">
+    <div class="tank-panel tool-feed" id="tankPanel">
       <div class="aquarium-light-fixture"></div>
 
-      <div class="tank-inner">
-        <div class="tank-fill"></div>
+      <div class="tank-inner" id="tankInner">
+        <div class="tank-fill" id="tankFill"></div>
+        <div class="tank-water-murk" id="waterMurk"></div>
         <div class="sun-rays"></div>
 
         <!-- Left Plant -->
-        <svg class="decor-plant plant-left" viewBox="0 0 120 260" preserveAspectRatio="xMidYMax meet"
+        <svg class="decor-plant plant-left" id="plantLeft" viewBox="0 0 120 260" preserveAspectRatio="xMidYMax meet"
           xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="leafGrad1" x1="0" y1="1" x2="0" y2="0">
@@ -802,7 +965,7 @@
         </svg>
 
         <!-- Right Plant -->
-        <svg class="decor-plant plant-right" viewBox="0 0 110 240" preserveAspectRatio="xMidYMax meet"
+        <svg class="decor-plant plant-right" id="plantRight" viewBox="0 0 110 240" preserveAspectRatio="xMidYMax meet"
           xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="fernGrad1" x1="0" y1="1" x2="0" y2="0">
@@ -845,33 +1008,61 @@
           <ellipse cx="62" cy="18" rx="22" ry="3.5" fill="#10b981" opacity="0.45" />
         </svg>
 
-        <!-- Heater -->
-        <svg class="equip-heater" viewBox="0 0 20 180" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="0" width="8" height="155" rx="4" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.4)"
-            stroke-width="1.2" />
-          <line class="heater-element" x1="10" y1="35" x2="10" y2="135" stroke="#f59e0b" stroke-width="2.2"
-            stroke-dasharray="3,3" opacity="0.8" />
+        <!-- Submersible Heater (Click to toggle) -->
+        <svg class="equip-heater" id="heaterFixture" onclick="toggleHeater()" viewBox="0 0 20 180" xmlns="http://www.w3.org/2000/svg" title="Click to Toggle Heater">
+          <rect x="6" y="0" width="8" height="155" rx="4" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" />
+          <line class="heater-element" id="heaterCoil" x1="10" y1="35" x2="10" y2="135" stroke="#f59e0b" stroke-width="2.2" stroke-dasharray="3,3" opacity="0.8" />
           <rect x="4" y="0" width="12" height="22" rx="3" fill="#1e293b" />
-          <circle cx="10" cy="14" r="2.5" fill="#ef4444" filter="drop-shadow(0 0 3px #ef4444)" />
+          <circle class="heater-indicator" id="heaterDot" cx="10" cy="14" r="2.5" fill="#ef4444" filter="drop-shadow(0 0 3px #ef4444)" />
         </svg>
 
-        <!-- Air Diffuser -->
-        <svg class="equip-airstone" id="airstoneFixture" viewBox="0 0 30 50" xmlns="http://www.w3.org/2000/svg">
+        <!-- Air Diffuser Stone (Click to toggle) -->
+        <svg class="equip-airstone" id="airstoneFixture" onclick="toggleAirPump()" viewBox="0 0 30 50" xmlns="http://www.w3.org/2000/svg" title="Click to Toggle Oxygen">
           <line x1="8" y1="0" x2="8" y2="35" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" />
-          <path d="M 8 35 L 8 42 L 22 42 L 22 35 Z" fill="rgba(255,255,255,0.3)" stroke="rgba(255,255,255,0.7)"
-            stroke-width="1.2" />
+          <path d="M 8 35 L 8 42 L 22 42 L 22 35 Z" fill="rgba(255,255,255,0.3)" stroke="rgba(255,255,255,0.7)" stroke-width="1.2" />
           <rect x="7" y="32" width="16" height="4" rx="1.5" fill="#f8fafc" stroke="#94a3b8" stroke-width="0.8" />
         </svg>
 
         <div class="tank-substrate"></div>
       </div>
+
+      <!-- Algae Front Layer -->
+      <div class="algae-overlay" id="algaeOverlay"></div>
+
+      <!-- Water Change Visual FX -->
+      <div class="water-drain-fx" id="waterDrainFx"></div>
+
       <div class="tank-glaze"></div>
     </div>
 
-    <!-- 3. BASEMENT / PEDESTAL STAND -->
+    <!-- 3. BASEMENT STAND -->
     <div class="tank-stand">
       <div class="tank-stand-badge">AMK AQUA DESIGN • 60P RIMLESS</div>
+      <div style="font-size: 0.65rem; color: #475569; font-weight: 700;">DIGITAL VIRTUAL ECOSYSTEM</div>
     </div>
+  </div>
+
+  <!-- TANK MAINTENANCE TOOLBAR -->
+  <div class="maintenance-dock">
+    <div class="tool-group">
+      <button class="tool-btn active" id="toolFeed" onclick="selectTool('feed')">🍞 Feed</button>
+      <button class="tool-btn" id="toolSiphon" onclick="selectTool('siphon')">🧹 Siphon</button>
+      <button class="tool-btn" id="toolSponge" onclick="selectTool('sponge')">🧽 Scraper</button>
+      <button class="tool-btn" id="toolShears" onclick="selectTool('shears')">✂️ Prune</button>
+    </div>
+
+    <div style="display: flex; gap: 6px;">
+      <button class="action-btn" id="waterChangeBtn" onclick="performWaterChange()" title="Perform 30% Partial Water Change">🚰 Water Change</button>
+      <button class="action-btn" id="heaterToggleBtn" onclick="toggleHeater()">🔥 Heater: ON</button>
+      <button class="action-btn active" id="airPumpBtn" onclick="toggleAirPump()">💨 Oxygen: ON</button>
+      <button class="action-btn" id="lightModeBtn" onclick="cycleLightMode()">💡 Light</button>
+      <button class="action-btn" id="speciesMenuBtn" onclick="toggleSpeciesMenu()">🐟 Stock ▾</button>
+    </div>
+  </div>
+
+  <!-- Dynamic Status & Ecological Hint Bar -->
+  <div class="status-panel" id="statusPanel">
+    Tank Status: Crystal Clear. All fish are healthy and content.
   </div>
 
   <!-- Species & Population Dropdown Modal -->
@@ -883,71 +1074,358 @@
     <div class="species-list" id="speciesList"></div>
   </div>
 
-  <div class="controls">
-    <button class="btn" id="speciesMenuBtn" onclick="toggleSpeciesMenu()">🐟 Fish Stock ▾</button>
-    <button class="btn" onclick="dropFoodAtRandom()">🍞 Drop Food Flakes</button>
-    <button class="btn" onclick="scareAllFish()">⚡ Tap Glass</button>
-    <button class="btn" id="airPumpBtn" onclick="toggleAirPump()">💨 Oxygen: ON</button>
-    <button class="btn" id="lightModeBtn" onclick="cycleLightMode()">💡 Light: Daylight</button>
-  </div>
-
-  <div class="stats-bar" id="statsBar">Tap inside the tank to drop food or tap on fish to startle them!</div>
-
   <script>
     const tank = document.getElementById('tankPanel');
+    const tankInner = document.getElementById('tankInner');
+    const waterMurkEl = document.getElementById('waterMurk');
+    const algaeOverlay = document.getElementById('algaeOverlay');
+    const statusPanel = document.getElementById('statusPanel');
+
+    // ─── TANK ECOLOGICAL PARAMETERS (PERSISTENT & REAL-TIME PACED) ───
+    // Pacing Modes: 1.0 = Real-Time (Days), 24.0 = Relaxed (Hours), 480.0 = Fast Demo (Mins)
+    const PACING_MODES = [
+      { id: 'realtime', label: '1x Days', speed: 1.0, desc: 'Real-Time Pace: water clarity and algae evolve naturally over days' },
+      { id: 'relaxed', label: '24x Hours', speed: 24.0, desc: 'Relaxed Pace: 1 hour = 1 tank day' },
+      { id: 'demo', label: '480x Demo', speed: 480.0, desc: 'Fast Demo: quick parameter demonstration' }
+    ];
+    let pacingIndex = parseInt(localStorage.getItem('aqua_pace_index') || '0', 10);
+    if (isNaN(pacingIndex) || pacingIndex < 0 || pacingIndex >= PACING_MODES.length) pacingIndex = 0;
+
+    let currentTemp = parseFloat(localStorage.getItem('aqua_temp') || '25.4');
+    let currentO2 = parseFloat(localStorage.getItem('aqua_o2') || '98.0');
+    let currentClarity = parseFloat(localStorage.getItem('aqua_clarity') || '100.0');
+    let currentAlgae = parseFloat(localStorage.getItem('aqua_algae') || '0.0');
+
+    let heaterActive = localStorage.getItem('aqua_heater') !== 'false';
+    let airPumpActive = localStorage.getItem('aqua_airpump') !== 'false';
+    let currentTool = 'feed';     // 'feed' | 'siphon' | 'sponge' | 'shears'
+    let soundEnabled = localStorage.getItem('aqua_sound') !== 'false';
+
     let foodList = [];
     let fishList = [];
+    let poopList = [];
+    let microBubbleList = [];
+    let algaePatches = [];
+    let lastSimTimestamp = Date.now();
+    let plantGrowthLeft = parseFloat(localStorage.getItem('aqua_plant_left') || '1.0');
+    let plantGrowthRight = parseFloat(localStorage.getItem('aqua_plant_right') || '1.0');
 
-    // Distinct Fish Models with Full Fin Anatomy
+    // ─── WEB AUDIO PROCEDURAL SYNTHESIZER (Zero external files) ───
+    let audioCtx = null;
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        initAudio();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'feed') {
+          // Soft water plop / drop
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(520, now);
+          osc.frequency.exponentialRampToValueAtTime(260, now + 0.12);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.start(now);
+          osc.stop(now + 0.12);
+        } else if (type === 'eat') {
+          // Tiny feeding bite nibble
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(800, now);
+          osc.frequency.setValueAtTime(1200, now + 0.04);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        } else if (type === 'siphon') {
+          // Low water suction gurgle
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(180, now);
+          osc.frequency.exponentialRampToValueAtTime(110, now + 0.2);
+          gain.gain.setValueAtTime(0.25, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        } else if (type === 'scrape') {
+          // Glass squeegee wipe noise
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.linearRampToValueAtTime(450, now + 0.15);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          osc.start(now);
+          osc.stop(now + 0.15);
+        } else if (type === 'snip') {
+          // Sharp plant scissors snip
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(1400, now);
+          osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        } else if (type === 'water') {
+          // Water refill rush
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(260, now);
+          osc.frequency.linearRampToValueAtTime(380, now + 0.4);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+          osc.start(now);
+          osc.stop(now + 0.4);
+        }
+      } catch (e) { }
+    }
+
+    function toggleAudio() {
+      soundEnabled = !soundEnabled;
+      const btn = document.getElementById('audioToggleBtn');
+      const icon = document.getElementById('audioIcon');
+      if (soundEnabled) {
+        btn.classList.add('active');
+        icon.innerText = "🔊";
+        playSound('feed');
+      } else {
+        btn.classList.remove('active');
+        icon.innerText = "🔇";
+      }
+    }
+
+    // Distinct Fish Models with Full Fin Anatomy (Preserved from user original)
     const FISH_MODELS = [
-      // 0. Classic Goldfish
+      // 0. Golden Fantail (Photo-Realistic Multi-Layered Silk Veil Tail)
       {
         type: 'goldfish',
-        width: 38,
-        height: 24,
-        speedMin: 0.0035,
-        speedMax: 0.0065,
-        svg: `
-          <svg viewBox="0 0 50 30" width="100%" height="100%">
-            <polygon points="38,15 48,5 45,15 48,25" fill="#ffb703"/>
-            <ellipse cx="22" cy="15" rx="16" ry="10" fill="#fb8500"/>
-            <polygon points="20,5 25,1 28,6" fill="#ffb703"/>
-            <polygon points="20,25 24,29 27,24" fill="#ffb703"/>
-            <circle cx="12" cy="12" r="2" fill="#fff"/>
-            <circle cx="12" cy="12" r="1" fill="#000"/>
-          </svg>
-        `
-      },
-      // 1. Graceful Angelfish
-      {
-        type: 'angelfish',
-        width: 52,
-        height: 52,
+        width: 72,
+        height: 44,
         speedMin: 0.003,
         speedMax: 0.006,
         svg: `
-          <svg viewBox="0 0 120 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 66 52 C 77 42 89 38 97 42 C 89 48 84 53 85 60 C 84 67 89 72 97 78 C 87 82 77 78 66 68 Z" fill="#facc15" stroke="#eab308" stroke-width="0.7"/>
-            <path d="M 68 55 Q 80 53 91 46" stroke="#ca8a04" stroke-width="0.8" fill="none" opacity="0.7"/>
-            <path d="M 68 60 Q 80 60 88 60" stroke="#ca8a04" stroke-width="0.8" fill="none" opacity="0.7"/>
-            <path d="M 68 65 Q 80 67 91 74" stroke="#ca8a04" stroke-width="0.8" fill="none" opacity="0.7"/>
-            <path d="M 32 35 C 44 26 62 18 92 12 C 78 20 68 32 64 45 C 52 42 42 38 32 35 Z" fill="#fde047" stroke="#eab308" stroke-width="0.7"/>
-            <path d="M 36 33 C 48 24 64 17 92 12" stroke="#ca8a04" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-            <path d="M 48 34 Q 65 24 78 20" stroke="#fef08a" stroke-width="0.9" fill="none"/>
-            <path d="M 56 38 Q 68 30 76 25" stroke="#fef08a" stroke-width="0.9" fill="none"/>
-            <path d="M 40 65 C 45 78 55 95 72 114 C 65 98 62 82 66 71 C 56 68 48 66 40 65 Z" fill="#fde047" stroke="#eab308" stroke-width="0.7"/>
-            <path d="M 42 67 C 48 81 57 98 72 114" stroke="#ca8a04" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-            <path d="M 48 68 Q 57 84 64 96" stroke="#fef08a" stroke-width="0.9" fill="none"/>
-            <path d="M 33 60 C 34 78 42 98 52 112" stroke="#facc15" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-            <path d="M 36 61 C 38 76 43 92 48 106" stroke="#fef08a" stroke-width="1.3" stroke-linecap="round" fill="none"/>
-            <path d="M 18 36 C 24 33 32 35 44 38 C 58 42 68 49 68 60 C 68 71 58 78 44 76 C 32 74 24 64 18 36 Z" fill="#ffffff" stroke="#38bdf8" stroke-width="0.8"/>
-            <path d="M 24 34 C 23 42 24 50 25 58" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round" fill="none"/>
-            <path d="M 37 30 C 38 45 39 61 44 77" stroke="#0f172a" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-            <path d="M 47 22 C 48 42 50 63 56 88" stroke="#0f172a" stroke-width="4.2" stroke-linecap="round" fill="none"/>
-            <path d="M 58 17 C 60 35 62 54 67 71" stroke="#0f172a" stroke-width="3.6" stroke-linecap="round" fill="none"/>
-            <circle cx="26" cy="38" r="3.4" fill="#ffffff"/>
-            <circle cx="26" cy="38" r="2.0" fill="#0f172a"/>
-            <circle cx="25.2" cy="37.2" r="0.8" fill="#ffffff"/>
+          <svg viewBox="0 0 160 95" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="gfBodyGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ea580c"/>
+                <stop offset="20%" stop-color="#f97316"/>
+                <stop offset="48%" stop-color="#f59e0b"/>
+                <stop offset="75%" stop-color="#fbbf24"/>
+                <stop offset="92%" stop-color="#fef3c7"/>
+                <stop offset="100%" stop-color="#ffffff"/>
+              </linearGradient>
+              <linearGradient id="gfSilkFin" x1="0" y1="0" x2="1" y2="0.3">
+                <stop offset="0%" stop-color="rgba(234, 88, 12, 0.95)"/>
+                <stop offset="25%" stop-color="rgba(249, 115, 22, 0.8)"/>
+                <stop offset="60%" stop-color="rgba(253, 186, 116, 0.65)"/>
+                <stop offset="85%" stop-color="rgba(254, 240, 138, 0.5)"/>
+                <stop offset="100%" stop-color="rgba(255, 255, 255, 0.35)"/>
+              </linearGradient>
+              <linearGradient id="gfFarTail" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="rgba(194, 65, 12, 0.75)"/>
+                <stop offset="35%" stop-color="rgba(234, 88, 12, 0.55)"/>
+                <stop offset="70%" stop-color="rgba(253, 186, 116, 0.4)"/>
+                <stop offset="100%" stop-color="rgba(255, 255, 255, 0.2)"/>
+              </linearGradient>
+            </defs>
+            <!-- Far-Side Secondary Tail Lobes (3D Bilateral Fin Volume) -->
+            <path d="M 72 44 C 88 28 108 14 136 12 C 124 24 110 36 78 46 Z" fill="url(#gfFarTail)"/>
+            <path d="M 74 44 C 92 27 114 16 134 13" stroke="rgba(255,255,255,0.45)" stroke-width="0.8" fill="none"/>
+            <path d="M 72 48 C 88 64 110 82 138 84 C 122 70 106 58 76 49 Z" fill="url(#gfFarTail)"/>
+            <path d="M 74 48 C 92 65 116 80 136 82" stroke="rgba(255,255,255,0.45)" stroke-width="0.8" fill="none"/>
+
+            <!-- Anal Fins (Trailing Ventral Veil) -->
+            <path d="M 64 54 C 74 68 86 78 98 76 C 90 66 80 58 68 53 Z" fill="url(#gfSilkFin)"/>
+            <path d="M 66 54 Q 78 68 96 74" stroke="rgba(255,255,255,0.7)" stroke-width="0.8" fill="none"/>
+
+            <!-- Pelvic / Ventral Ribbon Fins -->
+            <path d="M 44 58 C 48 72 58 88 66 86 C 60 74 54 64 47 57 Z" fill="url(#gfSilkFin)"/>
+            <path d="M 46 59 Q 54 74 64 84" stroke="rgba(255,255,255,0.85)" stroke-width="0.9" fill="none"/>
+
+            <!-- Tall Sail Dorsal Fin (Arched crest with clear rays) -->
+            <path d="M 40 28 C 48 8 64 4 82 12 C 78 24 70 32 58 36 Z" fill="url(#gfSilkFin)"/>
+            <path d="M 42 28 C 49 10 65 6 80 12" stroke="#ea580c" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+            <path d="M 47 26 Q 58 12 74 16" stroke="rgba(255,255,255,0.85)" stroke-width="0.9" fill="none"/>
+            <path d="M 52 28 Q 62 16 72 20" stroke="rgba(255,255,255,0.7)" stroke-width="0.8" fill="none"/>
+            <path d="M 58 31 Q 66 22 74 25" stroke="rgba(255,255,255,0.55)" stroke-width="0.7" fill="none"/>
+
+            <!-- Streamlined Oval Body (Graceful torpedo-curve from photo) -->
+            <path d="M 16 46 C 18 32 30 22 48 24 C 64 26 74 36 76 46 C 76 56 66 64 48 64 C 28 64 15 56 16 46 Z" fill="url(#gfBodyGrad)" stroke="#c2410c" stroke-width="0.9"/>
+            <path d="M 22 52 C 30 62 46 62 58 53 C 48 60 32 60 22 52 Z" fill="#ffffff" opacity="0.75"/>
+
+            <!-- Metallic Gold Scale Foil Glints (From photo: sparkling golden flank) -->
+            <g fill="none" stroke-linecap="round">
+              <path d="M 40 36 C 43 38 43 42 40 44" stroke="#fef08a" stroke-width="1.3" opacity="0.9"/>
+              <path d="M 46 34 C 49 36 49 40 46 42" stroke="#ffffff" stroke-width="1.2" opacity="0.95"/>
+              <path d="M 52 35 C 55 37 55 41 52 43" stroke="#fef08a" stroke-width="1.3" opacity="0.9"/>
+              <path d="M 58 37 C 61 39 61 43 58 45" stroke="#fef08a" stroke-width="1.1" opacity="0.8"/>
+              <path d="M 37 43 C 40 45 40 49 37 51" stroke="#fef08a" stroke-width="1.2" opacity="0.85"/>
+              <path d="M 43 42 C 46 44 46 48 43 50" stroke="#ffffff" stroke-width="1.4" opacity="1.0"/>
+              <path d="M 49 42 C 52 44 52 48 49 50" stroke="#ffffff" stroke-width="1.3" opacity="0.95"/>
+              <path d="M 55 43 C 58 45 58 49 55 51" stroke="#fef08a" stroke-width="1.2" opacity="0.85"/>
+              <path d="M 41 49 C 44 51 44 55 41 57" stroke="#fde047" stroke-width="1.1" opacity="0.8"/>
+              <path d="M 47 49 C 50 51 50 55 47 57" stroke="#ffffff" stroke-width="1.1" opacity="0.9"/>
+              <path d="M 53 49 C 56 51 56 55 53 57" stroke="#fde047" stroke-width="1.1" opacity="0.8"/>
+            </g>
+
+            <!-- Operculum Gill Cover & Head Anatomy -->
+            <path d="M 32 36 C 37 44 36 54 30 58" stroke="#9a3412" stroke-width="1.6" fill="none" opacity="0.85"/>
+            <path d="M 28 35 C 33 42 32 50 27 54" stroke="#fef08a" stroke-width="1.0" fill="none" opacity="0.7"/>
+
+            <!-- Lifelike Golden Eye (From photo: dark pupil + golden iris ring) -->
+            <circle cx="23" cy="42" r="4.2" fill="#0f172a"/>
+            <circle cx="23" cy="42" r="3.2" stroke="#fbbf24" stroke-width="1.2" fill="none"/>
+            <circle cx="23" cy="42" r="2.2" fill="#020617"/>
+            <circle cx="21.8" cy="41" r="0.8" fill="#ffffff"/>
+
+            <!-- Pectoral Fin (Long translucent veil wing sweeping back) -->
+            <path d="M 34 50 C 44 62 56 74 66 72 C 60 62 52 54 38 48 Z" fill="url(#gfSilkFin)"/>
+
+            <!-- Foreground Caudal Veil Tail (Cascading silk ribbons - natural, soft, no white border lines) -->
+            <!-- Upper Ribbon Banner -->
+            <path d="M 74 45 C 92 24 116 10 148 16 C 132 28 116 38 78 47 Z" fill="url(#gfSilkFin)"/>
+            <path d="M 76 46 Q 102 26 134 26" stroke="rgba(255,255,255,0.45)" stroke-width="0.8" fill="none"/>
+            <path d="M 77 47 Q 106 32 128 35" stroke="rgba(255,255,255,0.3)" stroke-width="0.7" fill="none"/>
+
+            <!-- Middle Cascading Fan Lobe -->
+            <path d="M 75 46 C 98 38 124 40 156 48 C 142 58 120 58 77 50 Z" fill="url(#gfSilkFin)"/>
+            <path d="M 76 48 Q 106 48 138 52" stroke="rgba(255,255,255,0.45)" stroke-width="0.8" fill="none"/>
+
+            <!-- Lower Sweeping Veil Lobe -->
+            <path d="M 75 48 C 96 64 120 78 148 76 C 130 65 110 56 76 50 Z" fill="url(#gfSilkFin)"/>
+            <path d="M 76 50 Q 102 64 130 68" stroke="rgba(255,255,255,0.45)" stroke-width="0.8" fill="none"/>
+            <path d="M 76 50 Q 98 58 120 60" stroke="rgba(255,255,255,0.3)" stroke-width="0.7" fill="none"/>
+          </svg>
+        `
+      },
+      // 1. Graceful Angelfish (Realistic Wide Diamond-Disc with Top 20% Yellow Style)
+      {
+        type: 'angelfish',
+        width: 58,
+        height: 65,
+        speedMin: 0.003,
+        speedMax: 0.006,
+        svg: `
+          <svg viewBox="0 0 130 145" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- Body Gradient: Top 20% Warm Amber-Gold, Lower 80% Iridescent Pearl Silver to Soft Violet -->
+              <linearGradient id="afBodyV3" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#d97706"/>
+                <stop offset="8%" stop-color="#f59e0b"/>
+                <stop offset="16%" stop-color="#fbbf24"/>
+                <stop offset="20%" stop-color="#fef08a"/>
+                <stop offset="25%" stop-color="#f8fafc"/>
+                <stop offset="48%" stop-color="#e2e8f0"/>
+                <stop offset="76%" stop-color="#cbd5e1"/>
+                <stop offset="90%" stop-color="#e0e7ff"/>
+                <stop offset="100%" stop-color="#c7d2fe"/>
+              </linearGradient>
+
+              <!-- Dorsal Fin: Amber-Gold Base & Spines with Iridescent Blue-Violet Sheen -->
+              <linearGradient id="afDorsalV3" x1="0" y1="1" x2="0.6" y2="0">
+                <stop offset="0%" stop-color="rgba(245, 158, 11, 0.85)"/>
+                <stop offset="20%" stop-color="rgba(251, 191, 36, 0.6)"/>
+                <stop offset="55%" stop-color="rgba(226, 232, 240, 0.5)"/>
+                <stop offset="85%" stop-color="rgba(199, 210, 254, 0.6)"/>
+                <stop offset="100%" stop-color="rgba(165, 180, 252, 0.75)"/>
+              </linearGradient>
+
+              <!-- Anal Fin: Pearl Silver Webbing with Soft Violet Glow at Scythe Tip -->
+              <linearGradient id="afAnalV3" x1="0" y1="0" x2="0.3" y2="1">
+                <stop offset="0%" stop-color="rgba(241, 245, 249, 0.85)"/>
+                <stop offset="35%" stop-color="rgba(226, 232, 240, 0.6)"/>
+                <stop offset="70%" stop-color="rgba(199, 210, 254, 0.55)"/>
+                <stop offset="100%" stop-color="rgba(129, 140, 248, 0.7)"/>
+              </linearGradient>
+
+              <!-- Caudal Tail Fin: Translucent Webbing with Reddish Rays & Violet Fringe -->
+              <linearGradient id="afTailV3" x1="0" y1="0.5" x2="1" y2="0.5">
+                <stop offset="0%" stop-color="rgba(241, 245, 249, 0.85)"/>
+                <stop offset="40%" stop-color="rgba(254, 215, 170, 0.5)"/>
+                <stop offset="80%" stop-color="rgba(251, 146, 60, 0.4)"/>
+                <stop offset="100%" stop-color="rgba(165, 180, 252, 0.65)"/>
+              </linearGradient>
+            </defs>
+
+            <!-- 1. CAUDAL FIN (Tail: Triangular Fan with reddish-amber ray bars & violet tips) -->
+            <path d="M 72 63 C 86 52 102 42 124 38 C 114 54 106 66 106 71 C 106 76 114 88 124 104 C 102 100 86 90 72 79 Z" fill="url(#afTailV3)" stroke="rgba(148, 163, 184, 0.4)" stroke-width="0.6"/>
+            <path d="M 74 65 Q 96 54 122 41" stroke="#ea580c" stroke-width="0.8" fill="none" opacity="0.75"/>
+            <path d="M 75 67 Q 95 60 112 52" stroke="#ea580c" stroke-width="0.7" fill="none" opacity="0.65"/>
+            <path d="M 75 70 Q 96 68 116 66" stroke="#ea580c" stroke-width="0.7" fill="none" opacity="0.6"/>
+            <path d="M 75 72 Q 96 74 116 76" stroke="#ea580c" stroke-width="0.7" fill="none" opacity="0.6"/>
+            <path d="M 75 75 Q 95 82 112 90" stroke="#ea580c" stroke-width="0.7" fill="none" opacity="0.65"/>
+            <path d="M 74 77 Q 96 88 122 101" stroke="#ea580c" stroke-width="0.8" fill="none" opacity="0.75"/>
+            <path d="M 118 42 C 122 40 124 39 125 38 C 122 46 116 54 110 60" stroke="#818cf8" stroke-width="1.2" fill="none" opacity="0.85"/>
+            <path d="M 118 100 C 122 102 124 103 125 104 C 122 96 116 88 110 82" stroke="#818cf8" stroke-width="1.2" fill="none" opacity="0.85"/>
+
+            <!-- 2. TALL DORSAL SAIL FIN (Extremely tall & swept back) -->
+            <path d="M 38 38 C 48 22 66 8 98 2 C 84 18 74 36 70 58 C 58 50 48 44 38 38 Z" fill="url(#afDorsalV3)" stroke="rgba(148, 163, 184, 0.45)" stroke-width="0.6"/>
+            <path d="M 38 39 C 48 22 66 8 98 2" stroke="#9a3412" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+            <path d="M 39 40 C 49 24 67 10 96 4" stroke="#f59e0b" stroke-width="1.0" stroke-linecap="round" fill="none"/>
+            <path d="M 50 30 C 54 20 64 12 76 6" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0.9"/>
+            <path d="M 62 42 C 65 30 73 20 84 14" stroke="#0f172a" stroke-width="2.4" stroke-linecap="round" fill="none" opacity="0.9"/>
+            <path d="M 44 36 Q 60 22 78 15" stroke="rgba(254, 240, 138, 0.7)" stroke-width="0.7" fill="none"/>
+            <path d="M 52 40 Q 66 28 80 22" stroke="rgba(255,255,255,0.5)" stroke-width="0.6" fill="none"/>
+            <path d="M 60 46 Q 70 36 80 30" stroke="rgba(255,255,255,0.4)" stroke-width="0.6" fill="none"/>
+
+            <!-- 3. LONG SWEEPING ANAL FIN (Dagger/Scythe shaped, tall vertically) -->
+            <path d="M 44 92 C 52 108 60 126 68 144 C 64 124 66 102 70 80 C 60 84 50 88 44 92 Z" fill="url(#afAnalV3)" stroke="rgba(148, 163, 184, 0.45)" stroke-width="0.6"/>
+            <path d="M 44 92 C 52 108 60 126 68 144" stroke="#334155" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+            <path d="M 45 93 C 53 109 61 127 67 142" stroke="#818cf8" stroke-width="0.9" stroke-linecap="round" fill="none" opacity="0.8"/>
+            <path d="M 54 94 C 57 106 62 122 66 136" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0.9"/>
+            <path d="M 50 93 Q 56 108 62 122" stroke="rgba(255,255,255,0.5)" stroke-width="0.7" fill="none"/>
+            <path d="M 56 90 Q 62 102 66 114" stroke="rgba(255,255,255,0.4)" stroke-width="0.6" fill="none"/>
+
+            <!-- 4. ELONGATED THREAD-LIKE PELVIC "FEELER" FINS (Bright Golden Yellow filaments) -->
+            <path d="M 36 88 C 38 106 46 126 56 144" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+            <path d="M 37 88 C 39 104 45 122 53 138" stroke="#fef08a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            <path d="M 39 88 C 41 100 45 114 51 128" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <path d="M 41 89 C 43 98 46 110 50 120" stroke="#f59e0b" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.75"/>
+
+            <!-- 5. TALL & WIDE DIAMOND-DISC BODY (Top Y=38 to Bottom Y=92) -->
+            <path d="M 12 63 C 14 60 17 58 20 54 C 24 48 30 42 38 38 C 50 38 64 50 72 63 C 74 67 74 74 72 78 C 64 88 52 92 44 92 C 30 90 20 82 17 71 C 15 67 11 65 12 63 Z" fill="url(#afBodyV3)" stroke="#64748b" stroke-width="0.8"/>
+
+            <!-- Top 20% Yellow Amber Mantle Accent -->
+            <path d="M 17 54 C 21 48 28 42 38 38 C 48 38 58 45 66 52 C 54 54 38 54 26 58 C 21 57 18 55 17 54 Z" fill="url(#afBodyV3)" opacity="0.4"/>
+            <g fill="none" stroke-linecap="round">
+              <path d="M 32 44 C 35 46 35 49 32 51" stroke="#ffffff" stroke-width="1.0" opacity="0.9"/>
+              <path d="M 40 43 C 43 45 43 48 40 50" stroke="#fef08a" stroke-width="1.0" opacity="0.85"/>
+              <path d="M 48 45 C 51 47 51 50 48 52" stroke="#ffffff" stroke-width="0.9" opacity="0.85"/>
+            </g>
+
+            <!-- Pointed upturned lips -->
+            <path d="M 11 62 Q 9 63 11 64 Q 13 65 14 64 Q 13 62 11 62 Z" fill="#fde047" stroke="#b45309" stroke-width="0.5"/>
+
+            <!-- Operculum (Gill Plate) Contour -->
+            <path d="M 28 56 C 34 64 33 76 26 82" stroke="#64748b" stroke-width="1.2" fill="none" opacity="0.55"/>
+            <path d="M 29 57 C 34 65 33 74 28 80" stroke="#ffffff" stroke-width="0.8" fill="none" opacity="0.8"/>
+
+            <!-- 6. AUTHENTIC ZEBRA BARS -->
+            <path d="M 24 43 C 23 52 23 66 22 76" stroke="#0f172a" stroke-width="3.2" stroke-linecap="round" fill="none" opacity="0.95"/>
+            <path d="M 37 39 C 36 52 35 68 34 82" stroke="#1e293b" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <path d="M 48 38 C 50 54 51 72 47 92" stroke="#0f172a" stroke-width="4.2" stroke-linecap="round" fill="none" opacity="0.95"/>
+            <path d="M 66 57 C 67 64 67 72 65 77" stroke="#1e293b" stroke-width="2.8" stroke-linecap="round" fill="none" opacity="0.9"/>
+
+            <!-- 7. ICONIC RED-RINGED EYE -->
+            <circle cx="23" cy="57" r="4.2" fill="#0f172a"/>
+            <circle cx="23" cy="57" r="3.4" stroke="#dc2626" stroke-width="1.3" fill="none"/>
+            <circle cx="23" cy="57" r="2.6" stroke="#fbbf24" stroke-width="0.8" fill="none"/>
+            <circle cx="23" cy="57" r="1.9" fill="#020617"/>
+            <circle cx="22" cy="55.8" r="0.8" fill="#ffffff"/>
+
+            <!-- 8. DELICATE PECTORAL FIN -->
+            <ellipse cx="32" cy="72" rx="7.5" ry="3.8" transform="rotate(-15 32 72)" fill="rgba(241, 245, 249, 0.75)" stroke="rgba(148, 163, 184, 0.6)" stroke-width="0.5"/>
+            <path d="M 28 71 Q 34 73 38 71" stroke="rgba(255,255,255,0.8)" stroke-width="0.7" fill="none"/>
           </svg>
         `
       },
@@ -1008,7 +1486,7 @@
           </svg>
         `
       },
-      // 4. Corydoras Catfish
+      // 4. Corydoras Catfish (Bottom cleaner)
       {
         type: 'corydoras',
         isBottomDweller: true,
@@ -1046,7 +1524,7 @@
           </svg>
         `
       },
-      // 5. Red Cherry Dwarf Shrimp
+      // 5. Red Cherry Dwarf Shrimp (Biofilm grazer)
       {
         type: 'shrimp',
         isBottomDweller: true,
@@ -1071,15 +1549,15 @@
           </svg>
         `
       },
-      // 6. Traditional Chinese Fancy Goldfish
+      // 6. Traditional Chinese Fancy Goldfish (Shortened Perky Fan Tail)
       {
         type: 'chinese_goldfish',
-        width: 65,
+        width: 58,
         height: 50,
         speedMin: 0.0028,
         speedMax: 0.0052,
         svg: `
-          <svg viewBox="0 0 120 85" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 100 85" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="cnBodyGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stop-color="#ea580c"/>
@@ -1106,31 +1584,51 @@
                 <stop offset="70%" stop-color="rgba(241, 245, 249, 0.7)"/>
                 <stop offset="100%" stop-color="rgba(203, 213, 225, 0.4)"/>
               </linearGradient>
+              <radialGradient id="ybWenGrad" cx="0.35" cy="0.35" r="0.65">
+                <stop offset="0%" stop-color="#ff6b6b"/>
+                <stop offset="40%" stop-color="#f95738"/>
+                <stop offset="80%" stop-color="#ea580c"/>
+                <stop offset="100%" stop-color="#c2410c"/>
+              </radialGradient>
             </defs>
-            <path d="M 52 46 C 60 62 76 80 102 82 C 95 68 84 54 54 44 Z" fill="url(#backLowerFan)"/>
-            <path d="M 54 47 C 64 64 78 78 100 80" stroke="rgba(255,255,255,0.7)" stroke-width="0.8" fill="none"/>
-            <path d="M 55 46 Q 74 62 88 70" stroke="rgba(255,255,255,0.5)" stroke-width="0.7" fill="none"/>
-            <path d="M 50 38 C 58 20 74 8 98 7 C 94 18 82 28 53 40 Z" fill="url(#backLowerFan)"/>
-            <path d="M 52 38 C 60 22 76 11 96 9" stroke="rgba(255,255,255,0.75)" stroke-width="0.9" fill="none"/>
-            <path d="M 52 39 C 60 21 78 11 103 11 C 97 22 84 32 55 41 Z" fill="url(#tailFanSilk)"/>
-            <path d="M 54 39 C 62 23 80 13 101 13" stroke="rgba(255,255,255,0.95)" stroke-width="1.2" fill="none"/>
-            <path d="M 55 40 Q 75 24 94 22" stroke="rgba(255,255,255,0.6)" stroke-width="0.8" fill="none"/>
+            <!-- 1. Lower Background Fan (Cute, slightly shortened silk petal) -->
+            <path d="M 52 46 C 58 58 68 70 82 71 C 77 60 70 51 54 44 Z" fill="url(#backLowerFan)"/>
+
+            <!-- 2. Upper Background Fan -->
+            <path d="M 50 38 C 56 25 68 15 80 15 C 77 23 70 30 53 40 Z" fill="url(#backLowerFan)"/>
+
+            <!-- 3. Upper Foreground Fan (Soft White-Silk, shortened proportion) -->
+            <path d="M 52 39 C 58 24 70 16 84 17 C 80 25 72 33 55 41 Z" fill="url(#tailFanSilk)"/>
+
+            <!-- 4. Dorsal Fin -->
             <path d="M 28 26 C 34 10 46 6 60 14 C 57 23 49 28 44 31 Z" fill="url(#tailFanSilk)"/>
-            <path d="M 32 25 Q 43 12 56 16" stroke="rgba(255,255,255,0.8)" stroke-width="0.8" fill="none"/>
+
+            <!-- 5. Body with Chinese Yuanbao Shape -->
             <path d="M 12 43 C 14 29 25 20 37 22 C 48 24 53 33 54 41 C 53 50 47 60 34 60 C 21 60 11 54 12 43 Z" fill="url(#cnBodyGrad)"/>
             <path d="M 18 49 C 24 58 37 58 45 50 C 40 57 27 58 18 49 Z" fill="#ffffff" opacity="0.75"/>
-            <ellipse cx="51" cy="42" rx="7" ry="10" fill="url(#tailRootGlow)"/>
-            <path d="M 53 43 C 70 42 96 40 118 47 C 114 62 98 72 55 48 Z" fill="url(#tailFanSilk)"/>
-            <path d="M 55 44 C 74 44 98 44 116 49" stroke="rgba(255,255,255,0.95)" stroke-width="1.3" fill="none"/>
-            <path d="M 55 45 C 75 49 97 53 113 58" stroke="rgba(255,255,255,0.8)" stroke-width="1.0" fill="none"/>
-            <path d="M 55 46 Q 78 57 104 66" stroke="rgba(255,255,255,0.7)" stroke-width="0.85" fill="none"/>
-            <path d="M 54 47 Q 72 63 92 70" stroke="rgba(255,255,255,0.6)" stroke-width="0.75" fill="none"/>
+
+            <!-- 6. Puffy Wen Cheek & Hood -->
+            <ellipse cx="20" cy="40" rx="9" ry="10" fill="url(#ybWenGrad)"/>
+            <circle cx="21" cy="32" r="4.5" fill="#f95738"/>
+            <circle cx="26" cy="34" r="4" fill="#ea580c"/>
+            <circle cx="16" cy="34" r="4" fill="#ff6b6b"/>
+            <circle cx="14" cy="45" r="4.5" fill="#f95738"/>
+            <circle cx="21" cy="46" r="5" fill="#ea580c"/>
+
+            <!-- 7. Caudal Peduncle Glow -->
+            <ellipse cx="51" cy="42" rx="6" ry="9" fill="url(#tailRootGlow)"/>
+
+            <!-- 8. Main Flowing White-Silk Caudal Fan (Shortened & perky, Yuanbao style) -->
+            <path d="M 53 43 C 65 42 76 41 87 46 C 83 55 74 61 55 48 Z" fill="url(#tailFanSilk)"/>
+
+            <!-- 9. Ventral & Anal Fins -->
             <path d="M 28 52 C 30 63 38 72 44 71 C 41 62 36 55 30 51 Z" fill="url(#tailFanSilk)"/>
-            <path d="M 30 53 Q 35 65 41 69" stroke="rgba(255,255,255,0.8)" stroke-width="0.8" fill="none"/>
             <path d="M 40 54 C 44 63 51 67 55 64 C 51 58 47 53 42 53 Z" fill="url(#tailFanSilk)"/>
-            <circle cx="17" cy="40" r="4.0" fill="#fef08a"/>
-            <circle cx="16.3" cy="40" r="2.6" fill="#0f172a"/>
-            <circle cx="15.3" cy="39.2" r="1.0" fill="#ffffff"/>
+
+            <!-- 10. Eye -->
+            <circle cx="17" cy="40" r="3.8" fill="#fef08a"/>
+            <circle cx="16.3" cy="40" r="2.5" fill="#0f172a"/>
+            <circle cx="15.3" cy="39.2" r="0.9" fill="#ffffff"/>
           </svg>
         `
       },
@@ -1179,7 +1677,7 @@
           </svg>
         `
       },
-      // 8. Super Red Dragon Arowana (Expanded Muscular High-Back Body, Overlapping Scales, Exact Reference Fins)
+      // 8. Super Red Dragon Arowana
       {
         type: 'arowana',
         isSurfaceDweller: true,
@@ -1198,14 +1696,12 @@
                 <stop offset="92%" stop-color="#ea580c"/>
                 <stop offset="100%" stop-color="#b91c1c"/>
               </linearGradient>
-
               <linearGradient id="aroFinFan" x1="0" y1="0" x2="1" y2="0">
                 <stop offset="0%" stop-color="#f97316"/>
                 <stop offset="25%" stop-color="#ef4444"/>
                 <stop offset="85%" stop-color="#dc2626"/>
                 <stop offset="100%" stop-color="#881337"/>
               </linearGradient>
-
               <linearGradient id="aroHeadPlate" x1="0" y1="0" x2="1" y2="0">
                 <stop offset="0%" stop-color="#d97706"/>
                 <stop offset="40%" stop-color="#f59e0b"/>
@@ -1213,8 +1709,6 @@
                 <stop offset="100%" stop-color="#c2410c"/>
               </linearGradient>
             </defs>
-
-            <!-- 1. DORSAL FIN (Arched Crest Fin set far back) -->
             <path d="M 188 38 C 196 16 220 12 250 14 C 265 17 270 34 266 48 L 252 50 C 242 34 214 34 188 38 Z" fill="url(#aroFinFan)" stroke="#7f1d1d" stroke-width="1.2"/>
             <g stroke="#fecaca" stroke-width="1.3" opacity="0.8" fill="none">
               <path d="M 204 32 Q 224 20 258 24"/>
@@ -1222,8 +1716,6 @@
               <path d="M 226 36 Q 242 27 264 38"/>
               <path d="M 238 38 Q 248 33 264 45"/>
             </g>
-
-            <!-- 2. ANAL FIN (Deep Fan Fin Running Under Caudal Peduncle) -->
             <path d="M 168 100 C 185 132 232 138 264 102 L 264 88 C 238 98 198 102 168 100 Z" fill="url(#aroFinFan)" stroke="#7f1d1d" stroke-width="1.2"/>
             <g stroke="#fecaca" stroke-width="1.3" opacity="0.8" fill="none">
               <line x1="178" y1="104" x2="242" y2="128"/>
@@ -1231,8 +1723,6 @@
               <line x1="204" y1="103" x2="260" y2="114"/>
               <line x1="220" y1="101" x2="262" y2="105"/>
             </g>
-
-            <!-- 3. CAUDAL TAIL FIN (Wide Rounded Dragon Paddle Tail) -->
             <path d="M 260 56 C 274 38 292 30 304 36 C 314 44 314 78 304 84 C 292 90 274 80 260 68 Z" fill="url(#aroFinFan)" stroke="#7f1d1d" stroke-width="1.4"/>
             <g stroke="#fee2e2" stroke-width="1.3" opacity="0.85" fill="none">
               <line x1="264" y1="60" x2="304" y2="44"/>
@@ -1241,96 +1731,112 @@
               <line x1="266" y1="63" x2="308" y2="68"/>
               <line x1="264" y1="64" x2="304" y2="76"/>
             </g>
-
-            <!-- 4. MUSCULAR HIGH-BACK & DEEP BELLY BODY TORSO -->
             <path d="M 16 54 C 40 40 98 32 188 32 C 232 32 258 48 266 60 L 266 66 C 258 78 232 98 188 98 C 128 100 84 98 48 88 C 30 82 22 68 16 54 Z" fill="url(#aroDeepBody)" stroke="#9a3412" stroke-width="1.2"/>
-
-            <!-- 5. TIGHT OVERLAPPING SCALES (5 Horizontal Rows x 8 Columns) -->
             <g opacity="0.95">
-              <!-- Column 1 -->
               <path d="M 96 38 C 103 38 109 45 103 52 C 96 45 90 38 96 38 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.6"/>
               <path d="M 96 52 C 103 52 109 59 103 66 C 96 59 90 52 96 52 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.6"/>
               <path d="M 96 66 C 103 66 109 73 103 80 C 96 73 90 66 96 66 Z" fill="#14b8a6" stroke="#f97316" stroke-width="2.6"/>
               <path d="M 96 80 C 103 80 109 87 103 94 C 96 87 90 80 96 80 Z" fill="#0f766e" stroke="#ea580c" stroke-width="2.6"/>
-
-              <!-- Column 2 -->
               <path d="M 114 36 C 121 36 127 43 121 50 C 114 43 108 36 114 36 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.6"/>
               <path d="M 114 50 C 121 50 127 57 121 64 C 114 57 108 50 114 50 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.6"/>
               <path d="M 114 64 C 121 64 127 71 121 78 C 114 71 108 64 114 64 Z" fill="#14b8a6" stroke="#f97316" stroke-width="2.6"/>
               <path d="M 114 78 C 121 78 127 85 121 92 C 114 85 108 78 114 78 Z" fill="#0d9488" stroke="#ea580c" stroke-width="2.6"/>
-              <path d="M 114 90 C 121 90 127 96 121 101 C 114 96 108 90 114 90 Z" fill="#0f766e" stroke="#ea580c" stroke-width="2.2"/>
-
-              <!-- Column 3 -->
               <path d="M 132 36 C 139 36 145 43 139 50 C 132 43 126 36 132 36 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.6"/>
               <path d="M 132 50 C 139 50 145 57 139 64 C 132 57 126 50 132 50 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.6"/>
               <path d="M 132 64 C 139 64 145 71 139 78 C 132 71 126 64 132 64 Z" fill="#14b8a6" stroke="#f97316" stroke-width="2.6"/>
               <path d="M 132 78 C 139 78 145 85 139 92 C 132 85 126 78 132 78 Z" fill="#0d9488" stroke="#ea580c" stroke-width="2.6"/>
-              <path d="M 132 90 C 139 90 145 96 139 101 C 132 96 126 90 132 90 Z" fill="#0f766e" stroke="#ea580c" stroke-width="2.2"/>
-
-              <!-- Column 4 -->
               <path d="M 150 36 C 157 36 163 43 157 50 C 150 43 144 36 150 36 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.6"/>
               <path d="M 150 50 C 157 50 163 57 157 64 C 150 57 144 50 150 50 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.6"/>
               <path d="M 150 64 C 157 64 163 71 157 78 C 150 71 144 64 150 64 Z" fill="#14b8a6" stroke="#f97316" stroke-width="2.6"/>
               <path d="M 150 78 C 157 78 163 85 157 92 C 150 85 144 78 150 78 Z" fill="#0d9488" stroke="#ea580c" stroke-width="2.6"/>
-              <path d="M 150 90 C 157 90 163 96 157 101 C 150 96 144 90 150 90 Z" fill="#0f766e" stroke="#ea580c" stroke-width="2.2"/>
-
-              <!-- Column 5 -->
-              <path d="M 168 37 C 175 37 181 44 175 51 C 168 44 162 37 168 37 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.6"/>
-              <path d="M 168 51 C 175 51 181 58 175 65 C 168 58 162 51 168 51 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.6"/>
-              <path d="M 168 65 C 175 65 181 72 175 79 C 168 72 162 65 168 65 Z" fill="#14b8a6" stroke="#f97316" stroke-width="2.6"/>
-              <path d="M 168 79 C 175 79 181 86 175 93 C 168 86 162 79 168 79 Z" fill="#0d9488" stroke="#ea580c" stroke-width="2.6"/>
-
-              <!-- Column 6 -->
-              <path d="M 186 39 C 193 39 199 46 193 53 C 186 46 180 39 186 39 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.4"/>
-              <path d="M 186 53 C 193 53 199 60 193 67 C 186 60 180 53 186 53 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.4"/>
-              <path d="M 186 67 C 193 67 199 74 193 81 C 186 74 180 67 186 67 Z" fill="#14b8a6" stroke="#f97316" stroke-width="2.4"/>
-              <path d="M 186 81 C 193 81 199 88 193 95 C 186 88 180 81 186 81 Z" fill="#0d9488" stroke="#ea580c" stroke-width="2.4"/>
-
-              <!-- Column 7 -->
-              <path d="M 204 43 C 210 43 216 49 210 56 C 204 49 198 43 204 43 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.2"/>
-              <path d="M 204 56 C 210 56 216 63 210 70 C 204 63 198 56 204 56 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.2"/>
-              <path d="M 204 70 C 210 70 216 77 210 84 C 204 77 198 70 204 70 Z" fill="#0d9488" stroke="#f97316" stroke-width="2.2"/>
-
-              <!-- Column 8 (Rear Peduncle) -->
-              <path d="M 222 47 C 228 47 234 53 228 60 C 222 53 216 47 222 47 Z" fill="#0f766e" stroke="#dc2626" stroke-width="2.0"/>
-              <path d="M 222 60 C 228 60 234 67 228 74 C 222 67 216 60 222 60 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="2.0"/>
-              <path d="M 238 52 C 244 52 248 57 244 63 C 240 57 234 52 238 52 Z" fill="#0f766e" stroke="#dc2626" stroke-width="1.8"/>
-              <path d="M 238 63 C 244 63 248 68 244 74 C 240 68 234 63 238 63 Z" fill="#14b8a6" stroke="#ef4444" stroke-width="1.8"/>
             </g>
-
-            <!-- 6. PELVIC / VENTRAL FIN (Pointed Feathered Double Tip) -->
             <path d="M 134 94 C 142 116 154 122 164 112 C 160 106 162 98 166 94 Z" fill="url(#aroFinFan)" stroke="#991b1b" stroke-width="1.2"/>
-            <line x1="138" y1="98" x2="158" y2="116" stroke="#fecaca" stroke-width="1.4"/>
-
-            <!-- 7. ELONGATED PECTORAL GLIDE FIN (Broad Dragon Wing) -->
             <path d="M 64 84 C 84 92 120 134 112 138 C 98 134 80 110 60 92 Z" fill="url(#aroFinFan)" stroke="#7f1d1d" stroke-width="1.4"/>
-            <path d="M 68 86 C 88 96 116 126 108 134" stroke="#fde047" stroke-width="1.8" fill="none"/>
-            <line x1="72" y1="92" x2="102" y2="128" stroke="#fecaca" stroke-width="1.2"/>
-
-            <!-- 8. OPERCULUM GILL ARMOR & HEAD SCULPT (Golden Shield with Red Edges) -->
             <path d="M 16 54 C 28 44 56 41 90 41 C 94 62 90 80 80 90 C 58 89 32 76 16 54 Z" fill="url(#aroHeadPlate)" stroke="#b45309" stroke-width="1.4"/>
-            <!-- Forehead Teal/Green Shimmer -->
-            <path d="M 16 54 C 26 48 40 43 54 42 C 40 46 26 50 16 54 Z" fill="#14b8a6" opacity="0.45"/>
-            <path d="M 82 43 C 90 56 88 78 76 88" stroke="#dc2626" stroke-width="4.0" fill="none"/>
-            <path d="M 70 45 C 78 57 76 74 66 82" stroke="#ea580c" stroke-width="2.2" fill="none" opacity="0.8"/>
-
-            <!-- 9. SHORT UPTURNED LOWER JAW & DRAGON BARBELS (Whiskers) -->
             <path d="M 16 54 L 26 58 C 30 68 38 76 46 80 C 32 76 22 66 16 54 Z" fill="#f59e0b" stroke="#ea580c" stroke-width="1.2"/>
-            <path d="M 16 54 L 25 58" stroke="#7f1d1d" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-            <!-- Chin Barbels pointing forward from the tip of the lower lip -->
             <path d="M 16 55 Q 10 54 5 52" stroke="#facc15" stroke-width="1.6" stroke-linecap="round" fill="none"/>
             <path d="M 15 57 Q 9 56 4 56" stroke="#f97316" stroke-width="1.3" stroke-linecap="round" fill="none"/>
-
-            <!-- 10. EXPRESSIVE DRAGON EYE -->
             <circle cx="32" cy="52" r="6.5" fill="#dc2626"/>
             <circle cx="32" cy="52" r="4.6" fill="#facc15"/>
             <circle cx="31.4" cy="52" r="2.8" fill="#09090b"/>
             <circle cx="30" cy="50.6" r="1.0" fill="#ffffff"/>
           </svg>
         `
+      },
+      // 9. Otocinclus Dwarf Catfish (Active Glass & Plant Algae Eater)
+      {
+        type: 'otocinclus',
+        isAlgaeEater: true,
+        width: 48,
+        height: 22,
+        speedMin: 0.0035,
+        speedMax: 0.0065,
+        svg: `
+          <svg viewBox="0 0 100 42" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="otoBackGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#475569"/>
+                <stop offset="25%" stop-color="#334155"/>
+                <stop offset="60%" stop-color="#64748b"/>
+                <stop offset="85%" stop-color="#cbd5e1"/>
+                <stop offset="100%" stop-color="#f8fafc"/>
+              </linearGradient>
+              <linearGradient id="otoFinTrans" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="rgba(255, 255, 255, 0.7)"/>
+                <stop offset="60%" stop-color="rgba(226, 232, 240, 0.5)"/>
+                <stop offset="100%" stop-color="rgba(203, 213, 225, 0.3)"/>
+              </linearGradient>
+            </defs>
+
+            <!-- 1. Forked Caudal Tail Fin with Dark Speckled Rays -->
+            <polygon points="78,21 98,8 92,21 98,34" fill="url(#otoFinTrans)" stroke="#475569" stroke-width="0.8"/>
+            <line x1="80" y1="21" x2="95" y2="12" stroke="#0f172a" stroke-width="1.1"/>
+            <line x1="80" y1="21" x2="95" y2="30" stroke="#0f172a" stroke-width="1.1"/>
+            <circle cx="88" cy="15" r="1.0" fill="#0f172a"/>
+            <circle cx="91" cy="28" r="1.0" fill="#0f172a"/>
+
+            <!-- 2. Dorsal Fin with Rigid Leading Spine -->
+            <path d="M 38 14 L 46 3 L 56 6 L 51 14 Z" fill="url(#otoFinTrans)" stroke="#334155" stroke-width="0.8"/>
+            <line x1="38" y1="14" x2="46" y2="3" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="48" cy="7" r="1.1" fill="#0f172a"/>
+            <circle cx="52" cy="10" r="1.0" fill="#0f172a"/>
+
+            <!-- 3. Ventral Pectoral Glider Fins (Glass grippers) -->
+            <path d="M 22 25 L 26 38 L 34 31 L 28 24 Z" fill="url(#otoFinTrans)" stroke="#334155" stroke-width="0.8"/>
+            <line x1="22" y1="25" x2="26" y2="38" stroke="#0f172a" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M 44 24 L 47 32 L 53 28 L 50 24 Z" fill="url(#otoFinTrans)" stroke="#334155" stroke-width="0.8"/>
+
+            <!-- 4. Slender Torpedo Catfish Body -->
+            <path d="M 8 22 C 12 13 28 11 50 13 C 68 15 78 18 80 21 C 78 24 68 28 50 29 C 28 30 12 28 8 22 Z" fill="url(#otoBackGrad)" stroke="#334155" stroke-width="0.8"/>
+
+            <!-- 5. Mottled Olive / Grey Camouflage Markings on Dorsal Back -->
+            <circle cx="24" cy="14" r="1.6" fill="#1e293b" opacity="0.8"/>
+            <circle cx="32" cy="13" r="1.8" fill="#1e293b" opacity="0.8"/>
+            <circle cx="42" cy="14" r="1.7" fill="#1e293b" opacity="0.8"/>
+            <circle cx="58" cy="16" r="1.5" fill="#1e293b" opacity="0.8"/>
+            <circle cx="68" cy="18" r="1.3" fill="#1e293b" opacity="0.8"/>
+
+            <!-- 6. Crisp Porcelain White Belly -->
+            <path d="M 12 23 C 24 28 50 28 72 23 C 50 29 24 29 12 23 Z" fill="#ffffff" opacity="0.85"/>
+
+            <!-- 7. Bold Unbroken Black Lateral Stripe & Caudal Diamond -->
+            <path d="M 6 22 L 20 21 L 52 21 L 76 21" stroke="#09090b" stroke-width="4.2" stroke-linecap="round" fill="none"/>
+            <polygon points="74,21 80,17 84,21 80,25" fill="#09090b"/>
+
+            <!-- 8. Ventral Sucker Mouth (Oral Disc) -->
+            <ellipse cx="7" cy="22" rx="3.0" ry="2.2" fill="#cbd5e1" stroke="#475569" stroke-width="0.8"/>
+            <ellipse cx="6.5" cy="22" rx="1.5" ry="1.0" fill="#1e293b"/>
+
+            <!-- 9. Expressive Catfish Eye with Amber Iris Ring -->
+            <circle cx="15" cy="18" r="2.8" fill="#facc15"/>
+            <circle cx="14.8" cy="18" r="1.8" fill="#09090b"/>
+            <circle cx="14.2" cy="17.3" r="0.7" fill="#ffffff"/>
+          </svg>
+        `
       }
     ];
 
+    // ─── FISH CLASS WITH BIOLOGICAL STATES & RESPONSES ───
     class Fish {
       constructor(modelIndex, startX, startY) {
         this.modelIndex = modelIndex;
@@ -1348,7 +1854,8 @@
         this.lastBubbleTime = Date.now() + Math.random() * 3000;
         this.individualScale = 0.88 + Math.random() * 0.24;
         this.isClimbing = false;
-        this.climbPlantSide = Math.random() < 0.5 ? 'left' : 'right';
+        this.satiation = Math.floor(Math.random() * 2); // 0 = hungry, 3 = full
+        this.lastPoopTime = Date.now() + Math.random() * 10000;
 
         this.el = document.createElement('div');
         this.el.className = 'fish-sprite';
@@ -1359,7 +1866,10 @@
 
         this.el.addEventListener('pointerdown', (e) => {
           e.stopPropagation();
-          this.dartAway(e.clientX, e.clientY);
+          if (currentTool === 'feed') {
+            this.dartAway(e.clientX, e.clientY);
+            playSound('eat');
+          }
         });
 
         this.pickNewTarget();
@@ -1369,6 +1879,53 @@
         const rect = tank.getBoundingClientRect();
         const waterHeight = rect.height * 0.94;
 
+        // 1. Hypoxic State (Low Oxygen): Fish must rise to the surface to gasp for air
+        if (currentO2 < 45 && this.model.type !== 'shrimp') {
+          this.targetY = waterHeight - this.model.height - (4 + Math.random() * 18);
+          this.targetX = 20 + Math.random() * (rect.width - this.model.width - 40);
+          this.speed = 0.002 + Math.random() * 0.002;
+          return;
+        }
+
+        // 2. Chilled State (Low Temperature): Fish huddle near the heater fixture (left)
+        if (currentTemp < 21.5 && this.model.type !== 'shrimp') {
+          const heaterX = Math.max(25, rect.width * 0.14);
+          this.targetX = heaterX + (Math.random() * 70 - 25);
+          this.targetY = 25 + Math.random() * (waterHeight * 0.45);
+          this.speed = this.model.speedMin * 0.4;
+          return;
+        }
+
+        // 3. Otocinclus Catfish Behavior (Hunts & Grazes Glass Algae Patches)
+        if (this.model.type === 'otocinclus') {
+          if (algaePatches.length > 0 && Math.random() < 0.75) {
+            // Find closest algae patch
+            let nearestPatch = null;
+            let minDist = 9999;
+            for (let p of algaePatches) {
+              let d = Math.hypot(p.x - this.x, p.y - this.y);
+              if (d < minDist) {
+                minDist = d;
+                nearestPatch = p;
+              }
+            }
+            if (nearestPatch) {
+              this.targetX = Math.max(15, Math.min(rect.width - 55, nearestPatch.x - 22));
+              this.targetY = Math.max(16, Math.min(waterHeight - 25, nearestPatch.y - 10));
+              this.speed = 0.0055;
+              this.targetAlgae = nearestPatch;
+              return;
+            }
+          }
+          // Default: Glides along lower glass and gravel substrate
+          this.targetAlgae = null;
+          this.targetX = 15 + Math.random() * (rect.width - 65);
+          this.targetY = 14 + Math.random() * (waterHeight * 0.45);
+          this.speed = 0.0035 + Math.random() * 0.0025;
+          return;
+        }
+
+        // 4. Red Cherry Shrimp Behavior (Plant Grazer)
         if (this.model.type === 'shrimp') {
           if (this.isClimbing) {
             const stayOnPlant = Math.random() < 0.65;
@@ -1397,6 +1954,44 @@
           return;
         }
 
+        // 5. Night / Darkness Sleep Rest & Torpor Mode (Lights Off)
+        if (currentLightIndex === 3) {
+          // Dragon Arowana: Obligate surface swimmer and surface air-breather.
+          // Never rests on gravel; glides steadily and majestically across the upper water layer.
+          if (this.model.type === 'arowana') {
+            const midX = rect.width / 2;
+            this.targetX = (this.x < midX) ? (midX + 25 + Math.random() * (midX - this.model.width - 45)) : (25 + Math.random() * (midX - 45));
+            this.targetY = Math.max(35, waterHeight - this.model.height - 20 - Math.random() * 25);
+            this.speed = 0.0018 + Math.random() * 0.0012;
+            return;
+          }
+
+          // Otocinclus & Cherry Shrimp: Rest firmly on substrate or lower plant leaves
+          if (this.model.type === 'otocinclus' || this.model.type === 'shrimp') {
+            this.targetX = Math.max(15, Math.min(rect.width - 55, this.x + (Math.random() * 80 - 40)));
+            this.targetY = 12 + Math.random() * 8;
+            this.speed = 0.0015;
+            this.targetAlgae = null;
+            return;
+          }
+
+          // Diurnal Fish (Golden Fantail, Chinese Yuanbao, Angelfish, Tetras, Tiger Barbs, Clownfish):
+          // Seek quiet bottom shelter zones (near plant thickets or lower substrate)
+          const plantZoneLeft = Math.random() < 0.38;
+          const plantZoneRight = Math.random() < 0.38;
+          if (plantZoneLeft) {
+            this.targetX = 25 + Math.random() * 80;
+          } else if (plantZoneRight) {
+            this.targetX = rect.width - 120 + Math.random() * 85;
+          } else {
+            this.targetX = 35 + Math.random() * (rect.width - this.model.width - 70);
+          }
+          this.targetY = 14 + Math.random() * 24; // Sheltered bottom 1/4 of tank
+          this.speed = 0.0012 + Math.random() * 0.0014; // Slow, calm resting glide
+          return;
+        }
+
+        // Standard Natural Cruising
         const midX = rect.width / 2;
         if (this.x < midX) {
           this.targetX = midX + 20 + Math.random() * (midX - this.model.width - 35);
@@ -1407,21 +2002,24 @@
         if (this.model.isBottomDweller) {
           this.targetY = 14 + Math.random() * 24;
         } else if (this.model.isSurfaceDweller) {
-          // Arowana cruises gracefully in the upper layer with full fin clearance
           this.targetY = Math.max(30, waterHeight - this.model.height - 18 - Math.random() * 32);
         } else {
           const usableCeiling = Math.max(60, waterHeight - this.model.height - 45);
           this.targetY = 24 + Math.random() * usableCeiling;
         }
 
-        this.speed = this.model.speedMin + Math.random() * (this.model.speedMax - this.model.speedMin);
+        let speedMultiplier = 1.0;
+        if (currentTemp < 22) speedMultiplier *= 0.5;
+        if (currentClarity < 50) speedMultiplier *= 0.7;
+
+        this.speed = (this.model.speedMin + Math.random() * (this.model.speedMax - this.model.speedMin)) * speedMultiplier;
       }
 
       disperseImmediately() {
         const rect = tank.getBoundingClientRect();
         const waterHeight = rect.height * 0.94;
 
-        this.postFeedCooldown = 210;
+        this.postFeedCooldown = 180;
         this.pauseFrames = 0;
         this.targetOffsetAngle = undefined;
 
@@ -1465,7 +2063,6 @@
           this.targetY = 14 + Math.random() * 22;
           this.speed = 0.08;
         } else if (this.model.isSurfaceDweller) {
-          // Drops slightly downward to evade before returning to surface
           this.targetY = (rect.height * 0.94) - this.model.height - 40;
           this.speed = 0.09;
         } else {
@@ -1478,12 +2075,12 @@
       seekNearestFood() {
         if (this.postFeedCooldown > 0) return false;
         if (!foodList.length) return false;
+        if (this.satiation >= 3) return false; // Full fish ignores excess pellets!
 
         let nearest = null;
         let minDist = 9999;
         for (let f of foodList) {
           if (this.model.type === 'shrimp' && f.y > 55) continue;
-
           let dist = Math.hypot(f.x - this.x, f.y - this.y);
           if (dist < minDist) {
             minDist = dist;
@@ -1495,12 +2092,10 @@
           if (this.targetOffsetAngle === undefined) {
             this.targetOffsetAngle = Math.random() * Math.PI * 2;
           }
-          // Flex movement: tighter orbit scale so large fish mouths actually reach the target
           const spreadRadius = 4 + (this.model.width * 0.15);
           this.targetX = nearest.x - (this.model.width / 2) + Math.cos(this.targetOffsetAngle) * spreadRadius;
           this.targetY = nearest.y + Math.sin(this.targetOffsetAngle) * (spreadRadius * 0.4);
 
-          // Size-based attack burst (big fish lunge faster to catch sinking food)
           const sizeBoost = this.model.width > 80 ? 3.5 : 2.2;
           this.speed = this.model.speedMax * sizeBoost;
           this.pauseFrames = 0;
@@ -1517,39 +2112,89 @@
         const hasFood = this.seekNearestFood();
         const now = Date.now();
 
+        // Realistic Fish Waste Digestion (Only poops after eating, spaced out over hours)
+        const currentSpeed = PACING_MODES[pacingIndex].speed;
+        const digestionInterval = (45 * 60 * 1000) / currentSpeed; // ~45 mins per dropping in real time
+        if (this.satiation > 0 && (now - this.lastPoopTime > digestionInterval) && poopList.length < 8) {
+          spawnPoop(this.x + this.model.width / 2, this.y);
+          this.lastPoopTime = now;
+          this.satiation--;
+        }
+
         if (!hasFood && this.speed > this.model.speedMax) {
           this.speed += (this.model.speedMax - this.speed) * 0.08;
         }
 
+        const isHypoxic = (currentO2 < 45 && this.model.type !== 'shrimp');
+        if (isHypoxic && !this.el.classList.contains('hypoxic')) {
+          this.el.classList.add('hypoxic');
+        } else if (!isHypoxic && this.el.classList.contains('hypoxic')) {
+          this.el.classList.remove('hypoxic');
+        }
+
         if (this.pauseFrames > 0 && !hasFood) {
           this.pauseFrames--;
-          this.y += Math.sin((now + this.x * 10) / 600) * 0.15;
+          if (currentLightIndex === 3) {
+            // Biological torpor: subtle vertical respiration hovering and gentle fin drift
+            this.y += Math.sin((now + this.x * 3) / 850) * 0.20;
+            this.x += Math.cos((now + this.x * 2) / 1200) * 0.06;
+          } else {
+            this.y += Math.sin((now + this.x * 10) / 600) * 0.15;
+          }
         } else {
           const dx = this.targetX - this.x;
           const dy = this.targetY - this.y;
           const dist = Math.hypot(dx, dy);
 
-          // Dynamic flex bite radius (massive fish have larger intake areas)
           const biteRange = 14 + (this.model.width * 0.25);
           if (hasFood && dist < biteRange) {
             eatFoodNear(this.x + this.model.width / 2, this.y, biteRange + 10);
+            this.satiation++;
             this.disperseImmediately();
+            playSound('eat');
+          }
+
+          // Otocinclus Grazing & Cleaning Algae
+          if (this.model.type === 'otocinclus' && this.targetAlgae && dist < 22) {
+            const patchIdx = algaePatches.indexOf(this.targetAlgae);
+            if (patchIdx > -1) {
+              // Latch onto glass and graze
+              this.pauseFrames = 75;
+              this.targetAlgae.radius = Math.max(0, this.targetAlgae.radius - 1.2);
+              this.targetAlgae.el.style.transform = `scale(${(this.targetAlgae.radius / 20).toFixed(2)})`;
+              if (this.targetAlgae.radius <= 4) {
+                this.targetAlgae.el.remove();
+                algaePatches.splice(patchIdx, 1);
+                currentAlgae = Math.max(0, (algaePatches.length / 20) * 100);
+                algaeOverlay.style.opacity = Math.min(1, currentAlgae / 60);
+                updateTelemetry();
+                updateStatus("Otocinclus catfish cleaned an algae patch off the glass!");
+                playSound('scrape');
+                this.targetAlgae = null;
+              }
+            }
           }
 
           if (dist < 12) {
             this.stuckFrames = 0;
             this.lastCheckPos = null;
-            const pauseChance = (this.model.type === 'shrimp') ? 0.75 : (this.postFeedCooldown > 0 ? 0 : 0.25);
+            const isNight = (currentLightIndex === 3);
+            const pauseChance = isNight ? 0.88 : ((this.model.type === 'shrimp') ? 0.75 : (this.postFeedCooldown > 0 ? 0 : 0.25));
             if (!hasFood && Math.random() < pauseChance) {
-              this.pauseFrames = (this.model.type === 'shrimp')
-                ? (140 + Math.floor(Math.random() * 220))
-                : (30 + Math.floor(Math.random() * 45));
+              if (isNight) {
+                // Extended sleep torpor pause with calm respiration bobbing (3-8 seconds)
+                this.pauseFrames = 180 + Math.floor(Math.random() * 300);
+              } else {
+                this.pauseFrames = (this.model.type === 'shrimp')
+                  ? (140 + Math.floor(Math.random() * 220))
+                  : (30 + Math.floor(Math.random() * 45));
+              }
             } else {
               this.pickNewTarget();
             }
           } else {
             if (!this.lastCheckPos) {
-              this.lastCheckPos = {x: this.x, y: this.y, frame: 0};
+              this.lastCheckPos = { x: this.x, y: this.y, frame: 0 };
             }
             this.lastCheckPos.frame++;
             if (this.lastCheckPos.frame > 210) {
@@ -1557,7 +2202,7 @@
               if (movedDist < 3.0) {
                 this.pickNewTarget();
               }
-              this.lastCheckPos = {x: this.x, y: this.y, frame: 0};
+              this.lastCheckPos = { x: this.x, y: this.y, frame: 0 };
             }
 
             if (hasFood) {
@@ -1565,7 +2210,6 @@
               this.x += (dx / dist) * step;
               this.y += (dy / dist) * step;
 
-              // Flex Movement: Prevents long fish from violently snapping left/right when right on top of food
               const turnThreshold = this.model.width * 0.1;
               if (Math.abs(dx) > Math.max(1.8, turnThreshold)) {
                 this.facingRight = dx > 0;
@@ -1573,18 +2217,19 @@
 
               let targetPitch = Math.atan2(dy, Math.abs(dx)) * (180 / Math.PI);
               let clampedPitch = Math.max(-40, Math.min(40, targetPitch));
-              // Larger fish tilt slightly slower, simulating heavier water displacement
               let flexFactor = this.model.width > 80 ? 0.06 : 0.12;
               this.tilt += (clampedPitch - this.tilt) * flexFactor;
             } else {
-              const nightDampener = (currentLightIndex >= 2) ? 0.6 : 1.0;
-              this.x += (dx * this.speed * nightDampener);
-              this.y += (dy * this.speed * nightDampener);
+              const nightDampener = (currentLightIndex >= 2) ? 0.55 : 1.0;
+              const coldDampener = (currentTemp < 22) ? 0.45 : 1.0;
+              this.x += (dx * this.speed * nightDampener * coldDampener);
+              this.y += (dy * this.speed * nightDampener * coldDampener);
 
               if (dx > 0.6) this.facingRight = true;
               else if (dx < -0.6) this.facingRight = false;
 
               let targetTilt = Math.max(-14, Math.min(14, dy * 0.22));
+              if (isHypoxic) targetTilt = -25; // Tilt head upward to gasp
               this.tilt += (targetTilt - this.tilt) * 0.04;
             }
           }
@@ -1608,34 +2253,32 @@
         const isBarb = (this.model.type === 'tiger_barb');
         const isArowana = (this.model.type === 'arowana');
 
+        const isNight = (currentLightIndex === 3);
         let waveBounce = 0;
         if (!hasFood && this.model.type !== 'shrimp') {
-          if (isChineseGold) {
-            waveBounce = Math.sin((now + this.x * 5) / 500) * 3.2;
-          } else if (isClown) {
-            waveBounce = Math.sin((now + this.x * 9) / 280) * 1.8;
-          } else if (isBarb) {
-            waveBounce = Math.sin((now + this.x * 11) / 220) * 1.6;
-          } else if (isArowana) {
-            waveBounce = Math.sin((now + this.x * 4) / 460) * 1.2; // Majestic, low-frequency glide
+          if (isNight) {
+            // Calm, rhythmic gill respiration micro-bobbing while resting at night
+            waveBounce = Math.sin((now + this.x * 4) / 750) * 0.75;
           } else {
-            waveBounce = Math.sin((now + this.x * 7) / 340) * 1.5;
+            if (isChineseGold) waveBounce = Math.sin((now + this.x * 5) / 500) * 3.2;
+            else if (isClown) waveBounce = Math.sin((now + this.x * 9) / 280) * 1.8;
+            else if (isBarb) waveBounce = Math.sin((now + this.x * 11) / 220) * 1.6;
+            else if (isArowana) waveBounce = Math.sin((now + this.x * 4) / 460) * 1.2;
+            else waveBounce = Math.sin((now + this.x * 7) / 340) * 1.5;
           }
         }
 
         const flip = this.facingRight ? "scaleX(-1)" : "scaleX(1)";
-
         let finalRotation = this.facingRight ? -this.tilt : this.tilt;
+
         if (this.model.type === 'shrimp') {
           finalRotation = this.isClimbing ? (this.facingRight ? -22 : 22) : 0;
+        } else if (isNight) {
+          finalRotation *= 0.32; // Neutral buoyancy equilibrium posture
         } else if (isChineseGold && !hasFood) {
           finalRotation += Math.sin((now + this.x * 8) / 420) * 5.2;
-        } else if (isClown && !hasFood) {
-          finalRotation += Math.sin((now + this.x * 12) / 320) * 3.5;
-        } else if (isBarb && !hasFood) {
-          finalRotation += Math.sin((now + this.x * 14) / 240) * 2.8;
         } else if (isArowana && !hasFood) {
-          finalRotation += Math.sin((now + this.x * 6) / 500) * 1.8; // Graceful, stately posture
+          finalRotation += Math.sin((now + this.x * 6) / 500) * 1.8;
         }
 
         this.el.style.left = this.x + 'px';
@@ -1644,7 +2287,236 @@
       }
     }
 
-    // Feeding Mechanism
+    // ─── TOOL SELECTION ───
+    function selectTool(toolName) {
+      currentTool = toolName;
+      document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById('tool' + toolName.charAt(0).toUpperCase() + toolName.slice(1));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      tank.classList.remove('tool-feed', 'tool-siphon', 'tool-sponge', 'tool-shears');
+      tank.classList.add('tool-' + toolName);
+
+      if (toolName === 'feed') updateStatus("Hand Mode: Tap anywhere in the tank to drop food flakes.");
+      else if (toolName === 'siphon') updateStatus("Gravel Siphon: Tap or drag along the gravel to vacuum up droppings & debris.");
+      else if (toolName === 'sponge') updateStatus("Algae Scraper: Drag across the glass to wipe away green algae spots.");
+      else if (toolName === 'shears') updateStatus("Plant Shears: Tap near overgrown plant foliage to prune stems.");
+    }
+
+    // ─── TANK CLICK & DRAG INTERACTIONS ───
+    tank.addEventListener('pointerdown', handleTankAction);
+    tank.addEventListener('pointermove', (e) => {
+      if (e.buttons === 1) handleTankAction(e);
+    });
+
+    function handleTankAction(e) {
+      const rect = tank.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = rect.height - (e.clientY - rect.top);
+
+      if (currentTool === 'feed') {
+        dropFood(clickX, clickY);
+        playSound('feed');
+      } else if (currentTool === 'siphon') {
+        triggerSiphonAt(clickX, clickY);
+      } else if (currentTool === 'sponge') {
+        wipeAlgaeNear(clickX, clickY);
+      } else if (currentTool === 'shears') {
+        prunePlantsNear(clickX, clickY);
+      }
+    }
+
+    // ─── SIPHON VACUUM SYSTEM ───
+    function triggerSiphonAt(x, y) {
+      // Create visual suction effect
+      const fx = document.createElement('div');
+      fx.className = 'suction-fx';
+      fx.style.left = (x - 12) + 'px';
+      fx.style.bottom = (y - 12) + 'px';
+      tank.appendChild(fx);
+      setTimeout(() => fx.remove(), 500);
+
+      let cleaned = false;
+
+      // Vacuum Poop
+      for (let i = poopList.length - 1; i >= 0; i--) {
+        const p = poopList[i];
+        if (Math.hypot(p.x - x, p.y - y) < 45) {
+          p.el.remove();
+          poopList.splice(i, 1);
+          cleaned = true;
+        }
+      }
+
+      // Vacuum Decaying Pellets on Bottom
+      for (let i = foodList.length - 1; i >= 0; i--) {
+        const f = foodList[i];
+        if (f.y <= 16 && Math.hypot(f.x - x, f.y - y) < 45) {
+          f.el.remove();
+          foodList.splice(i, 1);
+          cleaned = true;
+        }
+      }
+
+      if (cleaned) {
+        playSound('siphon');
+        currentClarity = Math.min(100, currentClarity + 2.5);
+        updateTelemetry();
+        updateStatus("Siphon cleaned substrate waste! Water clarity improving.");
+      }
+    }
+
+    // ─── ALGAE SCRAPER SYSTEM ───
+    function spawnAlgaePatch() {
+      if (algaePatches.length >= 24) return;
+      const rect = tank.getBoundingClientRect();
+      const patch = document.createElement('div');
+      patch.className = 'algae-patch';
+
+      const size = 30 + Math.random() * 45;
+      const px = 20 + Math.random() * (rect.width - size - 40);
+      const py = 20 + Math.random() * (rect.height * 0.85 - size);
+
+      patch.style.width = size + 'px';
+      patch.style.height = size + 'px';
+      patch.style.left = px + 'px';
+      patch.style.bottom = py + 'px';
+
+      algaeOverlay.appendChild(patch);
+      algaePatches.push({ el: patch, x: px + size / 2, y: py + size / 2, radius: size / 2 });
+
+      currentAlgae = Math.min(100, (algaePatches.length / 20) * 100);
+      algaeOverlay.style.opacity = Math.min(1, currentAlgae / 60);
+      updateTelemetry();
+    }
+
+    function wipeAlgaeNear(x, y) {
+      let wiped = false;
+      for (let i = algaePatches.length - 1; i >= 0; i--) {
+        const p = algaePatches[i];
+        if (Math.hypot(p.x - x, p.y - y) < p.radius + 30) {
+          p.el.style.transform = 'scale(0)';
+          p.el.style.opacity = '0';
+          setTimeout(() => p.el.remove(), 400);
+          algaePatches.splice(i, 1);
+          wiped = true;
+        }
+      }
+
+      if (wiped) {
+        playSound('scrape');
+        currentAlgae = Math.max(0, (algaePatches.length / 20) * 100);
+        algaeOverlay.style.opacity = Math.min(1, currentAlgae / 60);
+        updateTelemetry();
+        updateStatus("Scraped algae from glass! Glass is clean.");
+      }
+    }
+
+    // ─── PLANT PRUNING ───
+    function applyPlantScale() {
+      const pLeft = document.getElementById('plantLeft');
+      const pRight = document.getElementById('plantRight');
+      if (pLeft) {
+        pLeft.style.transformOrigin = 'bottom center';
+        pLeft.style.transform = `scaleY(${plantGrowthLeft.toFixed(3)}) scaleX(${(0.88 + plantGrowthLeft * 0.12).toFixed(3)})`;
+      }
+      if (pRight) {
+        pRight.style.transformOrigin = 'bottom center';
+        pRight.style.transform = `scaleY(${plantGrowthRight.toFixed(3)}) scaleX(${(0.88 + plantGrowthRight * 0.12).toFixed(3)})`;
+      }
+    }
+
+    function spawnLeafClipping(originX, originY) {
+      const clip = document.createElement('div');
+      clip.className = 'leaf-clip';
+      clip.style.left = originX + 'px';
+      clip.style.bottom = originY + 'px';
+      tank.appendChild(clip);
+
+      let px = originX;
+      let py = originY;
+      let fallSpeed = 0.6 + Math.random() * 0.4;
+      let wobble = Math.random() * Math.PI * 2;
+      let rot = Math.random() * 360;
+
+      const anim = () => {
+        py -= fallSpeed;
+        wobble += 0.08;
+        px += Math.sin(wobble) * 0.6;
+        rot += 2.5;
+
+        clip.style.bottom = py + 'px';
+        clip.style.left = px + 'px';
+        clip.style.transform = `rotate(${rot}deg)`;
+
+        if (py <= 16) {
+          // Reached substrate, dissolve after settling
+          setTimeout(() => {
+            clip.style.transition = 'opacity 1s';
+            clip.style.opacity = '0';
+            setTimeout(() => clip.remove(), 1000);
+          }, 2000);
+          return;
+        }
+        requestAnimationFrame(anim);
+      };
+      requestAnimationFrame(anim);
+    }
+
+    function prunePlantsNear(x, y) {
+      const rect = tank.getBoundingClientRect();
+      const nearLeft = (x < rect.width * 0.32 && y < rect.height * 0.85);
+      const nearRight = (x > rect.width * 0.68 && y < rect.height * 0.85);
+
+      if (nearLeft || nearRight) {
+        playSound('snip');
+        if (nearLeft) {
+          if (plantGrowthLeft > 0.65) {
+            plantGrowthLeft = Math.max(0.60, plantGrowthLeft - 0.16);
+            for (let i = 0; i < 3; i++) {
+              spawnLeafClipping(x + (Math.random() * 20 - 10), y + (Math.random() * 15 - 5));
+            }
+            updateStatus(`Pruned Left Stem Plant down to ${(plantGrowthLeft * 100).toFixed(0)}% height. It will regrow slowly in daylight.`);
+          } else {
+            updateStatus("Left plant is already trimmed down to base height. Give it time to regrow!");
+          }
+        } else if (nearRight) {
+          if (plantGrowthRight > 0.65) {
+            plantGrowthRight = Math.max(0.60, plantGrowthRight - 0.16);
+            for (let i = 0; i < 3; i++) {
+              spawnLeafClipping(x + (Math.random() * 20 - 10), y + (Math.random() * 15 - 5));
+            }
+            updateStatus(`Pruned Right Fern Plant down to ${(plantGrowthRight * 100).toFixed(0)}% height. It will regrow slowly in daylight.`);
+          } else {
+            updateStatus("Right plant is already trimmed down to base height. Give it time to regrow!");
+          }
+        }
+
+        applyPlantScale();
+        saveEcologyState();
+      }
+    }
+
+    // ─── WATER CHANGE MECHANISM ───
+    function performWaterChange() {
+      const drainFx = document.getElementById('waterDrainFx');
+      drainFx.style.opacity = '1';
+      playSound('water');
+      updateStatus("Water Change: Draining old water and refilling with fresh pristine water...");
+
+      setTimeout(() => {
+        currentClarity = 100.0;
+        currentO2 = Math.max(currentO2, 98.0);
+        currentTemp = 25.4;
+        drainFx.style.opacity = '0';
+        updateHeaterUI();
+      updateOxygenUI();
+      updateTelemetry();
+        updateStatus("Water change complete! 30% fresh water added. Water is pristine.");
+      }, 1000);
+    }
+
+    // ─── FEEDING & POOP ───
     function dropFood(x, y) {
       const pellet = document.createElement('div');
       pellet.className = 'food-pellet';
@@ -1658,21 +2530,33 @@
         el: pellet,
         fallSpeed: 0.5 + Math.random() * 0.35,
         driftPhase: Math.random() * Math.PI * 2,
-        driftSpeed: 0.04 + Math.random() * 0.03
+        driftSpeed: 0.04 + Math.random() * 0.03,
+        onFloorTime: 0
       };
       foodList.push(foodObj);
     }
 
-    function dropFoodAtRandom() {
-      const rect = tank.getBoundingClientRect();
-      for (let i = 0; i < 4; i++) {
-        setTimeout(() => {
-          dropFood(40 + Math.random() * (rect.width - 80), (rect.height * 0.94) - 15);
-        }, i * 150);
-      }
+    function spawnPoop(x, y) {
+      const poop = document.createElement('div');
+      poop.className = 'fish-poop';
+      poop.style.left = x + 'px';
+      poop.style.bottom = y + 'px';
+      tank.appendChild(poop);
+
+      const poopObj = {
+        x: x,
+        y: y,
+        el: poop,
+        fallSpeed: 0.75 + Math.random() * 0.3
+      };
+      poopList.push(poopObj);
+
+      // Trace bio-waste added to substrate
+      currentClarity = Math.max(25, currentClarity - 0.15);
+      saveEcologyState();
+      updateTelemetry();
     }
 
-    // Accepts dynamic hitRadius so big fish successfully consume the pellet
     function eatFoodNear(fx, fy, hitRadius = 24) {
       for (let i = foodList.length - 1; i >= 0; i--) {
         let f = foodList[i];
@@ -1692,12 +2576,10 @@
     function spawnBubble(x, y) {
       const rect = tank.getBoundingClientRect();
       const waterHeight = rect.height * 0.94;
-
       if ((y + 10) >= waterHeight) return;
 
       const bubble = document.createElement('div');
       bubble.className = 'tank-bubble';
-
       const startBottom = y + 6;
       const maxTravel = Math.min(30, Math.max(18, waterHeight - startBottom - 4));
 
@@ -1711,76 +2593,90 @@
       const animateBubble = () => {
         const elapsed = Date.now() - startTime;
         const progress = elapsed / duration;
-
         if (progress >= 1 || !bubble.parentElement) {
           if (bubble.parentElement) bubble.remove();
           return;
         }
-
-        const currentBottom = startBottom + (progress * maxTravel);
-        bubble.style.bottom = currentBottom + 'px';
+        bubble.style.bottom = (startBottom + progress * maxTravel) + 'px';
         bubble.style.opacity = (1 - progress).toFixed(2);
         requestAnimationFrame(animateBubble);
       };
-
       requestAnimationFrame(animateBubble);
     }
 
-    function scareAllFish() {
-      const rect = tank.getBoundingClientRect();
-      fishList.forEach(f => {
-        const fleeLeft = Math.random() < 0.5;
-        f.targetX = fleeLeft
-          ? (20 + Math.random() * (rect.width * 0.35))
-          : (rect.width * 0.6 + Math.random() * (rect.width * 0.35));
-
-        if (f.model.isBottomDweller) {
-          f.targetY = 14 + Math.random() * 20;
-        } else if (f.model.isSurfaceDweller) {
-          f.targetY = (rect.height * 0.94) - f.model.height - 35;
-        } else {
-          f.targetY = 25 + Math.random() * ((rect.height * 0.94) - f.model.height - 45);
+    // ─── EQUIPMENT TOGGLES & PERSISTENT BUTTON STYLES ───
+    function updateHeaterUI() {
+      const heaterEl = document.getElementById('heaterFixture');
+      const heaterBtn = document.getElementById('heaterToggleBtn');
+      if (heaterActive) {
+        if (heaterEl) heaterEl.classList.remove('heater-off');
+        if (heaterBtn) {
+          heaterBtn.innerHTML = `<span>🔥</span> Heater: ON`;
+          heaterBtn.className = "action-btn heater-btn-on";
         }
-        f.speed = f.model.speedMax * 2.2;
-        f.pauseFrames = 0;
-      });
+      } else {
+        if (heaterEl) heaterEl.classList.add('heater-off');
+        if (heaterBtn) {
+          heaterBtn.innerHTML = `<span>🔥</span> Heater: OFF`;
+          heaterBtn.className = "action-btn heater-btn-off";
+        }
+      }
     }
 
-    tank.addEventListener('pointerdown', (e) => {
-      const rect = tank.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = rect.height - (e.clientY - rect.top);
-      dropFood(clickX, clickY);
-    });
+    function toggleHeater() {
+      heaterActive = !heaterActive;
+      localStorage.setItem('aqua_heater', heaterActive ? 'true' : 'false');
+      updateHeaterUI();
+      if (heaterActive) {
+        updateStatus("Heater enabled. Regulating optimal temperature at 25.4°C.");
+      } else {
+        updateStatus("Heater switched off. Water temperature will slowly cool down.");
+      }
+      updateTelemetry();
+    }
 
-    // AIR PUMP & OXYGEN BUBBLES
-    let airPumpActive = true;
-    let microBubbleList = [];
+    function updateOxygenUI() {
+      const btn = document.getElementById('airPumpBtn');
+      const diffuser = document.getElementById('airstoneFixture');
+      if (airPumpActive) {
+        if (btn) {
+          btn.innerHTML = `<span>💨</span> Oxygen: ON`;
+          btn.className = "action-btn oxygen-btn-on";
+        }
+        if (diffuser) diffuser.style.opacity = '1.0';
+      } else {
+        if (btn) {
+          btn.innerHTML = `<span>💨</span> Oxygen: OFF`;
+          btn.className = "action-btn oxygen-btn-off";
+        }
+        if (diffuser) diffuser.style.opacity = '0.35';
+      }
+    }
 
     function toggleAirPump() {
       airPumpActive = !airPumpActive;
-      const btn = document.getElementById('airPumpBtn');
-      if (btn) {
-        btn.innerText = airPumpActive ? "💨 Oxygen: ON" : "💨 Oxygen: OFF";
-        btn.style.borderColor = airPumpActive ? "#00d2ff" : "rgba(255,255,255,0.18)";
+      localStorage.setItem('aqua_airpump', airPumpActive ? 'true' : 'false');
+      updateOxygenUI();
+      if (airPumpActive) {
+        updateStatus("Air pump on: Oxygen bubbling restored.");
+      } else {
+        updateStatus("Warning: Air pump turned off. Oxygen levels will drop!");
       }
+      updateTelemetry();
     }
 
     function spawnMicroOxygenBubble() {
       if (!airPumpActive) return;
-
       const diffuser = document.getElementById('airstoneFixture');
       if (!diffuser) return;
 
       const rect = tank.getBoundingClientRect();
       const diffRect = diffuser.getBoundingClientRect();
-
       const originX = (diffRect.left - rect.left) + 12 + (Math.random() * 8 - 4);
       const originY = 22;
 
       const bubble = document.createElement('div');
       bubble.className = 'air-micro-bubble';
-
       const size = 2 + Math.random() * 2.5;
       bubble.style.width = size + 'px';
       bubble.style.height = size + 'px';
@@ -1805,23 +2701,233 @@
       }
     }, 110);
 
-    let currentTemp = 25.4;
-    setInterval(() => {
-      const delta = (Math.random() - 0.48) * 0.08;
-      currentTemp = Math.max(25.1, Math.min(25.8, currentTemp + delta));
-      const tempEl = document.getElementById('tempDisplay');
-      if (tempEl) tempEl.innerText = currentTemp.toFixed(1) + "°C";
-    }, 4500);
+    // ─── REAL-TIME ECOLOGICAL SIMULATION ENGINE (DAYS-LONG PACE) ───
+    function cyclePacingMode() {
+      pacingIndex = (pacingIndex + 1) % PACING_MODES.length;
+      localStorage.setItem('aqua_pace_index', pacingIndex);
+      updatePacingUI();
+      updateStatus(`Pacing changed: ${PACING_MODES[pacingIndex].desc}`);
+    }
 
-    // LIGHTING PRESETS
+    function updatePacingUI() {
+      const chip = document.getElementById('chipPace');
+      const val = document.getElementById('valPace');
+      if (val) val.innerText = PACING_MODES[pacingIndex].label;
+      if (chip) {
+        chip.style.borderColor = (pacingIndex === 0) ? 'rgba(0, 210, 255, 0.4)' : (pacingIndex === 1 ? 'rgba(245, 158, 11, 0.5)' : 'rgba(239, 68, 68, 0.5)');
+      }
+    }
+
+    function saveEcologyState() {
+      localStorage.setItem('aqua_last_ts', Date.now());
+      localStorage.setItem('aqua_temp', currentTemp.toFixed(2));
+      localStorage.setItem('aqua_o2', currentO2.toFixed(1));
+      localStorage.setItem('aqua_clarity', currentClarity.toFixed(1));
+      localStorage.setItem('aqua_algae', currentAlgae.toFixed(1));
+      localStorage.setItem('aqua_heater', heaterActive ? 'true' : 'false');
+      localStorage.setItem('aqua_airpump', airPumpActive ? 'true' : 'false');
+      localStorage.setItem('aqua_sound', soundEnabled ? 'true' : 'false');
+      localStorage.setItem('aqua_poop_count', poopList.length);
+      localStorage.setItem('aqua_plant_left', plantGrowthLeft.toFixed(3));
+      localStorage.setItem('aqua_plant_right', plantGrowthRight.toFixed(3));
+    }
+
+    // Offline Time Catch-Up: calculates realistic changes elapsed while tab was closed
+    function applyOfflineTimeCatchUp() {
+      const savedTs = parseInt(localStorage.getItem('aqua_last_ts') || '0', 10);
+      if (savedTs <= 0) return;
+
+      const elapsedSeconds = (Date.now() - savedTs) / 1000;
+      if (elapsedSeconds <= 5) return; // Negligible reload
+
+      const elapsedHours = elapsedSeconds / 3600;
+      const speed = PACING_MODES[pacingIndex].speed;
+      const effectiveHours = elapsedHours * speed;
+
+      // 1. Water Clarity: naturally drops ~5% per 24 hours of uncleaned biowaste
+      const clarityDecayPerDay = 5.0; // 5% per 24h
+      const clarityLost = (effectiveHours / 24.0) * clarityDecayPerDay;
+      currentClarity = Math.max(25.0, currentClarity - clarityLost);
+
+      // 2. Algae Growth: under daylight, 1 patch appears every 6-8 hours
+      if (currentLightIndex === 0) {
+        const newAlgaePatches = Math.min(6, Math.floor(effectiveHours / 6.5));
+        for (let i = 0; i < newAlgaePatches; i++) {
+          spawnAlgaePatch();
+        }
+      }
+
+      // 2b. Plant Regrowth while away (takes days to grow tall)
+      if (currentLightIndex === 0 && effectiveHours > 0) {
+        const growthGained = (effectiveHours / 24.0) * 0.10; // ~10% growth per 24 hours of light
+        plantGrowthLeft = Math.min(1.22, plantGrowthLeft + growthGained);
+        plantGrowthRight = Math.min(1.20, plantGrowthRight + growthGained * 0.9);
+        applyPlantScale();
+      }
+
+      // 3. Temperature drift
+      if (!heaterActive) {
+        // Cooled to ambient over 4-6 hours
+        const coolFactor = Math.min(1.0, effectiveHours / 5.0);
+        currentTemp = 25.4 - (coolFactor * (25.4 - 19.5));
+      }
+
+      // 4. Oxygen drift
+      if (!airPumpActive) {
+        // Depleted over 3 hours
+        const o2Factor = Math.min(1.0, effectiveHours / 3.0);
+        currentO2 = Math.max(22.0, 98.0 - (o2Factor * 76.0));
+      }
+
+      // 5. Restore saved poops
+      const savedPoopCount = Math.min(6, parseInt(localStorage.getItem('aqua_poop_count') || '0', 10));
+      const rect = tank.getBoundingClientRect();
+      for (let i = 0; i < savedPoopCount; i++) {
+        spawnPoop(30 + Math.random() * (rect.width - 60), 14);
+      }
+
+      saveEcologyState();
+    }
+
+    // Active Simulation Loop (Evaluated every 3 seconds)
+    setInterval(() => {
+      const now = Date.now();
+      const dtSeconds = (now - lastSimTimestamp) / 1000;
+      lastSimTimestamp = now;
+
+      const speed = PACING_MODES[pacingIndex].speed;
+      // In Real-Time (1x): 24h = 86400s. In 3 seconds, dtRatio represents (3 * speed / 86400) of a day!
+      const simDayFraction = (dtSeconds * speed) / 86400.0;
+
+      // 1. Temperature Physics
+      if (heaterActive) {
+        // Reaches optimal 25.4°C and stays stable with micro-variations
+        const delta = (25.4 - currentTemp) * 0.15 + (Math.random() - 0.5) * 0.02;
+        currentTemp += delta;
+      } else {
+        // Slowly cools to 19.5°C over ~4 hours in real time
+        const coolRatePerDay = 24.0; // drops ~5.9°C over 6 hours (24°C/day)
+        currentTemp = Math.max(19.5, currentTemp - (simDayFraction * coolRatePerDay));
+      }
+
+      // 2. Dissolved Oxygen Physics
+      if (airPumpActive) {
+        // Aeration recovers efficiently
+        currentO2 = Math.min(100.0, currentO2 + 0.6);
+      } else {
+        // Stagnant water oxygen drops over ~3 hours in real time
+        const o2LossPerDay = (76.0 / (3.0 / 24.0)); // 76% lost in 3 hours
+        currentO2 = Math.max(22.0, currentO2 - (simDayFraction * o2LossPerDay));
+      }
+
+      // 3. Water Clarity Physics: takes 5-7 days to get cloudy if neglected
+      const dailyClarityLoss = 4.5 + (poopList.length * 0.4); // ~5-8% per day
+      currentClarity = Math.max(25.0, currentClarity - (simDayFraction * dailyClarityLoss));
+
+      // 4. Algae Growth Physics: under daylight, 1 patch every ~7 hours in real time
+      if (currentLightIndex === 0) {
+        const algaeChance = (dtSeconds * speed) / (7.0 * 3600.0);
+        if (Math.random() < algaeChance) {
+          spawnAlgaePatch();
+        }
+
+        // 5. Plant Regrowth Physics in Daylight (grows ~12% height per 24 hours)
+        const dailyGrowth = 0.12;
+        if (plantGrowthLeft < 1.25) {
+          plantGrowthLeft = Math.min(1.25, plantGrowthLeft + (simDayFraction * dailyGrowth));
+        }
+        if (plantGrowthRight < 1.20) {
+          plantGrowthRight = Math.min(1.20, plantGrowthRight + (simDayFraction * dailyGrowth * 0.85));
+        }
+        applyPlantScale();
+      }
+
+      saveEcologyState();
+      updateTelemetry();
+    }, 3000);
+
+    function updateTelemetry() {
+      // Update Temp
+      const valTemp = document.getElementById('valTemp');
+      const chipTemp = document.getElementById('chipTemp');
+      if (valTemp) valTemp.innerText = currentTemp.toFixed(1) + "°C";
+      if (chipTemp) {
+        chipTemp.className = 'telemetry-chip';
+        if (currentTemp < 21.5) chipTemp.classList.add('alert');
+        else if (currentTemp < 23.5) chipTemp.classList.add('warn');
+      }
+
+      // Update O2
+      const valO2 = document.getElementById('valO2');
+      const chipO2 = document.getElementById('chipO2');
+      if (valO2) valO2.innerText = Math.round(currentO2) + "%";
+      if (chipO2) {
+        chipO2.className = 'telemetry-chip';
+        if (currentO2 < 45) chipO2.classList.add('alert');
+        else if (currentO2 < 70) chipO2.classList.add('warn');
+      }
+
+      // Update Clarity
+      const valClarity = document.getElementById('valClarity');
+      const chipClarity = document.getElementById('chipClarity');
+      if (valClarity) valClarity.innerText = Math.round(currentClarity) + "%";
+      if (chipClarity) {
+        chipClarity.className = 'telemetry-chip';
+        if (currentClarity < 50) chipClarity.classList.add('alert');
+        else if (currentClarity < 75) chipClarity.classList.add('warn');
+      }
+
+      // Update Algae
+      const valAlgae = document.getElementById('valAlgae');
+      const chipAlgae = document.getElementById('chipAlgae');
+      if (valAlgae) valAlgae.innerText = Math.round(currentAlgae) + "%";
+      if (chipAlgae) {
+        chipAlgae.className = 'telemetry-chip';
+        if (currentAlgae > 65) chipAlgae.classList.add('alert');
+        else if (currentAlgae > 35) chipAlgae.classList.add('warn');
+      }
+
+      // Water Murk Visual Sync
+      if (waterMurkEl) {
+        const murkOpacity = Math.max(0, (100 - currentClarity) / 100 * 0.75);
+        waterMurkEl.style.opacity = murkOpacity.toFixed(2);
+      }
+    }
+
+    function updateStatus(text) {
+      if (statusPanel) statusPanel.innerText = text;
+    }
+
+    // ─── LIGHTING SPECTRUM MODES ───
     const LIGHT_MODES = [
-      {id: 'daylight', label: 'Daylight', cssClass: ''},
-      {id: 'sunset', label: 'Sunset', cssClass: 'light-sunset'},
-      {id: 'moonlight', label: 'Moonlight', cssClass: 'light-moonlight'},
-      {id: 'off', label: 'Dark / Off', cssClass: 'light-off'}
+      { id: 'daylight', label: 'Daylight', cssClass: '' },
+      { id: 'sunset', label: 'Sunset', cssClass: 'light-sunset' },
+      { id: 'moonlight', label: 'Moonlight', cssClass: 'light-moonlight' },
+      { id: 'off', label: 'Dark / Night', cssClass: 'light-off' }
     ];
 
     let currentLightIndex = parseInt(localStorage.getItem('aqua_light_mode') || '0', 10);
+
+    function updateLightUI() {
+      const mode = LIGHT_MODES[currentLightIndex];
+      const btnEl = document.getElementById('lightModeBtn');
+      if (!btnEl) return;
+      
+      btnEl.className = "action-btn";
+      if (mode.id === 'daylight') {
+        btnEl.innerHTML = `<span>💡</span> Light: Daylight`;
+        btnEl.classList.add('light-btn-daylight');
+      } else if (mode.id === 'sunset') {
+        btnEl.innerHTML = `<span>🌇</span> Light: Sunset`;
+        btnEl.classList.add('light-btn-sunset');
+      } else if (mode.id === 'moonlight') {
+        btnEl.innerHTML = `<span>🌙</span> Light: Moonlight`;
+        btnEl.classList.add('light-btn-moonlight');
+      } else {
+        btnEl.innerHTML = `<span>🌑</span> Light: Off`;
+        btnEl.classList.add('light-btn-off');
+      }
+    }
 
     function applyLightingPreset() {
       const mode = LIGHT_MODES[currentLightIndex];
@@ -1832,31 +2938,29 @@
         if (m.cssClass) assembly.classList.remove(m.cssClass);
       });
 
-      if (mode.cssClass) {
-        assembly.classList.add(mode.cssClass);
-      }
-
-      const labelEl = document.getElementById('lightModeLabel');
-      if (labelEl) labelEl.innerText = `SMART LED: ${mode.label.toUpperCase()}`;
-
-      const btnEl = document.getElementById('lightModeBtn');
-      if (btnEl) btnEl.innerText = `💡 Light: ${mode.label}`;
-
+      if (mode.cssClass) assembly.classList.add(mode.cssClass);
+      updateLightUI();
       localStorage.setItem('aqua_light_mode', currentLightIndex);
     }
 
     function cycleLightMode() {
       currentLightIndex = (currentLightIndex + 1) % LIGHT_MODES.length;
       applyLightingPreset();
+      if (currentLightIndex === 3) {
+        updateStatus("🌙 Night mode: Lights off. Fish settle peacefully into bottom shelter for sleep-resting torpor.");
+        fishList.forEach(f => f.pickNewTarget());
+      } else {
+        updateStatus(`Lighting spectrum switched to ${LIGHT_MODES[currentLightIndex].label}. Fish wake up and resume cruising.`);
+        fishList.forEach(f => f.pickNewTarget());
+      }
     }
 
-    // SPECIES POPULATION CONTROLLER (Index 8 = Asian Arowana)
-    const DEFAULT_POPULATION = {0: 2, 1: 2, 2: 3, 3: 2, 4: 2, 5: 3, 6: 2, 7: 3, 8: 1};
+    // ─── SPECIES POPULATION CONTROLLER ───
+    const DEFAULT_POPULATION = { 0: 2, 1: 2, 2: 3, 3: 2, 4: 2, 5: 3, 6: 2, 7: 3, 8: 1, 9: 2 };
     let populationCounts = JSON.parse(localStorage.getItem('aqua_population') || 'null') || DEFAULT_POPULATION;
 
-    if (populationCounts[8] === undefined) {
-      populationCounts[8] = 1;
-    }
+    if (populationCounts[8] === undefined) populationCounts[8] = 1;
+    if (populationCounts[9] === undefined) populationCounts[9] = 2;
 
     function savePopulationSettings() {
       localStorage.setItem('aqua_population', JSON.stringify(populationCounts));
@@ -1889,7 +2993,8 @@
         "Red Cherry Shrimp",
         "Chinese Yuanbao Goldfish",
         "Tiger Barb (Tiger Fish)",
-        "Super Red Dragon Arowana"
+        "Super Red Dragon Arowana",
+        "Otocinclus Algae Eater"
       ];
 
       FISH_MODELS.forEach((model, idx) => {
@@ -1977,17 +3082,23 @@
       });
     });
 
+    // ─── SETUP & RENDER LOOP ───
     function setupTank() {
       fishList.forEach(f => f.el.remove());
       fishList = [];
       syncFishPopulation();
       renderSpeciesDropdown();
       applyLightingPreset();
+      updatePacingUI();
+      applyOfflineTimeCatchUp();
+      applyPlantScale();
+      updateTelemetry();
     }
 
     function render() {
       fishList.forEach(f => f.update());
 
+      // Sinking Food Pellets Physics
       for (let i = foodList.length - 1; i >= 0; i--) {
         let f = foodList[i];
 
@@ -2002,8 +3113,9 @@
 
         if (f.y <= 14) {
           f.y = 14;
+          // Bottom scavengers (Corydoras & Shrimp) feed on substrate
           fishList.forEach(fish => {
-            if (fish.model.isBottomDweller && Math.hypot(fish.x - f.x, fish.y - f.y) < 140) {
+            if (fish.model.isBottomDweller && Math.hypot(fish.x - f.x, fish.y - f.y) < 130) {
               fish.targetX = f.x - (fish.model.width / 2);
               fish.targetY = 14;
               fish.speed = fish.model.speedMax * 1.8;
@@ -2011,16 +3123,27 @@
             }
           });
 
-          if (!f.dissolveTimer) {
-            f.dissolveTimer = setTimeout(() => {
-              if (f.el && f.el.parentElement) f.el.remove();
-              let idx = foodList.indexOf(f);
-              if (idx > -1) foodList.splice(idx, 1);
-            }, 5000);
+          // Uneaten food decays and turns brown on the substrate
+          f.onFloorTime++;
+          if (f.onFloorTime === 60) {
+            f.el.classList.add('decaying');
           }
         }
       }
 
+      // Sinking Fish Poop Physics
+      for (let i = poopList.length - 1; i >= 0; i--) {
+        let p = poopList[i];
+        if (p.y > 14) {
+          p.y -= p.fallSpeed;
+          p.el.style.bottom = p.y + 'px';
+        } else {
+          p.y = 14;
+          p.el.style.bottom = '14px';
+        }
+      }
+
+      // Rising Micro-Bubbles
       const tankRect = tank.getBoundingClientRect();
       const waterCeiling = (tankRect.height * 0.94) - 4;
 
