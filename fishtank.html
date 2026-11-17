@@ -1053,9 +1053,9 @@
 
     <div style="display: flex; gap: 6px;">
       <button class="action-btn" id="waterChangeBtn" onclick="performWaterChange()" title="Perform 30% Partial Water Change">🚰 Water Change</button>
-      <button class="action-btn" id="heaterToggleBtn" onclick="toggleHeater()">🔥 Heater: ON</button>
-      <button class="action-btn active" id="airPumpBtn" onclick="toggleAirPump()">💨 Oxygen: ON</button>
-      <button class="action-btn" id="lightModeBtn" onclick="cycleLightMode()">💡 Light</button>
+      <button class="action-btn heater-btn-on" id="heaterToggleBtn" onclick="toggleHeater()"><span>🔥</span> Heater: ON</button>
+      <button class="action-btn oxygen-btn-on" id="airPumpBtn" onclick="toggleAirPump()"><span>💨</span> Oxygen: ON</button>
+      <button class="action-btn light-btn-daylight" id="lightModeBtn" onclick="cycleLightMode()"><span>💡</span> Light: Daylight</button>
       <button class="action-btn" id="speciesMenuBtn" onclick="toggleSpeciesMenu()">🐟 Stock ▾</button>
     </div>
   </div>
@@ -3089,6 +3089,8 @@
       syncFishPopulation();
       renderSpeciesDropdown();
       applyLightingPreset();
+      updateHeaterUI();
+      updateOxygenUI();
       updatePacingUI();
       applyOfflineTimeCatchUp();
       applyPlantScale();
