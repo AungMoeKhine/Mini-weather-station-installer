@@ -164,6 +164,24 @@
 
     /* Dynamic Tool Cursors */
     .tank-panel.tool-feed { cursor: crosshair; }
+    .tool-tap { cursor: pointer; }
+    .tool-tap:active { cursor: grabbing; }
+    .glass-tap-ring {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 16px rgba(0, 210, 255, 0.85), inset 0 0 10px rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(0.3);
+      animation: tapRippleAnim 0.7s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+      z-index: 100;
+    }
+    @keyframes tapRippleAnim {
+      0% { opacity: 0.95; transform: translate(-50%, -50%) scale(0.3); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(2.2); }
+    }
     .tank-panel.tool-siphon { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2v14'/%3E%3Cpath d='M8 12l4 4 4-4'/%3E%3Ccircle cx='12' cy='19' r='3' fill='%2338bdf8' opacity='0.4'/%3E%3C/svg%3E") 14 26, pointer; }
     .tank-panel.tool-sponge { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='%2310b981' stroke='%23ffffff' stroke-width='1.5'%3E%3Crect x='3' y='5' width='18' height='14' rx='4'/%3E%3Ccircle cx='7' cy='10' r='1.2' fill='%23064e3b'/%3E%3Ccircle cx='12' cy='14' r='1.5' fill='%23064e3b'/%3E%3Ccircle cx='16' cy='9' r='1.1' fill='%23064e3b'/%3E%3C/svg%3E") 14 14, pointer; }
     .tank-panel.tool-shears { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%23f59e0b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Ccircle cx='6' cy='18' r='3'/%3E%3Cline x1='20' y1='4' x2='8.12' y2='15.88'/%3E%3Cline x1='14.47' y1='14.48' x2='20' y2='20'/%3E%3Cline x1='8.12' y1='8.12' x2='12' y2='12'/%3E%3C/svg%3E") 6 6, pointer; }
@@ -1045,6 +1063,7 @@
   <div class="maintenance-dock">
     <div class="tool-group">
       <button class="tool-btn active" id="toolFeed" onclick="selectTool('feed')">🍞 Feed</button>
+      <button class="tool-btn" id="toolTap" onclick="selectTool('tap')">👆 Tap Glass</button>
       <button class="tool-btn" id="toolSiphon" onclick="selectTool('siphon')">🧹 Siphon</button>
       <button class="tool-btn" id="toolSponge" onclick="selectTool('sponge')">🧽 Scraper</button>
       <button class="tool-btn" id="toolShears" onclick="selectTool('shears')">✂️ Prune</button>
@@ -1096,7 +1115,8 @@
 
     let heaterActive = localStorage.getItem('aqua_heater') !== 'false';
     let airPumpActive = localStorage.getItem('aqua_airpump') !== 'false';
-    let currentTool = 'feed';     // 'feed' | 'siphon' | 'sponge' | 'shears'
+    let currentTool = 'feed';
+    let glassHand = { active: false, x: 0, y: 0, lastMove: 0 };     // 'feed' | 'siphon' | 'sponge' | 'shears'
     let soundEnabled = localStorage.getItem('aqua_sound') !== 'false';
 
     let foodList = [];
@@ -2489,6 +2509,7 @@
         this.speed = this.model.speedMin;
         this.tilt = 0;
         this.pauseFrames = 0;
+        this.fleeUntil = 0;
         this.postFeedCooldown = 0;
         this.stuckFrames = 0;
         this.lastBubbleTime = Date.now() + Math.random() * 3000;
@@ -2674,35 +2695,34 @@
       dartAway(fromClientX, fromClientY) {
         const rect = tank.getBoundingClientRect();
         const localX = fromClientX - rect.left;
+        const waterHeight = rect.height * 0.94;
 
-        if (this.model.type === 'shrimp') {
-          this.targetX = localX > this.x ? Math.max(15, this.x - 140) : Math.min(rect.width - 45, this.x + 140);
-          this.targetY = Math.min(80, this.y + 35 + Math.random() * 30);
-          this.speed = 0.15;
-          this.isClimbing = false;
-          this.pauseFrames = 0;
-          return;
-        }
-
-        this.targetX = localX > this.x ? Math.max(20, this.x - 180) : Math.min(rect.width - 50, this.x + 180);
-
-        if (this.model.isBottomDweller) {
-          this.targetY = 14 + Math.random() * 22;
-          this.speed = 0.08;
-        } else if (this.model.isSurfaceDweller) {
-          this.targetY = (rect.height * 0.94) - this.model.height - 40;
-          this.speed = 0.09;
-        } else {
-          this.targetY = Math.min((rect.height * 0.94) - 40, Math.max(16, this.y + (Math.random() * 120 - 60)));
-          this.speed = 0.08;
-        }
+        this.fleeUntil = Date.now() + 2500 + Math.random() * 1200;
         this.pauseFrames = 0;
+
+        // Flee decisively to opposite corners/sides away from the tap point
+        if (localX > this.x) {
+          // Tap is to our right -> bolt left!
+          this.targetX = 15 + Math.random() * (rect.width * 0.28);
+        } else {
+          // Tap is to our left -> bolt right!
+          this.targetX = rect.width * 0.70 + Math.random() * (rect.width * 0.26) - this.model.width;
+        }
+
+        if (this.model.type === 'shrimp' || this.model.isBottomDweller) {
+          this.targetY = 14 + Math.random() * 25;
+        } else if (this.model.isSurfaceDweller) {
+          this.targetY = waterHeight - this.model.height - 18 - Math.random() * 30;
+        } else {
+          this.targetY = 20 + Math.random() * (waterHeight - this.model.height - 35);
+        }
+
+        this.facingRight = this.targetX > this.x;
+        this.speed = this.model.speedMax * 4.5; // High-speed panic sprint
       }
 
       seekNearestFood() {
-        if (this.postFeedCooldown > 0) return false;
         if (!foodList.length) return false;
-        if (this.satiation >= 3) return false;
 
         let nearest = null;
         let minDist = 9999;
@@ -2723,7 +2743,7 @@
           this.targetX = nearest.x - (this.model.width / 2) + Math.cos(this.targetOffsetAngle) * spreadRadius;
           this.targetY = nearest.y + Math.sin(this.targetOffsetAngle) * (spreadRadius * 0.4);
 
-          const sizeBoost = this.model.width > 80 ? 3.5 : 2.2;
+          const sizeBoost = this.model.width > 80 ? 4.5 : 3.6;
           this.speed = this.model.speedMax * sizeBoost;
           this.pauseFrames = 0;
           return true;
@@ -2738,6 +2758,23 @@
 
         const hasFood = this.seekNearestFood();
         const now = Date.now();
+
+        // Glass Tap Follow Hand (Fish swim towards hand ONLY if calm and not fleeing)
+        const isFleeing = (this.fleeUntil && now < this.fleeUntil);
+        let followingHand = false;
+        if (!hasFood && !isFleeing && currentTool === 'tap' && glassHand.active && (now - glassHand.lastMove < 4000)) {
+          if (this.targetOffsetAngle === undefined) {
+            this.targetOffsetAngle = Math.random() * Math.PI * 2;
+          }
+          const waterHeight = rect.height * 0.94;
+          const spread = 12 + (this.model.width * 0.22) + (Math.sin((now + this.x * 2) / 380) * 8);
+          this.targetX = Math.max(10, Math.min(rect.width - this.model.width - 10, glassHand.x - (this.model.width / 2) + Math.cos(this.targetOffsetAngle) * spread));
+          this.targetY = Math.max(10, Math.min(waterHeight - this.model.height - 10, glassHand.y - (this.model.height / 2) + Math.sin(this.targetOffsetAngle) * (spread * 0.6)));
+          this.speed = this.model.speedMax * 1.8;
+          this.pauseFrames = 0;
+          this.facingRight = this.targetX > this.x;
+          followingHand = true;
+        }
 
         const currentSpeed = PACING_MODES[pacingIndex].speed;
         const digestionInterval = (45 * 60 * 1000) / currentSpeed;
@@ -2827,8 +2864,14 @@
               this.lastCheckPos = { x: this.x, y: this.y, frame: 0 };
             }
 
-            if (hasFood) {
-              const step = Math.min(dist, 1.8 + (this.model.speedMax * 70));
+            if (isFleeing) {
+              const step = Math.min(dist, 4.5 + (this.model.speedMax * 260));
+              this.x += (dx / dist) * step;
+              this.y += (dy / dist) * step;
+              if (Math.abs(dx) > 1.5) this.facingRight = dx > 0;
+              this.tilt += (Math.max(-25, Math.min(25, (dy / dist) * 30)) - this.tilt) * 0.2;
+            } else if (hasFood) {
+              const step = Math.min(dist, 4.2 + (this.model.speedMax * 220));
               this.x += (dx / dist) * step;
               this.y += (dy / dist) * step;
 
@@ -2915,10 +2958,11 @@
       const activeBtn = document.getElementById('tool' + toolName.charAt(0).toUpperCase() + toolName.slice(1));
       if (activeBtn) activeBtn.classList.add('active');
 
-      tank.classList.remove('tool-feed', 'tool-siphon', 'tool-sponge', 'tool-shears');
+      tank.classList.remove('tool-feed', 'tool-tap', 'tool-siphon', 'tool-sponge', 'tool-shears');
       tank.classList.add('tool-' + toolName);
 
       if (toolName === 'feed') updateStatus("Hand Mode: Tap anywhere in the tank to drop food flakes.");
+      else if (toolName === 'tap') updateStatus("Glass Tap: Tap or move your hand along the glass; fish will follow looking for food!");
       else if (toolName === 'siphon') updateStatus("Gravel Siphon: Tap or drag along the gravel to vacuum up droppings & debris.");
       else if (toolName === 'sponge') updateStatus("Algae Scraper: Drag across the glass to wipe away green algae spots.");
       else if (toolName === 'shears') updateStatus("Plant Shears: Tap near overgrown plant foliage to prune stems.");
@@ -2927,7 +2971,24 @@
     // ─── TANK CLICK & DRAG INTERACTIONS ───
     tank.addEventListener('pointerdown', handleTankAction);
     tank.addEventListener('pointermove', (e) => {
+      const rect = tank.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = rect.height - (e.clientY - rect.top);
+      if (currentTool === 'tap') {
+        const now = Date.now();
+        if (!glassHand.startledUntil || now >= glassHand.startledUntil) {
+          glassHand.active = true;
+          glassHand.x = clickX;
+          glassHand.y = clickY;
+          glassHand.lastMove = now;
+        }
+      }
       if (e.buttons === 1) handleTankAction(e);
+    });
+    tank.addEventListener('pointerleave', () => {
+      if (currentTool === 'tap') {
+        glassHand.active = false;
+      }
     });
 
     function handleTankAction(e) {
@@ -2935,7 +2996,9 @@
       const clickX = e.clientX - rect.left;
       const clickY = rect.height - (e.clientY - rect.top);
 
-      if (currentTool === 'feed') {
+      if (currentTool === 'tap') {
+        triggerGlassTap(clickX, clickY, e.clientX, e.clientY);
+      } else if (currentTool === 'feed') {
         dropFood(clickX, clickY);
         playSound('feed');
       } else if (currentTool === 'siphon') {
@@ -2945,6 +3008,68 @@
       } else if (currentTool === 'shears') {
         prunePlantsNear(clickX, clickY);
       }
+    }
+
+    // ─── GLASS TAP & HAND FOLLOWING SYSTEM ───
+    function playGlassTapSound() {
+      if (!soundEnabled) return;
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      try {
+        const now = audioCtx.currentTime;
+
+        // 1. Sharp glass surface snap / click
+        const clickOsc = audioCtx.createOscillator();
+        const clickGain = audioCtx.createGain();
+        clickOsc.type = 'triangle';
+        clickOsc.frequency.setValueAtTime(2400, now);
+        clickOsc.frequency.exponentialRampToValueAtTime(700, now + 0.035);
+        clickGain.gain.setValueAtTime(0.5, now);
+        clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+        clickOsc.connect(clickGain);
+        clickGain.connect(audioCtx.destination);
+        clickOsc.start(now);
+        clickOsc.stop(now + 0.045);
+
+        // 2. Deep solid glass & water hollow knock resonance (thump)
+        const thumpOsc = audioCtx.createOscillator();
+        const thumpGain = audioCtx.createGain();
+        thumpOsc.type = 'sine';
+        thumpOsc.frequency.setValueAtTime(240, now);
+        thumpOsc.frequency.exponentialRampToValueAtTime(60, now + 0.12);
+        thumpGain.gain.setValueAtTime(0.65, now);
+        thumpGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+        thumpOsc.connect(thumpGain);
+        thumpGain.connect(audioCtx.destination);
+        thumpOsc.start(now);
+        thumpOsc.stop(now + 0.15);
+      } catch (err) {}
+    }
+
+    function triggerGlassTap(x, y, rawClientX, rawClientY) {
+      playGlassTapSound();
+      updateStatus("Glass Tap: Tap startled the fish! They dart away in fear.");
+
+      const rect = tank.getBoundingClientRect();
+      const ring = document.createElement('div');
+      ring.className = 'glass-tap-ring';
+      ring.style.left = (rawClientX - rect.left) + 'px';
+      ring.style.top = (rawClientY - rect.top) + 'px';
+      tank.appendChild(ring);
+      setTimeout(() => ring.remove(), 700);
+
+      // Block hand-following for 3.5 seconds while fish flee
+      const now = Date.now();
+      glassHand.startledUntil = now + 3500;
+      glassHand.active = false;
+
+      fishList.forEach(fish => {
+        fish.dartAway(rawClientX, rawClientY);
+      });
     }
 
     // ─── SIPHON VACUUM SYSTEM ───
@@ -3138,6 +3263,11 @@
 
     // ─── FEEDING & POOP ───
     function dropFood(x, y) {
+      fishList.forEach(fish => {
+        fish.postFeedCooldown = 0; // Wake up immediately
+        fish.pauseFrames = 0;
+        fish.speed = fish.model.speedMax * 3.0; // Fast sprint to food
+      });
       const pellet = document.createElement('div');
       pellet.className = 'food-pellet';
       pellet.style.left = x + 'px';
